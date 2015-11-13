@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.WebAPI", "Photon.WebAPI\Photon.WebAPI.csproj", "{600EED2E-EAB8-4270-B345-78CA9E1B1948}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.Services", "Photon.Services\Photon.Services\Photon.Services.csproj", "{61D12B4A-80A9-4B76-866B-2F6F20C8BBC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.Entities", "Photon.Entities\Photon.Entities\Photon.Entities.csproj", "{C5A870D2-B959-446D-BF7F-D294679E40F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{600EED2E-EAB8-4270-B345-78CA9E1B1948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600EED2E-EAB8-4270-B345-78CA9E1B1948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600EED2E-EAB8-4270-B345-78CA9E1B1948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600EED2E-EAB8-4270-B345-78CA9E1B1948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D12B4A-80A9-4B76-866B-2F6F20C8BBC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D12B4A-80A9-4B76-866B-2F6F20C8BBC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D12B4A-80A9-4B76-866B-2F6F20C8BBC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D12B4A-80A9-4B76-866B-2F6F20C8BBC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A870D2-B959-446D-BF7F-D294679E40F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A870D2-B959-446D-BF7F-D294679E40F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A870D2-B959-446D-BF7F-D294679E40F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A870D2-B959-446D-BF7F-D294679E40F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

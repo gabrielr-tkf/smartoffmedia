@@ -1,0 +1,3 @@
+﻿- Status multiples devices
+- Estimado de cuando queda libre
+- Suscripcion a notificacion de cuando queda libre (mail, windows notification, chrome notification, sonido)
