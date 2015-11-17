@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Photon.Entities
 {
+    // GetDeviceStatus
     //  {
     //      "id": "330034000d47343432313031",
     //      "name": "Photon Takeoff",

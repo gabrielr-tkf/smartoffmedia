@@ -120,10 +120,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
+    <Compile Include="Controllers\WebTestingController.cs" />
     <Compile Include="Entities\BaseResponse.cs" />
     <Compile Include="Entities\DeviceGetResponse.cs" />
     <Compile Include="Entities\DeviceVariableGetResponse.cs" />
+    <Compile Include="Entities\LogStateChangeResponse.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -156,6 +159,13 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\WebTesting\ShowStateChange.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\kkcloud - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\kkcloud - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
