@@ -1,4 +1,6 @@
-﻿using Photon.WebAPI.Entities;
+﻿using Microsoft.AspNet.SignalR;
+using Photon.WebAPI.Classes;
+using Photon.WebAPI.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,14 @@ namespace Photon.WebAPI.Controllers
                 {
                     ((List<Tuple<int, bool, DateTime>>)HttpContext.Current.Cache["LogsTable"]).Add(Tuple.Create(bathId, isOccupied, DateTime.Now));
                 }
+
+
+
+                NotificationController notificationController = new NotificationController();
+                notificationController.Publish(bathId.ToString(), isOccupied);
+
+
+
                 response.Status = "200";
                 response.Message = "State successfully logged";
             }
