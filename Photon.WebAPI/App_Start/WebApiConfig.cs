@@ -11,16 +11,18 @@ namespace Photon.WebAPI
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-           
+
+            //Enable Cors
+            config.EnableCors();
             // Web API routes
             config.MapHttpAttributeRoutes();
-
+            //Basic route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { controller = "Device", action = "Get",  id = RouteParameter.Optional }
             );
-
+            //Return Json as default browser request.
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
         }

@@ -8,6 +8,7 @@ using System.Web.Http;
 using Microsoft.AspNet.SignalR;
 using Photon.WebAPI.Classes;
 using Photon.WebAPI.Entities;
+using System.Web.Http.Cors;
 
 namespace Photon.WebAPI.Controllers
 {
@@ -16,7 +17,8 @@ namespace Photon.WebAPI.Controllers
 
         private static Queue<string> queueNotifications = new Queue<string>();
 
-
+        //TODO: Allow only used origin
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [System.Web.Http.AcceptVerbs("GET")]
         public NotificationSubscribeResponse Subscribe(string bathId, string userId)
         {
