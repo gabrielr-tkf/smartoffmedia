@@ -33,6 +33,29 @@ console.log("popup.js");
 		});
 		
 		
+		function callbackNotification()
+		{
+			console.log("notification callback");
+		}
+	
+		  
+		  var port = chrome.extension.connect({name: "Sample Communication"});
+//port.postMessage("Hi BackGround");
+port.onMessage.addListener(function(msg) {
+        console.log("message recieved"+ msg);
+		
+		if(true)
+		{
+			var opt = {
+			  type: "basic",
+			  title: "Primary Title",
+			  message: "Primary message to display",
+			  iconUrl: "url_to_small_icon"
+			}
+			chrome.notifications.create("1", opt,  callbackNotification)
+		}
+});
+		
 		
 		
 	
