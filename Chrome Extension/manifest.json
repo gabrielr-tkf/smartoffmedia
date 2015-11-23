@@ -10,13 +10,16 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["jquery.min.js", "jquery.signalR-2.2.0.min.js", "popup.js", "hubs.js"],
+    "scripts": ["jquery.min.js", "jquery.signalR-2.2.0.min.js", "popup.js", "hubs.js", "background.js"],
     "persistent": true
   },
   "permissions": [
 	"tabs",
 	"http://*/*", 
-    "https://*/*"
+    "https://*/*",
+	"storage",
+	"background"
+	
   ],
    "devtools_page": "devtools.html"
 }
