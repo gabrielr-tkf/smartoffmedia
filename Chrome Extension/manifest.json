@@ -18,7 +18,8 @@
 	"http://*/*", 
     "https://*/*",
 	"storage",
-	"background"
+	"background",
+	"notifications"
 	
   ],
    "devtools_page": "devtools.html"

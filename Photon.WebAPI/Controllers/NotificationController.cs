@@ -30,7 +30,9 @@ namespace Photon.WebAPI.Controllers
                 BathId = bathId,
                 UserId = userId,
                 Message = "User " + userId + " subscribed to bath " + bathId,
-                Status = "200"
+                Status = "200",
+                NotificationTitle = "kkcloud",
+                NotificationMessage = "Te avisaremos cuando el baño " + bathId + " este libre ;-)"
             };
 
             return response;
@@ -46,7 +48,7 @@ namespace Photon.WebAPI.Controllers
                 string userId = queueNotifications.Dequeue();
 
 
-                PhotonHub.SendMessage(userId, bathId.ToString(), isOccupied.ToString());
+                PhotonHub.SendMessage(userId, "Hey!", "El baño " + bathId.ToString() + " está " + isOccupied.ToString());
             }
 
 

@@ -9,42 +9,28 @@ namespace Photon.WebAPI.Classes
 {
     public class PhotonHub : Hub
     {
-        public static void SendMessage(string user, string bathid, string state)
+        public static void SendMessage(string user, string title, string message)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
             //hubContext.Clients.All.broadcastMessage(bathid, state);
-            hubContext.Clients.Client(htUsers_ConIds[user].ToString()).broadcastMessage(bathid, state);
+            hubContext.Clients.Client(UsersConnectionIds.Find(a=> a == user)).sendMessage(title, message);
         }
       
-        public static Hashtable htUsers_ConIds = new Hashtable(20);
+        public static List<string> UsersConnectionIds = new List<string>();
         public string registerConId()
         {
-
-            string userID = Guid.NewGuid().ToString();
-
-            bool alreadyExists = false;
-            if (htUsers_ConIds.Count == 0)
+            if (UsersConnectionIds.Count == 0)
             {
-                htUsers_ConIds.Add(userID, Context.ConnectionId);
+                UsersConnectionIds.Add(Context.ConnectionId);
             }
             else
             {
-                foreach (string key in htUsers_ConIds.Keys)
-                {
-                    if (key == userID)
-                    {
-                        htUsers_ConIds[key] = Context.ConnectionId;
-                        alreadyExists = true;
-                        break;
-                    }
-                }
-                if (!alreadyExists)
-                {
-                    htUsers_ConIds.Add(userID, Context.ConnectionId);
-                }
+              if(!UsersConnectionIds.Exists(a=> a == Context.ConnectionId))
+              {
+                  UsersConnectionIds.Add(Context.ConnectionId);
+              }
             }
-
-            return userID;
+            return Context.ConnectionId;
         }
     }
 }

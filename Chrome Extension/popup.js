@@ -2,60 +2,40 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 
+// Bind button event to recieve notifications
+$(function() {
+  $("#ucSubscribe").bind("click", function() {
+    var userId = localStorage.Guid;
+    $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
 
-
-console.log("popup.js");
-  function SubscribeNotification() {
-            var userId = localStorage.Guid;
-            //var userId = "asdasd";
-			console.log(userId + " en subscribe to notification");
-            $.get("http://localhost:52325/Api/Notification/subscribe?bathid=1&userId=" + userId, function (data) {
-
-					console.log(data);
-
-           });
-        }
-		function BindSuscriptionEvent()
-		{
-			$("#ucSubscribe").bind("click", function(){
-				
-				SubscribeNotification();
-				
-			});
-			
-		}
-		
-			
-		$(function () {     
-		console.log("popup.js Bind");
-			BindSuscriptionEvent();
-		});
-		
-		
-		function callbackNotification()
-		{
-			console.log("notification callback");
-		}
-	
-		  
-		  var port = chrome.extension.connect({name: "Sample Communication"});
-//port.postMessage("Hi BackGround");
-port.onMessage.addListener(function(msg) {
-        console.log("message recieved"+ msg);
-		
-		if(true)
-		{
-			var opt = {
-			  type: "basic",
-			  title: "Primary Title",
-			  message: "Primary message to display",
-			  iconUrl: "url_to_small_icon"
+			if(data.Status == "200")
+			{
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			}else {
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
 			}
-			chrome.notifications.create("1", opt,  callbackNotification)
-		}
+    });
+  });
 });
-		
-		
-		
-	
+//Show system notification => FRONTEND
+function ShowNotification(title, message) {
+  var opt = {
+    type: "basic",
+    title: title,
+    message: message,
+    iconUrl: "icon.png"
+  }
+  chrome.notifications.create("", opt, function() {});
+}
+
+//Communication with background.js
+var port = chrome.extension.connect({
+  name: "Sample Communication"
+});
+port.onMessage.addListener(function(msg) {
+
+  	console.log("message recieved " + msg);
+
+});
