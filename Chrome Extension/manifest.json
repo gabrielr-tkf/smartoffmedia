@@ -10,21 +10,13 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["jquery.signalR-2.2.0.min.js", "jquery.min.js" ]
+    "scripts": ["jquery.min.js", "jquery.signalR-2.2.0.min.js", "popup.js", "hubs.js"],
+    "persistent": true
   },
-  "background": {
-    "page": "background.html"
-  },
-  "content_scripts": [ {
-    "js": [ "jquery.min.js", "jquery.signalR-2.2.0.min.js" ],
-    "matches": [ "http://*/*", "https://*/*"]
-  }],
   "permissions": [
+	"tabs",
 	"http://*/*", 
-	"http://localhost:52325/*",
-    "https://*/*",
-    "https://ajax.googleapis.com/",
-	"https://ajax.googleapis.com/*"
-	
-  ]
+    "https://*/*"
+  ],
+   "devtools_page": "devtools.html"
 }

@@ -6,9 +6,11 @@
 
 var guid;
 
+console.log("popup.js");
+
   function SubscribeNotification() {
-            //var userId = guid;
-            var userId = "asdasd";
+            var userId = guid;
+            //var userId = "asdasd";
 			console.log(userId + " en subscribe to notification");
             $.get("http://localhost:52325/Api/Notification/subscribe?bathid=1&userId=" + userId, function (data) {
 
@@ -16,8 +18,22 @@ var guid;
 
            });
         }
+		function BindSuscriptionEvent()
+		{
+			$("#ucSubscribe").bind("click", function(){
+				
+				SubscribeNotification();
+				
+			});
+			
+		}
+		$(function () {     
+		console.log("popup.js Bind");
+			BindSuscriptionEvent();
+		});
 		
-		     
+		
+		  
         $(function () {
 
             $.connection.hub.url = "http://localhost:52325/signalr";
@@ -51,14 +67,4 @@ var guid;
             });
         });
 		
-		$("document").ready(function(){
 	
-	console.log("aaaa");
-	$("#ucSubscribe").bind("click", function(){
-		
-		
-		console.log("bbbb");
-		SubscribeNotification();
-		
-		});
-});
