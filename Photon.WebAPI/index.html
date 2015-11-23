@@ -68,15 +68,17 @@
     </script>
 
 
-    <a href="#" onclick="SubscribeNotification();">Suscribirme a notificaciones</a>
+    <a href="#" onclick="SubscribeNotification('0');">Suscribirme a baño 1</a>
+    <a href="#" onclick="SubscribeNotification('1');">Suscribirme a baño 2</a>
+    <a href="#" onclick="SubscribeNotification('2');">Suscribirme a baño 3</a>
 
     <script>
 
-        function SubscribeNotification()
+        function SubscribeNotification(bathId)
         {
             var userId = guid;
             console.log(userId + " en subscribe to notification");
-            $.get("http://localhost:52325/Api/Notification/subscribe?bathid=1&userId=" + userId , function (data) {
+            $.get("http://localhost:52325/Api/Notification/subscribe?bathid=" + bathId + "&userId=" + userId , function (data) {
                 
 
                 

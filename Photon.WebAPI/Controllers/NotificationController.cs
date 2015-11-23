@@ -9,43 +9,65 @@ using Microsoft.AspNet.SignalR;
 using Photon.WebAPI.Classes;
 using Photon.WebAPI.Entities;
 using System.Web.Http.Cors;
+using System.Web;
+using Photon.WebAPI.Utilities;
 
 namespace Photon.WebAPI.Controllers
 {
     public class NotificationController : ApiController
     {
-
-        private static Queue<string> queueNotifications = new Queue<string>();
-
         //TODO: Allow only used origin
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [System.Web.Http.AcceptVerbs("GET")]
-        public NotificationSubscribeResponse Subscribe(string bathId, string userId)
+        public NotificationSubscribeResponse Subscribe(int bathId, string userId)
         {
+            NotificationSubscribeResponse response = new NotificationSubscribeResponse();
+            response.BathId = bathId.ToString();
+            response.UserId = userId;
+            response.NotificationTitle = "kkcloud";
 
-            queueNotifications.Enqueue(userId);
+            bool bathIsOccupied = false;
+            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId];
 
-            NotificationSubscribeResponse response = new NotificationSubscribeResponse()
+            bathIsOccupied = ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId];
+
+            bool queueIsEmpty = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId].Count == 0;
+
+            if (!queueIsEmpty || queueIsEmpty && bathIsOccupied)
             {
-                BathId = bathId,
-                UserId = userId,
-                Message = "User " + userId + " subscribed to bath " + bathId,
-                Status = "200",
-                NotificationTitle = "kkcloud",
-                NotificationMessage = "Te avisaremos cuando el baño " + bathId + " este libre ;-)"
-            };
+                if (bathQueue.Contains(userId))
+                {
+                    response.Message = "User " + userId + " was already subscribed to bath " + bathId;
+                    response.Status = "200";
+                    response.NotificationMessage = "Ya estás en la cola para ese baño";
+                }
+                else
+                {
+                    bathQueue.Enqueue(userId);
+
+                    response.Message = "User " + userId + " subscribed to bath " + bathId;
+                    response.Status = "200";
+                    response.NotificationMessage = "Te avisamos cuando el baño " + bathId + " este libre ;-)";
+                }
+            }
+            else
+            {
+                response.Message = "Bathroom " + bathId + " is free and the queue is empty";
+                response.Status = "200";
+                response.NotificationMessage = "El baño está libre y no hay nadie esperando, va pa i";
+            }
 
             return response;
 
         }
-        public void Publish(string bathId, bool isOccupied)
+        public void Publish(int bathId, bool isOccupied)
         {
+            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId];
 
-
-            if (queueNotifications.Count > 0)
+            if (bathQueue.Count > 0)
             {
 
-                string userId = queueNotifications.Dequeue();
+                string userId = bathQueue.Dequeue();
 
 
                 PhotonHub.SendMessage(userId, "Hey!", "El baño " + bathId.ToString() + " está " + isOccupied.ToString());
