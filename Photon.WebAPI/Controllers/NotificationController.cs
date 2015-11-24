@@ -17,7 +17,7 @@ namespace Photon.WebAPI.Controllers
 {
     public class NotificationController : ApiController
     {
-       
+
         /// <summary>
         /// Subscribe user to notification
         /// </summary>
@@ -35,12 +35,12 @@ namespace Photon.WebAPI.Controllers
             response.NotificationTitle = "kkcloud";
 
             bool bathIsOccupied = false;
-            Queue<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1];
+            List<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<List<string>>)[bathId - 1];
 
             bathIsOccupied = (CacheManager.Get(Constants.OccupiedBaths) as List<bool>)[bathId - 1];
 
 
-            bool queueIsEmpty = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1].Count == 0;
+            bool queueIsEmpty = (CacheManager.Get(Constants.BathQueues) as List<List<string>>)[bathId - 1].Count == 0;
 
             if (!queueIsEmpty || queueIsEmpty && bathIsOccupied)
             {
@@ -52,7 +52,7 @@ namespace Photon.WebAPI.Controllers
                 }
                 else
                 {
-                    bathQueue.Enqueue(userId);
+                    bathQueue.Add(userId);
 
                     response.Message = "User " + userId + " subscribed to bath " + bathId;
                     response.Status = "200";
@@ -62,7 +62,7 @@ namespace Photon.WebAPI.Controllers
             else
             {
                 response.Message = "Bathroom " + bathId + " is free and the queue is empty";
-                response.Status = "200";
+                response.Status = "304"; //Not Modified.
                 response.NotificationMessage = "El baño está libre y no hay nadie esperando, va pa i";
             }
 
@@ -84,20 +84,21 @@ namespace Photon.WebAPI.Controllers
             response.UserId = userId;
             response.NotificationTitle = "kkcloud";
 
-          
-            Queue<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1];
 
-            bool queueIsEmpty = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1].Count == 0;
+            List<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<List<string>>)[bathId - 1];
+
+            bool queueIsEmpty = (CacheManager.Get(Constants.BathQueues) as List<List<string>>)[bathId - 1].Count == 0;
 
             if (!queueIsEmpty)
             {
-             
-                    //TODO: Remove user
 
-                    response.Message = "User " + userId + " removed from list to bath " + bathId;
-                    response.Status = "200";
-                    response.NotificationMessage = "Ya no estás en la cola para ese baño";
-            
+                // Remove user from Queue
+                bathQueue.Remove(userId);
+
+                response.Message = "User " + userId + " removed from list to bath " + bathId;
+                response.Status = "200";
+                response.NotificationMessage = "Ya no estás en la cola para ese baño";
+
             }
             else
             {
@@ -115,18 +116,21 @@ namespace Photon.WebAPI.Controllers
         /// <param name="isOccupied"></param>
         public void Publish(int bathId, bool isOccupied)
         {
-            Queue<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1];
+            List<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<List<string>>)[bathId - 1];
 
             if (bathQueue.Count > 0)
             {
+                //Get first user from Queue
+                string userId = bathQueue.First();
 
-                string userId = bathQueue.Dequeue();
+                //Remove first item from Queue
+                bathQueue.RemoveAt(0);
 
                 BathStatus bathStatus = new BathStatus()
-                { 
+                {
                     Title = "Hey!",
                     Message = "El baño " + bathId.ToString() + " está " + isOccupied.ToString(),
-                    BathId   = bathId,
+                    BathId = bathId,
                     IsOccupied = isOccupied
                 };
                 PhotonHub.SendMessage(userId, bathStatus);
