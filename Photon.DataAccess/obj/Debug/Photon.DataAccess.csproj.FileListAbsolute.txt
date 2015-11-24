@@ -1,0 +1,5 @@
+D:\Trabajos\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.DataAccess.dll
+D:\Trabajos\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.DataAccess.pdb
+D:\Trabajos\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.csprojResolveAssemblyReference.cache
+D:\Trabajos\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.dll
+D:\Trabajos\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.pdb
