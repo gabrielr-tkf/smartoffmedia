@@ -16,6 +16,13 @@ namespace Photon.WebAPI.Controllers
 {
     public class NotificationController : ApiController
     {
+       
+        /// <summary>
+        /// Subscribe user to notification
+        /// </summary>
+        /// <param name="bathId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         //TODO: Allow only used origin
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [System.Web.Http.AcceptVerbs("GET")]
@@ -27,12 +34,12 @@ namespace Photon.WebAPI.Controllers
             response.NotificationTitle = "kkcloud";
 
             bool bathIsOccupied = false;
-            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId - 1];
-            
-            bathIsOccupied = ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId - 1];
+            Queue<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1];
+
+            bathIsOccupied = (CacheManager.Get(Constants.OccupiedBaths) as List<bool>)[bathId - 1];
 
 
-            bool queueIsEmpty = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId - 1].Count == 0;
+            bool queueIsEmpty = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1].Count == 0;
 
             if (!queueIsEmpty || queueIsEmpty && bathIsOccupied)
             {
@@ -61,9 +68,14 @@ namespace Photon.WebAPI.Controllers
             return response;
 
         }
+        /// <summary>
+        ///  Send notification to Subscribed user (first in the list)
+        /// </summary>
+        /// <param name="bathId"></param>
+        /// <param name="isOccupied"></param>
         public void Publish(int bathId, bool isOccupied)
         {
-            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId - 1];
+            Queue<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1];
 
             if (bathQueue.Count > 0)
             {

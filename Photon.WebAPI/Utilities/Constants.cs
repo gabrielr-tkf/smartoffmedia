@@ -11,6 +11,9 @@ namespace Photon.WebAPI.Utilities
 
         public const string OccupiedBaths = "OccupiedBaths";
         public const string LastOccupiedTimes = "LastOccupiedTimes";
-        public const string BathQueues = "BathQueues";      
+        public const string BathQueues = "BathQueues";
+
+
+        public const string CacheDuration = "CacheDuration";
     }
 }

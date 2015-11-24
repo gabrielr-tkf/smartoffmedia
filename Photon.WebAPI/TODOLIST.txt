@@ -5,3 +5,4 @@
 - Notificacion de device offline => a administradores
 + SingalR cross domain, SignalR between 2 servers (distinct webapps or urls) - DONE
 + WebAPI cross domain - DONE
+- Si esta libre o ocupado con machine learning

@@ -20,9 +20,9 @@ namespace Photon.WebAPI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            HttpContext.Current.Cache[Constants.OccupiedBaths] = new List<bool>(new bool[]{false, false, false});
-            HttpContext.Current.Cache[Constants.LastOccupiedTimes] = new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }); ;            
-            HttpContext.Current.Cache[Constants.BathQueues] = new List<Queue<string>>(new Queue<string>[] {new Queue<string>(), new Queue<string>(), new Queue<string>()});
+            CacheManager.Add(Constants.OccupiedBaths, new List<bool>(new bool[] { false, false, false }));
+            CacheManager.Add(Constants.LastOccupiedTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
+            CacheManager.Add(Constants.BathQueues, new List<Queue<string>>(new Queue<string>[] { new Queue<string>(), new Queue<string>(), new Queue<string>() }));
         }
     }
 }

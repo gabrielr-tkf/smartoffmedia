@@ -21,10 +21,10 @@ namespace Photon.WebAPI.Controllers
         public LogStateChangeResponse LogStateChange(int bathId, bool isOccupied)
         {
             LogStateChangeResponse response = new LogStateChangeResponse();
-           
+
             try
             {
-                ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId - 1] = isOccupied;
+                (CacheManager.Get(Constants.OccupiedBaths) as List<bool>)[bathId - 1] = isOccupied;
 
                 if (!isOccupied)
                 {
@@ -33,7 +33,7 @@ namespace Photon.WebAPI.Controllers
 
                     DateTime occupiedTime = DateTime.Now;
 
-                    occupiedTime = ((List<DateTime>)HttpContext.Current.Cache[Constants.LastOccupiedTimes])[bathId - 1];
+                    occupiedTime = (CacheManager.Get(Constants.LastOccupiedTimes) as List<DateTime>)[bathId - 1];
 
                     try
                     {
@@ -61,18 +61,18 @@ namespace Photon.WebAPI.Controllers
                 }
                 else
                 {
-                    ((List<DateTime>)HttpContext.Current.Cache[Constants.LastOccupiedTimes])[bathId] = DateTime.Now;
+                    (CacheManager.Get(Constants.LastOccupiedTimes) as List<DateTime>)[bathId] = DateTime.Now;
                 }
 
 
-                if (HttpContext.Current.Cache["LogsTable"] == null)
+                if (!CacheManager.ValidatExistence("LogsTable"))
                 {
-                    HttpContext.Current.Cache["LogsTable"] = new List<Tuple<int, bool, DateTime>>();
-                    ((List<Tuple<int, bool, DateTime>>)HttpContext.Current.Cache["LogsTable"]).Add(Tuple.Create(bathId, isOccupied, DateTime.Now));
+                    CacheManager.Add("LogsTable", new List<Tuple<int, bool, DateTime>>());
+                    (CacheManager.Get("LogsTable") as List<Tuple<int, bool, DateTime>>).Add(Tuple.Create(bathId, isOccupied, DateTime.Now));
                 }
                 else
                 {
-                    ((List<Tuple<int, bool, DateTime>>)HttpContext.Current.Cache["LogsTable"]).Add(Tuple.Create(bathId, isOccupied, DateTime.Now));
+                    (CacheManager.Get("LogsTable") as List<Tuple<int, bool, DateTime>>).Add(Tuple.Create(bathId, isOccupied, DateTime.Now));
                 }
 
                 response.Status = "200";
@@ -84,7 +84,7 @@ namespace Photon.WebAPI.Controllers
                 response.Message = "Internal Server Error";
             }
 
-           return response;
+            return response;
         }
     }
 }
