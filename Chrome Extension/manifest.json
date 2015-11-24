@@ -1,12 +1,22 @@
 {
   "manifest_version": 2,
-
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "kkcloud",
+  "description": "Disponibilidad de Baños",
   "version": "1.0",
-
+  "icons": {
+    "18": "images/logo/logo18.png",
+    "24": "images/logo/logo24.png",
+    "36": "images/logo/logo36.png",
+    "48": "images/logo/logo48.png"
+  },
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": {
+      "18": "images/logo/logo18.png",
+  		"24": "images/logo/logo24.png",
+      "36": "images/logo/logo36.png",
+      "48": "images/logo/logo48.png"
+  	},
+    "default_title": "kkcloud",
     "default_popup": "popup.html"
   },
   "background": {
@@ -14,13 +24,18 @@
     "persistent": true
   },
   "permissions": [
-	"tabs",
-	"http://*/*", 
+  	"tabs",
+  	"http://*/*",
     "https://*/*",
-	"storage",
-	"background",
-	"notifications"
-	
+  	"storage",
+  	"background",
+  	"notifications"
   ],
-   "devtools_page": "devtools.html"
+  "devtools_page": "devtools.html",
+  "omnibox": {
+    "keyword": "kkcloud"
+  },
+  "web_accessible_resources": [
+    "images/logo/logo48.png"
+  ]
 }

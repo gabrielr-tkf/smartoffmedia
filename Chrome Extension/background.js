@@ -1,4 +1,4 @@
- var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
+ var HUB_BASE_URL = "http://localhost:52325/signalr";
 
  //Method A) Using Long Lived Connections
  var frontEndProxy;
@@ -24,7 +24,7 @@
      type: "basic",
      title: title,
      message: message,
-     iconUrl: "icon.png"
+     iconUrl: "images/logo/logo48.png"
    }
    chrome.notifications.create("", opt, function() {});
  }
@@ -36,7 +36,7 @@
    // Declare a proxy to reference the hub.
    var chat = $.connection.photonHub;
    // Create a function that the hub can call to broadcast messages.
-   chat.client.sendMessage = function(title, message) {
+   chat.client.sendMessage = function(bathStatus) {
      // Html encode display name and message.
      //var encodedName = $('<div />').text(name).html();
      //var encodedMsg = $('<div />').text(message).html();
@@ -52,8 +52,16 @@
     // }
      //Method B)
      //frontEndProxy.postMessage("From background " + name + " " + message);
+    var data = {
+      type : 200,
+      BathId : bathStatus.BathId,
+      IsOccupied : bathStatus.IsOccupied
+    }
 
-     ShowNotification(title, message);
+    frontEndProxy.postMessage(data);
+
+     //ShowNotification(title, message);
+     ShowNotification(bathStatus.Title, bathStatus.Message);
 
    };
 
