@@ -24,7 +24,7 @@ namespace Photon.WebAPI.Controllers
            
             try
             {
-                ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId] = isOccupied;
+                ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId - 1] = isOccupied;
 
                 if (!isOccupied)
                 {
@@ -33,7 +33,7 @@ namespace Photon.WebAPI.Controllers
 
                     DateTime occupiedTime = DateTime.Now;
 
-                    occupiedTime = ((List<DateTime>)HttpContext.Current.Cache[Constants.LastOccupiedTimes])[bathId];
+                    occupiedTime = ((List<DateTime>)HttpContext.Current.Cache[Constants.LastOccupiedTimes])[bathId - 1];
 
                     try
                     {

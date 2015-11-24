@@ -27,11 +27,12 @@ namespace Photon.WebAPI.Controllers
             response.NotificationTitle = "kkcloud";
 
             bool bathIsOccupied = false;
-            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId];
+            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId - 1];
+            
+            bathIsOccupied = ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId - 1];
 
-            bathIsOccupied = ((List<bool>)HttpContext.Current.Cache[Constants.OccupiedBaths])[bathId];
 
-            bool queueIsEmpty = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId].Count == 0;
+            bool queueIsEmpty = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId - 1].Count == 0;
 
             if (!queueIsEmpty || queueIsEmpty && bathIsOccupied)
             {
@@ -62,7 +63,7 @@ namespace Photon.WebAPI.Controllers
         }
         public void Publish(int bathId, bool isOccupied)
         {
-            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId];
+            Queue<string> bathQueue = ((List<Queue<string>>)HttpContext.Current.Cache[Constants.BathQueues])[bathId - 1];
 
             if (bathQueue.Count > 0)
             {
