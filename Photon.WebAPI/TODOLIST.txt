@@ -6,5 +6,15 @@
 + SingalR cross domain, SignalR between 2 servers (distinct webapps or urls) - DONE
 + WebAPI cross domain - DONE
 - Si esta libre o ocupado con machine learning
-+ Status baños cuando inicializa la aplicacion
-+ Preservar checked cuando se cierra el popup
+- Status baños cuando inicializa la aplicacion
+- Preservar checked cuando se cierra el popup
+
+
+
+
+
+
+/////////GUIA/////////////////// 
+
+SIMBOLO "-"  => queda por hacer.
+SIMBOLO "+"  => listo. 
