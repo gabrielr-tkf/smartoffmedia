@@ -11,6 +11,7 @@ using Photon.WebAPI.Entities;
 using System.Web.Http.Cors;
 using System.Web;
 using Photon.WebAPI.Utilities;
+using Photon.Entities;
 
 namespace Photon.WebAPI.Controllers
 {
@@ -69,6 +70,45 @@ namespace Photon.WebAPI.Controllers
 
         }
         /// <summary>
+        /// UnSubscribe user to notification
+        /// </summary>
+        /// <param name="bathId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [System.Web.Http.AcceptVerbs("GET")]
+        public NotificationUnSubscribeResponse Unsubscribe(int bathId, string userId)
+        {
+            NotificationUnSubscribeResponse response = new NotificationUnSubscribeResponse();
+            response.BathId = bathId.ToString();
+            response.UserId = userId;
+            response.NotificationTitle = "kkcloud";
+
+          
+            Queue<string> bathQueue = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1];
+
+            bool queueIsEmpty = (CacheManager.Get(Constants.BathQueues) as List<Queue<string>>)[bathId - 1].Count == 0;
+
+            if (!queueIsEmpty)
+            {
+             
+                    //TODO: Remove user
+
+                    response.Message = "User " + userId + " removed from list to bath " + bathId;
+                    response.Status = "200";
+                    response.NotificationMessage = "Ya no estás en la cola para ese baño";
+            
+            }
+            else
+            {
+                response.Message = "Empty Queue => Bathroom " + bathId;
+                response.Status = "200";
+                response.NotificationMessage = "Ya no estabas en la cola para este baño";
+            }
+
+            return response;
+        }
+        /// <summary>
         ///  Send notification to Subscribed user (first in the list)
         /// </summary>
         /// <param name="bathId"></param>
@@ -82,8 +122,14 @@ namespace Photon.WebAPI.Controllers
 
                 string userId = bathQueue.Dequeue();
 
-
-                PhotonHub.SendMessage(userId, "Hey!", "El baño " + bathId.ToString() + " está " + isOccupied.ToString());
+                BathStatus bathStatus = new BathStatus()
+                { 
+                    Title = "Hey!",
+                    Message = "El baño " + bathId.ToString() + " está " + isOccupied.ToString(),
+                    BathId   = bathId,
+                    IsOccupied = isOccupied
+                };
+                PhotonHub.SendMessage(userId, bathStatus);
             }
 
 

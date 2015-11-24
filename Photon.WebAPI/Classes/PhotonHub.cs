@@ -4,16 +4,17 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Collections;
+using Photon.Entities;
 
 namespace Photon.WebAPI.Classes
 {
     public class PhotonHub : Hub
     {
-        public static void SendMessage(string user, string title, string message)
+        public static void SendMessage(string user, BathStatus bathStatus)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
             //hubContext.Clients.All.broadcastMessage(bathid, state);
-            hubContext.Clients.Client(UsersConnectionIds.Find(a=> a == user)).sendMessage(title, message);
+            hubContext.Clients.Client(UsersConnectionIds.Find(a=> a == user)).sendMessage(bathStatus);
         }
       
         public static List<string> UsersConnectionIds = new List<string>();
