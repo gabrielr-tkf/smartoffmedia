@@ -24,7 +24,7 @@ namespace Photon.WebAPI
             CacheManager.Add(Constants.OccupiedByFirstInLine, new List<bool>(new bool[] { true, true, true}));
             CacheManager.Add(Constants.LastOccupiedTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
             CacheManager.Add(Constants.LastFreedTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
-            CacheManager.Add(Constants.LineAdvanceTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
+            CacheManager.Add(Constants.LastLineAdvanceTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
             CacheManager.Add(Constants.BathLines, new List<List<string>>(new List<string>[] { new List<string>(), new List<string>(), new List<string>() }));            
         }
     }
