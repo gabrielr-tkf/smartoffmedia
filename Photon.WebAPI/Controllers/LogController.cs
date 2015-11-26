@@ -55,34 +55,6 @@ namespace Photon.WebAPI.Controllers
             return response;
         }
 
-        /// <summary>
-        /// Return the state of 
-        /// </summary>
-        /// <returns></returns>
-        [System.Web.Http.AcceptVerbs("GET")]
-        public LogGetStateResponse GetState()
-        {
-
-            LogGetStateResponse response = new LogGetStateResponse()
-            {
-                BathStatus = new List<Photon.Entities.BathStatus>(),
-                Message = "Success",
-                Status = "200"
-            };
-
-            int id = 1;
-            foreach (bool bathState in (CacheManager.Get(Constants.OccupiedBaths) as List<bool>))
-            {
-               
-                response.BathStatus.Add(new Photon.Entities.BathStatus()
-                {
-                    BathId = id,
-                    IsOccupied = bathState
-                });
-                id++;
-            }
-
-            return response;
-        }
+       
     }
 }

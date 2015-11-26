@@ -5,8 +5,8 @@ using System.Web;
 
 namespace Photon.WebAPI.Entities
 {
-    public class LogGetStateResponse : BaseResponse
+    public class BathStateResponse : BaseResponse
     {
-        public List<Photon.Entities.BathStatus> BathStatus { get; set; }
+        public List<Photon.Entities.BathStatus> BathStatusList { get; set; }
     }
 }

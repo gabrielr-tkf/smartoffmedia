@@ -1,13 +1,15 @@
-﻿using Photon.WebAPI.Utilities;
+﻿using Photon.WebAPI.Entities;
+using Photon.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using System.Web.Http;
 
 namespace Photon.WebAPI.Controllers
 {
-    public class BathStateController
+    public class BathStateController : ApiController
     {
         /// <summary>
         /// Looks for baths that are free and advances the line in case a bath has been free for more than
@@ -75,6 +77,34 @@ namespace Photon.WebAPI.Controllers
 
                 Thread.Sleep(3000);
             }
+        }
+
+          [System.Web.Http.AcceptVerbs("GET")]
+        public BathStateResponse GetAllBathStatus()
+        {
+           List<bool> bathOccupancy = CacheManager.Get(Constants.OccupiedBaths) as List<bool>;
+
+           BathStateResponse response = new BathStateResponse();
+           response.Message = "Success";
+           response.Status = "200";
+           response.BathStatusList = new List<Photon.Entities.BathStatus>();
+
+           int bathid = 1;
+           foreach (var item in bathOccupancy)
+           {
+               Photon.Entities.BathStatus bathStatus = new Photon.Entities.BathStatus()
+               {
+                   BathId = bathid,
+                   IsOccupied = item
+               };
+               response.BathStatusList.Add(bathStatus);
+               bathid++;
+
+           }
+
+           return response;
+
+           
         }
     }
 }

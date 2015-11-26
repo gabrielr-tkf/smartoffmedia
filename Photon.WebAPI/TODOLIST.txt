@@ -1,18 +1,22 @@
-﻿- Status multiples devices
-- Estimado de cuando queda libre
-- Suscripcion a notificacion de cuando queda libre (chrome notification, sonido)
+﻿+ Suscripcion a notificacion de cuando queda libre (chrome notification) - DONE
 + Remove suscription - DONE
-- Notificacion de device offline => a administradores
++ Status baños cuando inicializa la aplicacion (/Api/BathState/GetAllBathStatus => Return json with all bathroom state) -  DONE
 + SingalR cross domain, SignalR between 2 servers (distinct webapps or urls) - DONE
 + WebAPI cross domain - DONE
+- Status multiples devices ()
+- Notificacion de device offline => a administradores ()
+- Estimado de cuando queda libre x ñoba
 - Si esta libre o ocupado con machine learning
-- Status baños cuando inicializa la aplicacion (/Api/Log/GetState => Return json with all bathroom state)
-- Preservar checked cuando se cierra el popup
+- Abrir pestaña con status de notificaciones (activada/desactivada) para chrome extension
 
 
 Chrome Extension
 
++ Suscripcion a notificacion de cuando queda libre (chrome notification) - DONE
++ Remove suscription - DONE
 - Abrir pestaña con status de notificaciones (activada/desactivada)
+- Status baños cuando inicializa la aplicacion (/Api/Log/GetState => Return json with all bathroom state) (Preservar checked cuando se cierra el popup)
+
 
 
 
