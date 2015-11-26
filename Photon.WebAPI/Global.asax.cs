@@ -21,8 +21,11 @@ namespace Photon.WebAPI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             CacheManager.Add(Constants.OccupiedBaths, new List<bool>(new bool[] { false, false, false }));
+            CacheManager.Add(Constants.OccupiedByFirstInLine, new List<bool>(new bool[] { true, true, true}));
             CacheManager.Add(Constants.LastOccupiedTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
-            CacheManager.Add(Constants.BathQueues, new List<List<string>>(new List<string>[] { new List<string>(), new List<string>(), new List<string>() }));
+            CacheManager.Add(Constants.LastFreedTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
+            CacheManager.Add(Constants.LineAdvanceTimes, new List<DateTime>(new DateTime[] { DateTime.Now, DateTime.Now, DateTime.Now }));
+            CacheManager.Add(Constants.BathLines, new List<List<string>>(new List<string>[] { new List<string>(), new List<string>(), new List<string>() }));            
         }
     }
 }

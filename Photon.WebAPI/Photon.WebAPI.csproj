@@ -153,11 +153,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BathStateController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
-    <Compile Include="Controllers\WebTestingController.cs" />
     <Compile Include="Entities\BaseResponse.cs" />
     <Compile Include="Entities\DeviceGetResponse.cs" />
     <Compile Include="Entities\DeviceVariableGetResponse.cs" />
@@ -181,7 +181,9 @@
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="TODOLIST.txt" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -191,6 +193,10 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Photon.DataAccess\Photon.DataAccess.csproj">
+      <Project>{262ec7a6-dd53-475d-86e8-3cdf8bfc9438}</Project>
+      <Name>Photon.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Photon.Entities\Photon.Entities\Photon.Entities.csproj">
       <Project>{c5a870d2-b959-446d-bf7f-d294679e40f9}</Project>
       <Name>Photon.Entities</Name>
@@ -204,9 +210,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\WebTesting\ShowStateChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\kkcloud - FTP.pubxml" />
