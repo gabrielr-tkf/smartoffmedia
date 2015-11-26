@@ -1,12 +1,12 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
+//var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 var API_BASE_URL = "http://localhost:52325/";
 
-var wcMensCheckbox   = document.getElementById('wcMensCheckbox');
+var wcMensCheckbox = document.getElementById('wcMensCheckbox');
 var wcWomensCheckbox = document.getElementById('wcWomensCheckbox');
-var wcMixedCheckbox  = document.getElementById('wcMixedCheckbox');
+var wcMixedCheckbox = document.getElementById('wcMixedCheckbox');
 
 var swcMensCheckbox = new Switchery(wcMensCheckbox, {
   size: 'small',
@@ -30,92 +30,161 @@ var swcMixedCheckbox = new Switchery(wcMixedCheckbox, {
 $(function() {
 
 
-  $("#ucSubscribe").bind("click", function() {
-    var userId = localStorage.Guid;
-    $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
-
-			if(data.Status == "200")
-			{
-
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
-			}else {
-				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-			}
-    });
-  });
-
   var fiveSeconds = new Date().getTime() + 3000 * 60;
   $('.countdown').countdown(fiveSeconds)
-  .on('update.countdown', function(event) {
-    var $this = $(this);
-    $this.html(event.strftime('<span>%M:%S</span>'));
-  })
-  .on('finish.countdown', function(event) {
-    $(this).html('This offer has expired!').parent().addClass('disabled');
-    // Test for notification support.
-    if (window.Notification) {
-      //show();
-      //
-    }
-  });
+    .on('update.countdown', function(event) {
+      var $this = $(this);
+      $this.html(event.strftime('<span>%M:%S</span>'));
+    })
+    .on('finish.countdown', function(event) {
+      $(this).html('This offer has expired!').parent().addClass('disabled');
+      // Test for notification support.
+      if (window.Notification) {
+        //show();
+        //
+      }
+    });
+
+  //Bathroom 1
+  var wasCallCallback1 = false;
 
   $(wcMensCheckbox).on('change', function() {
-    if(JSON.parse($(this)[0].checked)){
-      var userId = localStorage.Guid;
+
+    var userId = localStorage.Guid;
+
+    console.log("Change");
+
+    if (JSON.parse($(this)[0].checked)) {
+
+
       $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
-  			if(data.Status == "200")
-  			{
-  				ShowNotification(data.NotificationTitle, data.NotificationMessage);
-  			}else if(data.Status == "304"){
+
+        console.log("Subscribe");
+        //Subscription Success
+        if (data.Status == "200") {
+          ShowNotification(data.NotificationTitle, data.NotificationMessage);
+          wasCallCallback1 = false;
+        } else if (data.Status == "304") {
+          wasCallCallback1 = true;
           wcMensCheckbox.checked = !wcMensCheckbox.checked;
           swcMensCheckbox.handleOnchange(false);
           ShowNotification(data.NotificationTitle, data.NotificationMessage);
-        }else {
-  				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-  			}
+        } else {
+          //Subscription Error!
+          ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+        }
       });
-    }else{
-      //unsuscribe
+    } else {
+
+      if (!wasCallCallback1) {
+        //Unsubscribe
+        $.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=1&userId=" + userId, function(data) {
+
+          console.log("Unsubscribe");
+
+          if (data.Status == "200") {
+            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+
+          } else if (data.Status == "304") {
+
+            //Keep button green and show error message
+            wcMensCheckbox.checked = true;
+            swcMensCheckbox.handleOnchange(true);
+            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+
+
+          } else {
+            ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+          }
+        });
+      }
     }
   });
-
+  //Bathroom 2
+  var wasCallCallback2 = false;
   $(wcWomensCheckbox).on('change', function() {
-    if(JSON.parse($(this)[0].checked)){
-      var userId = localStorage.Guid;
+
+    var userId = localStorage.Guid;
+
+    if (JSON.parse($(this)[0].checked)) {
+      //Subscribe
       $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=2&userId=" + userId, function(data) {
-  			if(data.Status == "200")
-  			{
-        }else if(data.Status == "304"){
-  				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+        //Subscription Success
+        if (data.Status == "200") {
+          ShowNotification(data.NotificationTitle, data.NotificationMessage);
+          wasCallCallback2 = false;
+        } else if (data.Status == "304") {
+          wasCallCallback2 = true;
           wcWomensCheckbox.checked = !wcWomensCheckbox.checked;
           swcWomensCheckbox.handleOnchange(false);
           ShowNotification(data.NotificationTitle, data.NotificationMessage);
-  			}else {
-  				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-  			}
+        } else {
+          //Subscription Error!
+          ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+        }
       });
-    }else{
+    } else {
       //unsuscribe
+      if (!wasCallCallback2) {
+        $.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=2&userId=" + userId, function(data) {
+          if (data.Status == "200") {
+            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+
+          } else if (data.Status == "304") {
+
+            //Keep button green and show error message
+            swcWomensCheckbox.checked = true;
+            swcWomensCheckbox.handleOnchange(true);
+            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+
+
+          } else {
+            ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+          }
+        });
+      }
     }
   });
-
+  //Bathroom 3
+  var wasCallCallback3 = false;
   $(wcMixedCheckbox).on('change', function() {
-    if(JSON.parse($(this)[0].checked)){
-      var userId = localStorage.Guid;
+    //subscribe
+    var userId = localStorage.Guid;
+    if (JSON.parse($(this)[0].checked)) {
       $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=3&userId=" + userId, function(data) {
-  			if(data.Status == "200")
-  			{
-  				ShowNotification(data.NotificationTitle, data.NotificationMessage);
-        }else if(data.Status == "304"){
+        //Subscription Success
+        if (data.Status == "200") {
+          ShowNotification(data.NotificationTitle, data.NotificationMessage);
+          wasCallCallback3 = false;
+        } else if (data.Status == "304") {
+          wasCallCallback3 = true;
           wcMixedCheckbox.checked = !wcMixedCheckbox.checked;
           swcMixedCheckbox.handleOnchange(false);
           ShowNotification(data.NotificationTitle, data.NotificationMessage);
-  			}else {
-  				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-  			}
+        } else {
+          //Subscription Error!
+          ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+        }
       });
-    }else{
-      //unsuscribe
+    } else {
+      //unsubscribe
+      if (!wasCallCallback3) {
+        $.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=3&userId=" + userId, function(data) {
+          if (data.Status == "200") {
+            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+
+          } else if (data.Status == "304") {
+
+            //Keep button green and show error message
+            swcMixedCheckbox.checked = true;
+            swcMixedCheckbox.handleOnchange(true);
+            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+
+          } else {
+            ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+          }
+        });
+      }
     }
   });
 
@@ -136,10 +205,10 @@ var port = chrome.extension.connect({
   name: "Sample Communication"
 });
 port.onMessage.addListener(function(data) {
-	console.log(data);
-  if(data.type == 200) {
+  console.log(data);
+  if (data.type == 200) {
     console.log(true);
-    if(!data.IsOccupied) {
+    if (!data.IsOccupied) {
       switch (data.BathId) {
         case 1:
           wcMensCheckbox.checked = !wcMensCheckbox.checked;
