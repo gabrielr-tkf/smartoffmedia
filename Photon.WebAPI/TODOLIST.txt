@@ -10,6 +10,9 @@
 - Preservar checked cuando se cierra el popup
 
 
+Chrome Extension
+
+- Abrir pestaña con status de notificaciones (activada/desactivada)
 
 
 

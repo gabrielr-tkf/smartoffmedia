@@ -1,3 +1,4 @@
+ //var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
  var HUB_BASE_URL = "http://localhost:52325/signalr";
 
  //Method A) Using Long Lived Connections
@@ -52,13 +53,14 @@
     // }
      //Method B)
      //frontEndProxy.postMessage("From background " + name + " " + message);
-    var data = {
-      type : 200,
-      BathId : bathStatus.BathId,
-      IsOccupied : bathStatus.IsOccupied
-    }
+    
+	// var data = {
+      // type : 200,
+      // BathId : bathStatus.BathId,
+      // IsOccupied : bathStatus.IsOccupied
+    // }
 
-    frontEndProxy.postMessage(data);
+    // frontEndProxy.postMessage(data);
 
      //ShowNotification(title, message);
      ShowNotification(bathStatus.Title, bathStatus.Message);
