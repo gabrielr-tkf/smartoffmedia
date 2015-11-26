@@ -1,7 +1,7 @@
 ﻿- Status multiples devices
 - Estimado de cuando queda libre
 - Suscripcion a notificacion de cuando queda libre (chrome notification, sonido)
-+ Remove subscription - DONE
++ Remove suscription - DONE
 - Notificacion de device offline => a administradores
 + SingalR cross domain, SignalR between 2 servers (distinct webapps or urls) - DONE
 + WebAPI cross domain - DONE
