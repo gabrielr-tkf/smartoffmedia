@@ -26,6 +26,20 @@ var swcMixedCheckbox = new Switchery(wcMixedCheckbox, {
   secondaryColor: '#c2000d'
 });
 
+$(function() {
+
+    //Get Status of all bathrooms on Load
+    $.get(API_BASE_URL + "/Api/BathState/GetAllBathStatus", function(data) {
+
+        console.log(data);
+        console.log(data.BathStatusList);
+
+    });
+
+    //Get Status of User Notifications (On/off for all bathrooms)
+    //TODO
+});
+
 // Bind button event to recieve notifications
 $(function() {
 

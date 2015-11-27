@@ -173,6 +173,34 @@ namespace Photon.WebAPI.Controllers
             }            
         }
 
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [System.Web.Http.AcceptVerbs("GET")]
+        public NotificationSubscriptionStatusByUserResponse SubscriptionStatusByUser(string userId)
+        {
+            List<List<string>> bathSuscriptionList = CacheManager.Get(Constants.BathLines) as List<List<string>>;
+
+            NotificationSubscriptionStatusByUserResponse response = new NotificationSubscriptionStatusByUserResponse();
+            {
+               
+                Message = "Success",
+                Status = "200"
+
+            };
+
+            foreach (List<string> item in bathSuscriptionList)
+            {
+                if (item.Contains(userId))
+                {
+
+                }
+            }
+
+           
+
+            return response;
+        }
+
         /// <summary>
         /// Make the bath line advance and notify the users about their new position.
         /// This method should be called when the first user in line doesn't indicate that he/she is,

@@ -46,6 +46,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />
+    <Compile Include="UserSubscriptionStatus.cs" />
     <Compile Include="Variable.cs" />
   </ItemGroup>
   <ItemGroup>

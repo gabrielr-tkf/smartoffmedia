@@ -78,7 +78,7 @@ namespace Photon.WebAPI.Controllers
                 Thread.Sleep(3000);
             }
         }
-
+		[EnableCors(origins: "*", headers: "*", methods: "*")]
           [System.Web.Http.AcceptVerbs("GET")]
         public BathStateResponse GetAllBathStatus()
         {
