@@ -66,9 +66,9 @@ namespace Photon.WebAPI.Controllers
                     if (ms > 45000 && (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[i])
                     {
                         // If the line had already been advanced, don't do it again. We check this by
-                        // comparing the last time we advanced the line and the last time the bath
-                        // was occupied
-                        if (lastLineAdvanceTime > lastOccupiedTime)
+                        // comparing the last time the bath was occupied and the last time we advanced
+                        // the line
+                        if (lastOccupiedTime > lastLineAdvanceTime)
                         {
                             notificationController.AdvanceLine(i + 1, true);
                         }
