@@ -10,6 +10,17 @@ namespace Photon.WebAPI.Controllers
 {
     public class DeviceController : ApiController
     {
+
+        [System.Web.Http.AcceptVerbs("GET")]
+        public void LogSensorActivity(string deviceId, string sensorType, string sensorValue)
+        {
+            
+ 
+        }
+
+
+
+
         [System.Web.Http.AcceptVerbs("GET")]
         public DeviceGetResponse Get()
         {
@@ -70,5 +81,7 @@ namespace Photon.WebAPI.Controllers
             }
             return response;
         }
+
+
     }
 }

@@ -30,4 +30,9 @@ namespace Photon.Entities
         public string Last_Heard { get; set; }
 
     }
+
+    public enum SensorType
+    {
+        PirSensor = 1 // Motion Sensor
+    }
 }
