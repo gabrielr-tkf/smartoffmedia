@@ -1,4 +1,6 @@
-﻿using Photon.WebAPI.Entities;
+﻿using Photon.Entities;
+using Photon.WebAPI.Entities;
+using Photon.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,10 @@ namespace Photon.WebAPI.Controllers
         [System.Web.Http.AcceptVerbs("GET")]
         public void LogSensorActivity(string deviceId, string sensorType, string sensorValue)
         {
-            
+            List<BathroomLine> bathroomLines = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>);
+
+            Device device = bathroomLines.First(a => a.Bathroom.PhotonDevice.ID == deviceId).Bathroom.PhotonDevice;
+
  
         }
 
