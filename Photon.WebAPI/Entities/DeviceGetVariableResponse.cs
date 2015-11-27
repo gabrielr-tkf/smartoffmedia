@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Photon.WebAPI.Entities
 {
-    public class DeviceVariableGetResponse : BaseResponse
+    public class DeviceGetVariableResponse : BaseResponse
     {
         public Photon.Entities.Variable Variable { get; set; }
     }

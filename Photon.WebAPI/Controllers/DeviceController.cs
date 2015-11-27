@@ -29,9 +29,9 @@ namespace Photon.WebAPI.Controllers
             return response;
         }
         [System.Web.Http.AcceptVerbs("GET")]
-        public DeviceVariableGetResponse GetPIRStatus()
+        public DeviceGetVariableResponse GetPIRStatus()
         {
-            DeviceVariableGetResponse response = new DeviceVariableGetResponse();
+            DeviceGetVariableResponse response = new DeviceGetVariableResponse();
             try
             {
                 response.Variable = Photon.Services.PhotonController.GetDevicePIRStatus();
@@ -47,5 +47,28 @@ namespace Photon.WebAPI.Controllers
             return response;
         }
 
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public DeviceGetResponse GetOAuthToken()
+        {
+
+            DeviceGetResponse response = new DeviceGetResponse();
+            try
+            {
+                //response.Device = Photon.Services.PhotonController.GetDeviceStatus();
+
+
+                Photon.Services.PhotonController.GetToken();
+
+                //Everything OK
+                response.Status = "200";
+                response.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                response.Status = "500";
+                response.Message = "Internal Server Error";
+            }
+            return response;
+        }
     }
 }

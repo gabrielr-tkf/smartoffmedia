@@ -35,32 +35,38 @@ namespace Photon.WebAPI.Controllers
             response.NotificationTitle = "kkcloud";
 
             bool bathIsOccupied = false;
-            List<string> bathLine = (CacheManager.Get(Constants.BathLines) as List<List<string>>)[bathId - 1];
 
-            bathIsOccupied = (CacheManager.Get(Constants.OccupiedBaths) as List<bool>)[bathId - 1];
+            BathroomLine bathroomLine = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>).First(a => a.Bathroom.ID == bathId);
 
-            bool lineIsEmpty = (CacheManager.Get(Constants.BathLines) as List<List<string>>)[bathId - 1].Count == 0;
+            List<User> usersInLine = bathroomLine.UsersLine;
+
+            bathIsOccupied = bathroomLine.Bathroom.IsOccupied;
+
+            bool lineIsEmpty = usersInLine.Count == 0;
 
             if (!lineIsEmpty || lineIsEmpty && bathIsOccupied)
             {
-                if (bathLine.Contains(userId))
+                if (usersInLine.Exists(a => a.ID == userId))
                 {
-                    response.Message = "User " + userId + " was already subscribed to bath " + bathId;
+                    response.Message = "Success";
                     response.Status = "200";
                     response.NotificationMessage = "Ya estás en la cola para ese baño";
                 }
                 else
                 {
-                    bathLine.Add(userId);
+                    usersInLine.Add(new User()
+                    {
+                            ID = userId
+                    });
 
-                    response.Message = "User " + userId + " subscribed to bath " + bathId;
+                    response.Message = "Success";
                     response.Status = "200";
                     response.NotificationMessage = "Te avisamos cuando el baño " + bathId + " este libre ;-)";
                 }
             }
             else
             {
-                response.Message = "Bathroom " + bathId + " is free and the line is empty";
+                response.Message = "Success";
                 response.Status = "304"; //Not Modified.
                 response.NotificationMessage = "El baño está libre y no hay nadie esperando, va pa i";
             }
@@ -76,32 +82,32 @@ namespace Photon.WebAPI.Controllers
         /// <returns></returns>
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [System.Web.Http.AcceptVerbs("GET")]
-        public NotificationUnSubscribeResponse Unsubscribe(int bathId, string userId)
+        public NotificationUnsubscribeResponse Unsubscribe(int bathId, string userId)
         {
-            NotificationUnSubscribeResponse response = new NotificationUnSubscribeResponse();
+            NotificationUnsubscribeResponse response = new NotificationUnsubscribeResponse();
             response.BathId = bathId.ToString();
             response.UserId = userId;
             response.NotificationTitle = "kkcloud";
 
 
-            List<string> bathLine = (CacheManager.Get(Constants.BathLines) as List<List<string>>)[bathId - 1];
+            List<User> usersInLine = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>).First(a => a.Bathroom.ID == bathId).UsersLine;
 
-            bool lineIsEmpty = (CacheManager.Get(Constants.BathLines) as List<List<string>>)[bathId - 1].Count == 0;
+            bool lineIsEmpty = usersInLine.Count == 0;
 
-            if (!bathLine.Contains(userId))
+            if (!usersInLine.Exists(a => a.ID == userId))
             {
 
                 // Remove user from the line
-                bathLine.Remove(userId);
-
-                response.Message = "User " + userId + " removed from list to bath " + bathId;
+                usersInLine.RemoveAt(usersInLine.FindIndex(a => a.ID == userId));
+               
+                response.Message = "Success";
                 response.Status = "200";
                 response.NotificationMessage = "Ya no estás en la cola para ese baño";
 
             }
             else
             {
-                response.Message = "Empty line => Bathroom " + bathId;
+                response.Message = "Success";
                 response.Status = "200";
                 response.NotificationMessage = "Ya no estabas en la cola para este baño";
             }
@@ -114,44 +120,61 @@ namespace Photon.WebAPI.Controllers
         /// </summary>
         /// <param name="bathId"></param>
         /// <param name="isOccupied"></param>
-        public void Publish(int bathId, bool isOccupied)
+        public void Publish(Bathroom bathroom)
         {
-            List<string> bathLine = (CacheManager.Get(Constants.BathLines) as List<List<string>>)[bathId - 1];
+            List<User> usersInLine = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>).First(a=>a.Bathroom.ID == bathroom.ID).UsersLine;
 
-            if (bathLine.Count > 0)
+            if (usersInLine.Count > 0)
             {
                 // If the bath was freed notify all the users in the line
-                if (!isOccupied)
+                if (!bathroom.IsOccupied)
                 {
-                    (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[bathId - 1] = true;
+                    (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[bathroom.ID-1] = true;
 
-                    for (int i = 0; i < bathLine.Count; i++)
+                    for (int i = 0; i < usersInLine.Count; i++)
                     {
-                        string userId = bathLine[i];
+                        //string userId = bathLine[i].ID;
+                        User user = usersInLine[i];
 
                         // If the user was first in line for the bath, send him/her a notification
                         if (i == 0)
                         {
-                            BathStatus bathStatus = new BathStatus()
+                            //BathStatus bathStatus = new BathStatus()
+                            //{
+                            //    Title = "Hey!",
+                            //    Message = "¡El baño " + bathroom.ID.ToString() + " está libre y es tu turno!",
+                            //    BathId = bathroom.ID,
+                            //    IsOccupied = bathroom.IsOccupied
+                            //};
+
+                            Notification notification = new Notification()
                             {
+                                User = user,
+                                Bathroom = bathroom,
                                 Title = "Hey!",
-                                Message = "¡El baño " + bathId.ToString() + " está libre y es tu turno!",
-                                BathId = bathId,
-                                IsOccupied = isOccupied
+                                Message = "¡El baño " + bathroom.ID.ToString() + " está libre y es tu turno!"
                             };
-                            PhotonHub.SendMessage(userId, bathStatus);
+
+                            PhotonHub.SendMessage(notification);
                         }
                         // Send an advance notification to the rest of the users in the line
                         else
                         {
-                            BathStatus bathStatus = new BathStatus()
+                            //BathStatus bathStatus = new BathStatus()
+                            //{
+                            //    Title = "Hey!",
+                            //    Message = "El baño " + bathroom.ID.ToString() + " está libre y sos el " + (i + 1) + "º en la fila",
+                            //    BathId = bathroom.ID,
+                            //    IsOccupied = bathroom.IsOccupied
+                            //};
+                            Notification notification = new Notification()
                             {
+                                User = user,
+                                Bathroom = bathroom,
                                 Title = "Hey!",
-                                Message = "El baño " + bathId.ToString() + " está libre y sos el " + (i + 1) + "º en la fila",
-                                BathId = bathId,
-                                IsOccupied = isOccupied
+                                Message = "El baño " + bathroom.ID.ToString() + " está libre y sos el " + (i + 1) + "º en la fila"
                             };
-                            PhotonHub.SendMessage(userId, bathStatus);
+                            PhotonHub.SendMessage(notification);
                         }
                     }
                 }
@@ -159,47 +182,29 @@ namespace Photon.WebAPI.Controllers
                 // another user from taking his/her place, making him/her go to the end of the line again
                 else
                 {
-                    string userId = bathLine.First();
+                    User user = usersInLine.First();
 
-                    BathStatus bathStatus = new BathStatus()
+                    //BathStatus bathStatus = new BathStatus()
+                    //{
+                    //    Title = "Hey!",
+                    //    Message = "El baño " + bathroom.ID.ToString() + " fue ocupado y tenías el primer lugar, ¿fuiste vos?",
+                    //    BathId = bathroom.ID,
+                    //    IsOccupied = bathroom.IsOccupied
+                    //};
+                    Notification notification = new Notification()
                     {
+                        User = user,
+                        Bathroom = bathroom,
                         Title = "Hey!",
-                        Message = "El baño " + bathId.ToString() + " fue ocupado y tenías el primer lugar, ¿fuiste vos?",
-                        BathId = bathId,
-                        IsOccupied = isOccupied
+                        Message = "El baño " + bathroom.ID.ToString() + " fue ocupado y tenías el primer lugar, ¿fuiste vos?"
                     };
-                    PhotonHub.SendMessage(userId, bathStatus);
-                }
-            }            
-        }
-
-
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [System.Web.Http.AcceptVerbs("GET")]
-        public NotificationSubscriptionStatusByUserResponse SubscriptionStatusByUser(string userId)
-        {
-            List<List<string>> bathSuscriptionList = CacheManager.Get(Constants.BathLines) as List<List<string>>;
-
-            NotificationSubscriptionStatusByUserResponse response = new NotificationSubscriptionStatusByUserResponse();
-            {
-               
-                Message = "Success",
-                Status = "200"
-
-            };
-
-            foreach (List<string> item in bathSuscriptionList)
-            {
-                if (item.Contains(userId))
-                {
-
+                    PhotonHub.SendMessage(notification);
                 }
             }
-
-           
-
-            return response;
         }
+
+
+
 
         /// <summary>
         /// Make the bath line advance and notify the users about their new position.
@@ -211,25 +216,27 @@ namespace Photon.WebAPI.Controllers
         /// </summary>
         public void AdvanceLine(int bathId, bool removeFromAll)
         {
-            List<string> bathLine = (CacheManager.Get(Constants.BathLines) as List<List<string>>)[bathId - 1];
+            BathroomLine bathLine = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>).First(a => a.Bathroom.ID == bathId);
+            List<User> usersInLine = bathLine.UsersLine;
 
-            if (bathLine.Count > 0)
+            if (usersInLine.Count > 0)
             {
-                string userId = bathLine.First();
+                //string userId = bathLine.First();
+                User user = usersInLine.First();
 
                 if (removeFromAll)
                 {
-                    Unsubscribe(1, userId);
-                    Unsubscribe(2, userId);
-                    Unsubscribe(3, userId);
+                    Unsubscribe(1, user.ID);
+                    Unsubscribe(2, user.ID);
+                    Unsubscribe(3, user.ID);
                 }
                 else
                 {
-                    Unsubscribe(bathId, userId);
+                    Unsubscribe(bathId, user.ID);
                 }
             }
 
-            (CacheManager.Get(Constants.LastLineAdvanceTimes) as List<DateTime>)[bathId] = DateTime.Now;
+            bathLine.LastLineAdvanceTimes = DateTime.Now;
         }
 
         /// <summary>
@@ -238,7 +245,8 @@ namespace Photon.WebAPI.Controllers
         /// <param name="bathId"></param>
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [System.Web.Http.AcceptVerbs("GET")]
-        public void KeepFirstPosition(int bathId){
+        public void KeepFirstPosition(int bathId)
+        {
             (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[bathId - 1] = false;
         }
 

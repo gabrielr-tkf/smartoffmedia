@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Photon.WebAPI.Entities
 {
-    public class NotificationUnSubscribeResponse : BaseResponse
+    public class NotificationUnsubscribeResponse : BaseResponse
     {
         public string UserId { get; set; }
         public string BathId { get; set; }

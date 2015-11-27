@@ -1,15 +1,15 @@
-﻿using Photon.WebAPI.Entities;
+﻿using Photon.Entities;
+using Photon.WebAPI.Controllers;
 using Photon.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
-using System.Web.Http;
 
-namespace Photon.WebAPI.Controllers
+namespace Photon.WebAPI.Classes
 {
-    public class BathStateController : ApiController
+    public class LinesAdvancer
     {
         /// <summary>
         /// Looks for baths that are free and advances the line in case a bath has been free for more than
@@ -19,23 +19,33 @@ namespace Photon.WebAPI.Controllers
         {
             NotificationController notificationController = new NotificationController();
 
+            List<BathroomLine> bathroomLines = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>);
+            DateTime lastFreedTime;
+            TimeSpan span;
+            int ms;
+            Bathroom bathroom;
+
             while (true)
             {
-                for (int i = 0; i < (CacheManager.Get(Constants.BathLines) as List<List<string>>).Count; i++)
+
+                for (int i = 0; i < bathroomLines.Count; i++)
                 {
-                    DateTime lastFreedTime = (CacheManager.Get(Constants.LastFreedTimes) as List<DateTime>)[i];
-                    TimeSpan span = DateTime.Now - lastFreedTime;
-                    int ms = (int)span.TotalMilliseconds;
+                    bathroom = bathroomLines[i].Bathroom;
+                    lastFreedTime = bathroom.LastFreedTime;
+                    span = DateTime.Now - lastFreedTime;
+                    ms = (int)span.TotalMilliseconds;
 
                     // After 60 seconds since the last bath exit time, if the bath is still free,
                     // advances the line and sends a notification to all the users waiting for that
                     // bath. The last freed time is set as DateTime.Now (resetting the seconds count to 0)
-                    if (ms > 60000 && !(CacheManager.Get(Constants.OccupiedBaths) as List<bool>)[i])
-                    {
-                        notificationController.AdvanceLine(i + 1, false);
-                        notificationController.Publish(i + 1, false);
 
-                        (CacheManager.Get(Constants.LastFreedTimes) as List<DateTime>)[i] = DateTime.Now;
+
+                    if (ms > 60000 && !(bathroom.IsOccupied))
+                    {
+                        notificationController.AdvanceLine(bathroom.ID, false);
+                        notificationController.Publish(bathroom);
+
+                        bathroom.LastFreedTime = DateTime.Now;
                     }
 
                 }
@@ -51,15 +61,23 @@ namespace Photon.WebAPI.Controllers
         {
             NotificationController notificationController = new NotificationController();
 
+            List<BathroomLine> bathroomLines = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>);
+            Bathroom bathroom;
+            DateTime lastOccupiedTime;
+            DateTime lastLineAdvanceTime;
+            TimeSpan span;
+            int ms;
             while (true)
             {
-                for (int i = 0; i < (CacheManager.Get(Constants.BathLines) as List<List<string>>).Count; i++)
+
+                for (int i = 0; i < bathroomLines.Count; i++)
                 {
-                    DateTime lastOccupiedTime = (CacheManager.Get(Constants.LastOccupiedTimes) as List<DateTime>)[i];
-                    DateTime lastLineAdvanceTime = (CacheManager.Get(Constants.LastLineAdvanceTimes) as List<DateTime>)[i];
-                    TimeSpan span = DateTime.Now - lastOccupiedTime;
-                    int ms = (int)span.TotalMilliseconds;
-                    
+                    bathroom = bathroomLines[i].Bathroom;
+                    lastOccupiedTime = bathroom.LastOccupiedTime;
+                    lastLineAdvanceTime = bathroomLines[i].LastLineAdvanceTimes;
+                    span = DateTime.Now - lastOccupiedTime;
+                    ms = (int)span.TotalMilliseconds;
+
                     // After 45 seconds since the last occupancy time, if the user didn't indicate that
                     // he/she was not the one who occupied the bath, it's assumed that he/she was the one,
                     // so we remove him/her from all the lines
@@ -77,34 +95,6 @@ namespace Photon.WebAPI.Controllers
 
                 Thread.Sleep(3000);
             }
-        }
-		[EnableCors(origins: "*", headers: "*", methods: "*")]
-          [System.Web.Http.AcceptVerbs("GET")]
-        public BathStateResponse GetAllBathStatus()
-        {
-           List<bool> bathOccupancy = CacheManager.Get(Constants.OccupiedBaths) as List<bool>;
-
-           BathStateResponse response = new BathStateResponse();
-           response.Message = "Success";
-           response.Status = "200";
-           response.BathStatusList = new List<Photon.Entities.BathStatus>();
-
-           int bathid = 1;
-           foreach (var item in bathOccupancy)
-           {
-               Photon.Entities.BathStatus bathStatus = new Photon.Entities.BathStatus()
-               {
-                   BathId = bathid,
-                   IsOccupied = item
-               };
-               response.BathStatusList.Add(bathStatus);
-               bathid++;
-
-           }
-
-           return response;
-
-           
         }
     }
 }

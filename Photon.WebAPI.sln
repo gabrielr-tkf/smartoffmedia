@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.WebAPI", "Photon.WebAPI\Photon.WebAPI.csproj", "{600EED2E-EAB8-4270-B345-78CA9E1B1948}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.Services", "Photon.Services\Photon.Services\Photon.Services.csproj", "{61D12B4A-80A9-4B76-866B-2F6F20C8BBC5}"

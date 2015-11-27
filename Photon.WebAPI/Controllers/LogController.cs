@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
-using Photon.DataAccess;
+using Photon.Entities;
+using Photon.Services;
 using Photon.WebAPI.Classes;
 using Photon.WebAPI.Entities;
 using Photon.WebAPI.Utilities;
@@ -25,22 +26,23 @@ namespace Photon.WebAPI.Controllers
 
             try
             {
-                (CacheManager.Get(Constants.OccupiedBaths) as List<bool>)[bathId - 1] = isOccupied;
+                Bathroom bathroom = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>).First(a=> a.Bathroom.ID == bathId).Bathroom;
+                bathroom.IsOccupied = isOccupied;
 
-                if (!isOccupied)
+                if (!bathroom.IsOccupied)
                 {
-                    DateTime occupiedTime = (CacheManager.Get(Constants.LastOccupiedTimes) as List<DateTime>)[bathId - 1];
+                    DateTime occupiedTime = bathroom.LastOccupiedTime;
 
-                    Logger.LogBathUsage(bathId, occupiedTime, DateTime.Now);
+                    Logger.LogBathUsage(bathroom);
 
                     NotificationController notificationController = new NotificationController();
-                    notificationController.Publish(bathId, isOccupied);
+                    notificationController.Publish(bathroom);
 
-                    (CacheManager.Get(Constants.LastFreedTimes) as List<DateTime>)[bathId] = DateTime.Now;
+                    bathroom.LastFreedTime = DateTime.Now;
                 }
                 else
                 {
-                    (CacheManager.Get(Constants.LastOccupiedTimes) as List<DateTime>)[bathId] = DateTime.Now;
+                    bathroom.LastOccupiedTime = DateTime.Now;
                 }
 
                 response.Status = "200";

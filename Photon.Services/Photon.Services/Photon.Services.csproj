@@ -48,11 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="PhotonController.cs" />
     <Compile Include="PhotonRESTService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Photon.DataAccess\Photon.DataAccess.csproj">
+      <Project>{262ec7a6-dd53-475d-86e8-3cdf8bfc9438}</Project>
+      <Name>Photon.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Photon.Entities\Photon.Entities\Photon.Entities.csproj">
       <Project>{c5a870d2-b959-446d-bf7f-d294679e40f9}</Project>
       <Name>Photon.Entities</Name>

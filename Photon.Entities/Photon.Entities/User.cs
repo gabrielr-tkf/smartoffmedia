@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Photon.Entities
 {
-    public class UserSubscriptionStatus
+    public class User
     {
-        public int BathId { get; set; }
-        public bool IsOccupied { get; set; }
+        public string ID { get; set; }
+
     }
 }

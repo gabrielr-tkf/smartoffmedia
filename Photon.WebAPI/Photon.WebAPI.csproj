@@ -153,18 +153,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\BathStateController.cs" />
+    <Compile Include="Classes\LinesAdvancer.cs" />
+    <Compile Include="Controllers\BathController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Entities\BaseResponse.cs" />
-    <Compile Include="Entities\BathStateResponse.cs" />
+    <Compile Include="Entities\BathGetStatusResponse.cs" />
     <Compile Include="Entities\DeviceGetResponse.cs" />
-    <Compile Include="Entities\DeviceVariableGetResponse.cs" />
+    <Compile Include="Entities\DeviceGetVariableResponse.cs" />
     <Compile Include="Entities\LogStateChangeResponse.cs" />
-    <Compile Include="Entities\NotificationSubscriptionStatusByUserResponse.cs" />
-    <Compile Include="Entities\NotificationUnSubscribeResponse.cs" />
+    <Compile Include="Entities\NotificationUnsubscribeResponse.cs" />
     <Compile Include="Entities\NotificationSubscribeResponse.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -194,10 +193,6 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Photon.DataAccess\Photon.DataAccess.csproj">
-      <Project>{262ec7a6-dd53-475d-86e8-3cdf8bfc9438}</Project>
-      <Name>Photon.DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Photon.Entities\Photon.Entities\Photon.Entities.csproj">
       <Project>{c5a870d2-b959-446d-bf7f-d294679e40f9}</Project>
       <Name>Photon.Entities</Name>

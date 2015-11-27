@@ -10,25 +10,33 @@ namespace Photon.WebAPI.Classes
 {
     public class PhotonHub : Hub
     {
-        public static void SendMessage(string user, BathStatus bathStatus)
+        //public static void SendMessage(string user, BathStatus bathStatus)
+        public static void SendMessage(Notification notification)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
             //hubContext.Clients.All.broadcastMessage(bathid, state);
-            hubContext.Clients.Client(UsersConnectionIds.Find(a=> a == user)).sendMessage(bathStatus);
+            hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
         }
       
-        public static List<string> UsersConnectionIds = new List<string>();
+        //public static List<string> UsersConnectionIds = new List<string>();
+        public static List<User> UsersList = new List<User>();
         public string registerConId()
         {
-            if (UsersConnectionIds.Count == 0)
+            if (UsersList.Count == 0)
             {
-                UsersConnectionIds.Add(Context.ConnectionId);
+                UsersList.Add(new User() 
+                {
+                   ID = Context.ConnectionId
+                });
             }
             else
             {
-              if(!UsersConnectionIds.Exists(a=> a == Context.ConnectionId))
+                if (!UsersList.Exists(a => a.ID == Context.ConnectionId))
               {
-                  UsersConnectionIds.Add(Context.ConnectionId);
+                  UsersList.Add(new User()
+                  {
+                      ID = Context.ConnectionId
+                  });
               }
             }
             return Context.ConnectionId;

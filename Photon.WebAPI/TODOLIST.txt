@@ -1,6 +1,6 @@
 ﻿+ Suscripcion a notificacion de cuando queda libre (chrome notification) - DONE
 + Remove suscription - DONE
-+ Status baños cuando inicializa la aplicacion (/Api/BathState/GetAllBathStatus => Return json with all bathroom state) -  DONE
++ Status baños cuando inicializa la aplicacion (/Api/Bath/GetStatus => Return json with all bathroom state) -  DONE
 + SingalR cross domain, SignalR between 2 servers (distinct webapps or urls) - DONE
 + WebAPI cross domain - DONE
 - Status multiples devices ()
@@ -15,7 +15,7 @@ Chrome Extension
 + Suscripcion a notificacion de cuando queda libre (chrome notification) - DONE
 + Remove suscription - DONE
 - Abrir pestaña con status de notificaciones (activada/desactivada)
-- Status baños cuando inicializa la aplicacion (/Api/Log/GetState => Return json with all bathroom state) (Preservar checked cuando se cierra el popup)
+- Status baños cuando inicializa la aplicacion (/Api/Bath/GetStatus => Return json with all bathroom state) (Preservar checked cuando se cierra el popup)
 
 
 

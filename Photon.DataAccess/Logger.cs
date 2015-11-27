@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,7 +18,7 @@ namespace Photon.DataAccess
         /// <param name="bathId"></param>
         /// <param name="occupiedTime"></param>
         /// <param name="freedTime"></param>
-        public static void LogBathUsage(int bathId, DateTime occupiedTime, DateTime freedTime)
+        public static void LogBathUsage(Bathroom bathroom)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["kkcloudFreeDB"].ConnectionString;
             LoggingCN = new SqlConnection(connectionString);
@@ -28,8 +29,8 @@ namespace Photon.DataAccess
 
                 if (LoggingCN.State != ConnectionState.Open)
                     LoggingCN.Open();
-                command.Parameters.AddWithValue("@bathId", bathId);
-                command.Parameters.AddWithValue("@occupiedTime", occupiedTime);
+                command.Parameters.AddWithValue("@bathId", bathroom.ID);
+                command.Parameters.AddWithValue("@occupiedTime", bathroom.LastOccupiedTime);
                 command.Parameters.AddWithValue("@freedTime", DateTime.Now);
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "LogBathUsage";
