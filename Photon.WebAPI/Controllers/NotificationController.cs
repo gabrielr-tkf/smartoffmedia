@@ -62,6 +62,11 @@ namespace Photon.WebAPI.Controllers
                     response.Message = "Success";
                     response.Status = "200";
                     response.NotificationMessage = "Te avisamos cuando el baño " + bathId + " este libre ;-)";
+
+                    if (usersInLine.Count == 1)
+                    {
+                        bathroomLine.LastTimesFirstChanged = DateTime.Now;
+                    }
                 }
             }
             else
@@ -94,7 +99,7 @@ namespace Photon.WebAPI.Controllers
 
             bool lineIsEmpty = usersInLine.Count == 0;
 
-            if (!usersInLine.Exists(a => a.ID == userId))
+            if (usersInLine.Exists(a => a.ID == userId))
             {
 
                 // Remove user from the line
@@ -236,7 +241,7 @@ namespace Photon.WebAPI.Controllers
                 }
             }
 
-            bathLine.LastLineAdvanceTimes = DateTime.Now;
+            bathLine.LastTimesFirstChanged = DateTime.Now;
         }
 
         /// <summary>

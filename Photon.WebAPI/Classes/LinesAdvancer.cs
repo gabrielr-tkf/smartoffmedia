@@ -15,7 +15,7 @@ namespace Photon.WebAPI.Classes
         /// Looks for baths that are free and advances the line in case a bath has been free for more than
         /// 1 minute (the first person is removed from the line)
         /// </summary>
-        public void UnusedBathsVerifier()
+        public static void UnusedBathsVerifier()
         {
             NotificationController notificationController = new NotificationController();
 
@@ -57,14 +57,14 @@ namespace Photon.WebAPI.Classes
         /// <summary>
         /// Method used to confirm that the first user in line, is effectively occupying the bath
         /// </summary>
-        public void FirstInLineOccupancyVerifier(int bathId)
+        public static void FirstInLineOccupancyVerifier()
         {
             NotificationController notificationController = new NotificationController();
 
             List<BathroomLine> bathroomLines = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>);
             Bathroom bathroom;
             DateTime lastOccupiedTime;
-            DateTime lastLineAdvanceTime;
+            DateTime lastTimeFirstChanged;
             TimeSpan span;
             int ms;
             while (true)
@@ -74,19 +74,19 @@ namespace Photon.WebAPI.Classes
                 {
                     bathroom = bathroomLines[i].Bathroom;
                     lastOccupiedTime = bathroom.LastOccupiedTime;
-                    lastLineAdvanceTime = bathroomLines[i].LastLineAdvanceTimes;
+                    lastTimeFirstChanged = bathroomLines[i].LastTimesFirstChanged;
                     span = DateTime.Now - lastOccupiedTime;
                     ms = (int)span.TotalMilliseconds;
 
                     // After 45 seconds since the last occupancy time, if the user didn't indicate that
                     // he/she was not the one who occupied the bath, it's assumed that he/she was the one,
                     // so we remove him/her from all the lines
-                    if (ms > 45000 && (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[i])
+                    if (ms > 45000 && bathroom.IsOccupied && (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[i])
                     {
                         // If the line had already been advanced, don't do it again. We check this by
                         // comparing the last time the bath was occupied and the last time we advanced
                         // the line
-                        if (lastOccupiedTime > lastLineAdvanceTime)
+                        if (lastOccupiedTime > lastTimeFirstChanged)
                         {
                             notificationController.AdvanceLine(i + 1, true);
                         }

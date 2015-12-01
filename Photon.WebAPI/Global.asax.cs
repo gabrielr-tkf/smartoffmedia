@@ -1,8 +1,10 @@
 ﻿using Photon.Entities;
+using Photon.WebAPI.Classes;
 using Photon.WebAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -53,20 +55,20 @@ namespace Photon.WebAPI
             BathroomLine linebth1 = new BathroomLine()
             {
                 Bathroom = wcMen,
-                LastLineAdvanceTimes = DateTime.Now
+                LastTimesFirstChanged = DateTime.Now
             };
           
 
             BathroomLine linebth2 = new BathroomLine()
             {
                 Bathroom = wcWoman,
-                LastLineAdvanceTimes = DateTime.Now
+                LastTimesFirstChanged = DateTime.Now
             };
 
             BathroomLine linebth3 = new BathroomLine()
             {
                 Bathroom = wcMix,
-                LastLineAdvanceTimes = DateTime.Now
+                LastTimesFirstChanged = DateTime.Now
             };
 
             List<BathroomLine> bathlines = new List<BathroomLine>();
@@ -79,7 +81,15 @@ namespace Photon.WebAPI
 
             CacheManager.Add(Constants.OccupiedByFirstInLine, new List<bool>(new bool[] { true, true, true}));
 
+            new Thread(() =>
+            {
+                LinesAdvancer.UnusedBathsVerifier();
+            }).Start();
 
+            new Thread(() =>
+            {
+                LinesAdvancer.FirstInLineOccupancyVerifier();
+            }).Start();
          
             
         }

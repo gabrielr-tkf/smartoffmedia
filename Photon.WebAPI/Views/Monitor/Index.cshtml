@@ -1,0 +1,25 @@
+﻿@using Photon.Entities;
+@using Photon.WebAPI.Utilities;
+@{
+    List<BathroomLine> bathroomLines = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>);
+}
+
+<div>Bath 1 state: @(bathroomLines[0].Bathroom.IsOccupied ? "Occupied" : "Free")</div>
+<div>Bath 2 state: @(bathroomLines[1].Bathroom.IsOccupied ? "Occupied" : "Free")</div>
+<div>Bath 3 state: @(bathroomLines[2].Bathroom.IsOccupied ? "Occupied" : "Free")</div>
+<br />
+<div>Bath 1 Line: @ViewBag.Line1</div>
+<div>Bath 2 Line: @ViewBag.Line2</div>
+<div>Bath 3 Line:: @ViewBag.Line3</div>
+<br />
+<div>Bath 1 Last time first changed: @bathroomLines[0].LastTimesFirstChanged.ToString("HH:mm:ss")</div>
+<div>Bath 2 Last time first changed: @bathroomLines[1].LastTimesFirstChanged.ToString("HH:mm:ss")</div>
+<div>Bath 3 Last time first changed: @bathroomLines[2].LastTimesFirstChanged.ToString("HH:mm:ss")</div>
+<br />
+<div>Bath 1 Last freed time: @bathroomLines[0].Bathroom.LastFreedTime.ToString("HH:mm:ss")</div>
+<div>Bath 2 Last freed time: @bathroomLines[1].Bathroom.LastFreedTime.ToString("HH:mm:ss")</div>
+<div>Bath 3 Last freed time: @bathroomLines[2].Bathroom.LastFreedTime.ToString("HH:mm:ss")</div>
+<br />
+<div>Bath 1 Last occupied time: @bathroomLines[0].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>
+<div>Bath 2 Last occupied time: @bathroomLines[1].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>
+<div>Bath 3 Last occupied time: @bathroomLines[2].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>

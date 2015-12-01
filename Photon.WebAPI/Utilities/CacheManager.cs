@@ -28,7 +28,7 @@ namespace Photon.WebAPI.Utilities
         /// <param name="obj">object</param>
         public static void Add(string key, object obj)
         {
-            HttpContext.Current.Cache.Insert(key, obj, null, Expiration, TimeSpan.Zero);
+            System.Web.HttpRuntime.Cache.Insert(key, obj, null, Expiration, TimeSpan.Zero);
             cacheAddCount++;
         }
 
@@ -41,7 +41,7 @@ namespace Photon.WebAPI.Utilities
         /// <param name="priority">ystem.Web.Caching.CacheItemPriority</param>
         public static void Add(string key, object obj, System.Web.Caching.CacheItemPriority priority)
         {
-            HttpContext.Current.Cache.Add(key, obj, null, Expiration, TimeSpan.Zero, priority, null);
+            System.Web.HttpRuntime.Cache.Add(key, obj, null, Expiration, TimeSpan.Zero, priority, null);
             cacheAddCount++;
         }
 
@@ -54,7 +54,7 @@ namespace Photon.WebAPI.Utilities
         /// <param name="fileNameDependencyObj">string</param>
         public static void Add(string key, object obj, string fileNameDependencyObj)
         {
-            HttpContext.Current.Cache.Insert(key, obj, new System.Web.Caching.CacheDependency(fileNameDependencyObj));
+            System.Web.HttpRuntime.Cache.Insert(key, obj, new System.Web.Caching.CacheDependency(fileNameDependencyObj));
             cacheAddCount++;
         }
 
@@ -68,7 +68,7 @@ namespace Photon.WebAPI.Utilities
         /// <param name="fileNameDependencyObj">string</param>
         public static void Add(string key, object obj, System.Web.Caching.CacheItemPriority priority, string fileNameDependencyObj)
         {
-            HttpContext.Current.Cache.Insert(key, obj, new System.Web.Caching.CacheDependency(fileNameDependencyObj), Expiration, TimeSpan.Zero, priority, null);
+            System.Web.HttpRuntime.Cache.Insert(key, obj, new System.Web.Caching.CacheDependency(fileNameDependencyObj), Expiration, TimeSpan.Zero, priority, null);
             cacheAddCount++;
         }
 
@@ -79,7 +79,7 @@ namespace Photon.WebAPI.Utilities
         /// </summary>
         public static void Clear(string key)
         {
-            HttpContext.Current.Cache.Remove(key);
+            System.Web.HttpRuntime.Cache.Remove(key);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Photon.WebAPI.Utilities
         /// <returns>Object</returns>
         public static Object Get(string key)
         {
-            return HttpContext.Current.Cache.Get(key);
+            return System.Web.HttpRuntime.Cache.Get(key);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Photon.WebAPI.Utilities
         /// <returns>int</returns>
         public static int Count()
         {
-            return HttpContext.Current.Cache.Count;
+            return System.Web.HttpRuntime.Cache.Count;
         }
 
         /// <summary>

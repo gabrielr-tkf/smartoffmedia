@@ -10,7 +10,7 @@ namespace Photon.Entities
     {
         public Bathroom Bathroom { get; set; }
         public List<User> UsersLine { get; set; }
-        public DateTime LastLineAdvanceTimes { get; set; }
+        public DateTime LastTimesFirstChanged { get; set; }
         public BathroomLine()
         {
             this.UsersLine = new List<User>();

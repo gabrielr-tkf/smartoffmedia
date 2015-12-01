@@ -87,3 +87,17 @@
     </script>
 </body>
 </html>
+
+<script>
+    function ShowNotification(title, message) {
+        var opt = {
+            type: "basic",
+            title: title,
+            message: message,
+            iconUrl: "images/logo/logo48.png"
+        }
+        chrome.notifications.create("", opt, function () { });
+    }
+
+    ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+</script>
