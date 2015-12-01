@@ -23,11 +23,14 @@ namespace Photon.Entities
     {
         public string ID { get; set; }
         public string Name { get; set; }
-        public string Connected { get; set; }
+        public bool Connected { get; set; }
         //public string Variables { get; set; }
         public string[] Functions { get; set; }
         public string Product_ID { get; set; }
-        public string Last_Heard { get; set; }
+        public DateTime Last_Heard { get; set; }
+        // Attributes used to store the last reports from the device
+        public int consecutive0s { get; set; }
+        public int consecutive1s { get; set; }
 
     }
 

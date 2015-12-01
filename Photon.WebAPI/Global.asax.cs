@@ -78,7 +78,6 @@ namespace Photon.WebAPI
 
             CacheManager.Add(Constants.BathLines, bathlines);  
 
-
             CacheManager.Add(Constants.OccupiedByFirstInLine, new List<bool>(new bool[] { true, true, true}));
 
             new Thread(() =>
