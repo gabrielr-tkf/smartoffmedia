@@ -16,6 +16,10 @@ namespace Photon.WebAPI.Classes
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
             //hubContext.Clients.All.broadcastMessage(bathid, state);
             hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
+
+            // TODO: These 2 lines are only for debugging purposes. They have to be removed
+            string stringNotification = notification.User.ID.Split('-')[0] + ": " + notification.Message;
+            ((List<string>)System.Web.HttpRuntime.Cache["Notifications"]).Add(stringNotification);
         }
       
         //public static List<string> UsersConnectionIds = new List<string>();

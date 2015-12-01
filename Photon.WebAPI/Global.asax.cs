@@ -90,7 +90,9 @@ namespace Photon.WebAPI
             {
                 LinesAdvancer.FirstInLineOccupancyVerifier();
             }).Start();
-         
+
+            // TODO: This line is only for debugging purposes. It has to be removed
+            CacheManager.Add("Notifications", new List<string>());
             
         }
     }

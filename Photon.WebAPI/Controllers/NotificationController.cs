@@ -61,7 +61,7 @@ namespace Photon.WebAPI.Controllers
 
                     response.Message = "Success";
                     response.Status = "200";
-                    response.NotificationMessage = "Te avisamos cuando el baño " + bathId + " este libre ;-)";
+                    response.NotificationMessage = "Tenés el número " + usersInLine.Count + ", te avisamos cuando el baño " + bathId + " esté libre ;-)";
 
                     if (usersInLine.Count == 1)
                     {
@@ -73,8 +73,12 @@ namespace Photon.WebAPI.Controllers
             {
                 response.Message = "Success";
                 response.Status = "304"; //Not Modified.
-                response.NotificationMessage = "El baño está libre y no hay nadie esperando, va pa i";
+                response.NotificationMessage = "El baño " + bathId +  " está libre y no hay nadie esperando, va pa i";
             }
+
+            // TODO: These 2 lines are only for debugging purposes. They have to be removed
+            string stringNotification = response.UserId.Split('-')[0] + ": " + response.NotificationMessage;
+            ((List<string>)System.Web.HttpRuntime.Cache["Notifications"]).Add(stringNotification);
 
             return response;
 
@@ -107,15 +111,19 @@ namespace Photon.WebAPI.Controllers
                
                 response.Message = "Success";
                 response.Status = "200";
-                response.NotificationMessage = "Ya no estás en la cola para ese baño";
+                response.NotificationMessage = "Ya no estás en la cola para el baño " + bathId;
 
             }
             else
             {
                 response.Message = "Success";
                 response.Status = "200";
-                response.NotificationMessage = "Ya no estabas en la cola para este baño";
+                response.NotificationMessage = "Ya no estabas en la cola para el baño " + bathId;
             }
+
+            // TODO: These 2 lines are only for debugging purposes. They have to be removed
+            string stringNotification = response.UserId.Split('-')[0] + ": " + response.NotificationMessage;
+            ((List<string>)System.Web.HttpRuntime.Cache["Notifications"]).Add(stringNotification);
 
             return response;
         }

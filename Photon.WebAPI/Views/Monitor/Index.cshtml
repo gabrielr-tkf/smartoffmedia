@@ -23,3 +23,14 @@
 <div>Bath 1 Last occupied time: @bathroomLines[0].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>
 <div>Bath 2 Last occupied time: @bathroomLines[1].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>
 <div>Bath 3 Last occupied time: @bathroomLines[2].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>
+<br />
+<br />
+<div><b>Last 20 notifications:</b></div>
+<br />
+@{
+    List<string> last20Notifications = (CacheManager.Get("Notifications") as List<string>).Skip((CacheManager.Get("Notifications") as List<string>).Count - 20).ToList();
+}
+
+@foreach(string n in last20Notifications){
+    <div>@n</div>
+}

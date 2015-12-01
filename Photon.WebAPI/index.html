@@ -71,17 +71,22 @@
     <div><a href="#" onclick="SubscribeNotification('1');">Suscribirme a baño 1</a></div>
     <div><a href="#" onclick="SubscribeNotification('2');">Suscribirme a baño 2</a></div>
     <div><a href="#" onclick="SubscribeNotification('3');">Suscribirme a baño 3</a></div>
-
+    <br />
+    <div><a href="#" onclick="UnsubscribeNotification('1');">Des-suscribirme a baño 1</a></div>
+    <div><a href="#" onclick="UnsubscribeNotification('2');">Des-suscribirme a baño 2</a></div>
+    <div><a href="#" onclick="UnsubscribeNotification('3');">Des-suscribirme a baño 3</a></div>
     <script>
 
         function SubscribeNotification(bathId)
         {
             var userId = guid;
-            console.log(userId + " en subscribe to notification");
-            $.get("http://localhost:52325/Api/Notification/subscribe?bathid=" + bathId + "&userId=" + userId , function (data) {
-                
+            $.get("http://localhost:52325/Api/Notification/subscribe?bathid=" + bathId + "&userId=" + userId , function (data) {                
+            });
+        }
 
-                
+        function UnsubscribeNotification(bathId) {
+            var userId = guid;
+            $.get("http://localhost:52325/Api/Notification/unsubscribe?bathid=" + bathId + "&userId=" + userId, function (data) {
             });
         }
     </script>

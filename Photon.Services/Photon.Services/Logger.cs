@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Photon.Services
@@ -11,7 +12,10 @@ namespace Photon.Services
     {
         public static void LogBathUsage(Bathroom bathroom)
         {
-            Photon.DataAccess.Logger.LogBathUsage(bathroom);
+            new Thread(() =>
+            {
+                Photon.DataAccess.Logger.LogBathUsage(bathroom);
+            }).Start();            
         }
     }
 }
