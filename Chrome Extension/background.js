@@ -37,7 +37,7 @@
    // Declare a proxy to reference the hub.
    var chat = $.connection.photonHub;
    // Create a function that the hub can call to broadcast messages.
-   chat.client.sendMessage = function(bathStatus) {
+   chat.client.sendMessage = function(notification) {
      // Html encode display name and message.
      //var encodedName = $('<div />').text(name).html();
      //var encodedMsg = $('<div />').text(message).html();
@@ -53,17 +53,10 @@
     // }
      //Method B)
      //frontEndProxy.postMessage("From background " + name + " " + message);
-    
-	// var data = {
-      // type : 200,
-      // BathId : bathStatus.BathId,
-      // IsOccupied : bathStatus.IsOccupied
-    // }
 
     // frontEndProxy.postMessage(data);
 
-     //ShowNotification(title, message);
-     ShowNotification(bathStatus.Title, bathStatus.Message);
+     ShowNotification(notification.Title, notification.Message);
 
    };
 

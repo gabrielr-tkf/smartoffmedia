@@ -32,6 +32,8 @@ namespace Photon.Entities
         public int consecutive0s { get; set; }
         public int consecutive1s { get; set; }
 
+        public string PhotoSensorValue { get; set; }
+
     }
 
     public enum SensorType

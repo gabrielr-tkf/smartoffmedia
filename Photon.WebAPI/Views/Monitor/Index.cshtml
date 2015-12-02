@@ -7,6 +7,7 @@
 <div>Bath 1 state: @(bathroomLines[0].Bathroom.IsOccupied ? "Occupied" : "Free")</div>
 <div>Bath 2 state: @(bathroomLines[1].Bathroom.IsOccupied ? "Occupied" : "Free")</div>
 <div>Bath 3 state: @(bathroomLines[2].Bathroom.IsOccupied ? "Occupied" : "Free")</div>
+
 <br />
 <div>Bath 1 Line: @ViewBag.Line1</div>
 <div>Bath 2 Line: @ViewBag.Line2</div>
@@ -34,3 +35,9 @@
 @foreach(string n in last20Notifications){
     <div>@n</div>
 }
+
+<div>Sensor 1 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue != null) {
+
+                         @bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue;
+
+                     }</div>
