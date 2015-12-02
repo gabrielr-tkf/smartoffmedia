@@ -7,15 +7,15 @@
 - Notificacion de device offline => a administradores ()
 - Estimado de cuando queda libre x ñoba
 - Si esta libre o ocupado con machine learning
-- Abrir pestaña con status de notificaciones (activada/desactivada) para chrome extension
++ Abrir pestaña con status de notificaciones (activada/desactivada) para chrome extension - DONE
 
 
 Chrome Extension
 
 + Suscripcion a notificacion de cuando queda libre (chrome notification) - DONE
 + Remove suscription - DONE
-- Abrir pestaña con status de notificaciones (activada/desactivada)
-- Status baños cuando inicializa la aplicacion (/Api/Bath/GetStatus => Return json with all bathroom state) (Preservar checked cuando se cierra el popup)
++ Abrir pestaña con status de notificaciones (activada/desactivada) - DONE
++ Status baños cuando inicializa la aplicacion (/Api/Bath/GetStatus => Return json with all bathroom state) (Preservar checked cuando se cierra el popup) -  DONE
 
 Particle Firmware
 

@@ -165,6 +165,7 @@
     <Compile Include="Entities\DeviceGetResponse.cs" />
     <Compile Include="Entities\DeviceGetVariableResponse.cs" />
     <Compile Include="Entities\LogStateChangeResponse.cs" />
+    <Compile Include="Entities\NotificationGetNotificationStatusByUserResponse.cs" />
     <Compile Include="Entities\NotificationUnsubscribeResponse.cs" />
     <Compile Include="Entities\NotificationSubscribeResponse.cs" />
     <Compile Include="Global.asax.cs">

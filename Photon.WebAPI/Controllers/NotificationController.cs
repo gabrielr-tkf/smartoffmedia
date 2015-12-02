@@ -215,7 +215,26 @@ namespace Photon.WebAPI.Controllers
                 }
             }
         }
+        
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [System.Web.Http.AcceptVerbs("GET")]
+        public NotificationGetNotificationStatusByUserResponse GetNotificationStatusByUser(string userId)
+        {
+            List<BathroomLine> bathLines = CacheManager.Get(Constants.BathLines) as List<BathroomLine>;
 
+            NotificationGetNotificationStatusByUserResponse response = new NotificationGetNotificationStatusByUserResponse()
+            {
+                Status = "200",
+                Message = "Success"
+            };
+
+            response.SubscribedNotificationBath1 = bathLines[0].UsersLine.Exists(a => a.ID == userId);
+            response.SubscribedNotificationBath2 = bathLines[1].UsersLine.Exists(a => a.ID == userId);
+            response.SubscribedNotificationBath3 = bathLines[2].UsersLine.Exists(a => a.ID == userId);
+
+            return response;
+           
+        }
 
 
 
@@ -256,8 +275,6 @@ namespace Photon.WebAPI.Controllers
         /// Method called when the first user in line indicates that he/she was not the one occupying the bath
         /// </summary>
         /// <param name="bathId"></param>
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [System.Web.Http.AcceptVerbs("GET")]
         public void KeepFirstPosition(int bathId)
         {
             (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[bathId - 1] = false;
