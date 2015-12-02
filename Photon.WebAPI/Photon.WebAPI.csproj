@@ -153,6 +153,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Classes\DeviceProcessor.cs" />
     <Compile Include="Classes\LinesAdvancer.cs" />
     <Compile Include="Controllers\BathController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />

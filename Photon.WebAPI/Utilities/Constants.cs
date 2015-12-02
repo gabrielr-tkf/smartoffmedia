@@ -16,7 +16,7 @@ namespace Photon.WebAPI.Utilities
 
 
         public const string CacheDuration = "CacheDuration";
-        public const string ReportsRequiredToOccupy = "ReportsRequiredToOccupy";
-        public const string ReportsRequiredToFree = "ReportsRequiredToFree";
+        public const string SecondsRequiredToOccupy = "SecondsRequiredToOccupy";
+        public const string SecondsRequiredToFree = "SecondsRequiredToFree";
     }
 }
