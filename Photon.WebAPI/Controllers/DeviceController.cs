@@ -30,7 +30,7 @@ namespace Photon.WebAPI.Controllers
             }
             else {
 
-                device.PhotoSensorValue = sensorValue;
+                device.PhotoSensorValue = int.Parse(sensorValue);
                 //To Test other sensors
             }
 

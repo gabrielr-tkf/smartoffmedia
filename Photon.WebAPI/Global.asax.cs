@@ -92,7 +92,7 @@ namespace Photon.WebAPI
 
             new Thread(() =>
             {
-                DeviceProcessor.ProcessDeviceState("330034000d47343432313031");
+                DeviceProcessor.ProcessDevicesState("330034000d47343432313031");
             }).Start();
 
             // TODO: This line is only for debugging purposes. It has to be removed

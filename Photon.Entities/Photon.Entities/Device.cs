@@ -28,10 +28,11 @@ namespace Photon.Entities
         public string[] Functions { get; set; }
         public string Product_ID { get; set; }
         public DateTime LastPIRReportTime { get; set; }
+        public DateTime LastPhotoReportTime { get; set; }
         // Attributes used to store the last reports from the device
 
         public string PIRSensorValue { get; set; }
-        public string PhotoSensorValue { get; set; }
+        public int PhotoSensorValue { get; set; }
 
     }
 
