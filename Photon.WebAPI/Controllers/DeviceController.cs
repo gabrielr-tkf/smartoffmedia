@@ -26,15 +26,14 @@ namespace Photon.WebAPI.Controllers
             //PirSensor
             if (sensorType == "1")
             {
-                device.PIRSensorValue = sensorValue;                
+                device.PIRSensorValue = sensorValue;
+                device.LastPIRReportTime = DateTime.Now;
             }
-            else {
+            else if(sensorType == "3"){
 
                 device.PhotoSensorValue = int.Parse(sensorValue);
-                //To Test other sensors
+                device.LastPhotoReportTime = DateTime.Now;
             }
-
-            device.LastPIRReportTime = DateTime.Now;
         }
 
 

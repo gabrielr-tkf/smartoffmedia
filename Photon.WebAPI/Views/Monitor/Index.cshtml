@@ -36,7 +36,13 @@
     <div>@n</div>
 }
 
-<div>Sensor 1 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue != null) {
+<div>Sensor 1 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PIRSensorValue != null) {
+
+                         @bathroomLines[0].Bathroom.PhotonDevice.PIRSensorValue;
+
+                     }</div>
+
+<div>Sensor 3 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue != null) {
 
                          @bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue;
 

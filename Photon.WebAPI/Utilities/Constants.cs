@@ -18,6 +18,7 @@ namespace Photon.WebAPI.Utilities
         public const string CacheDuration = "CacheDuration";
         public const string PIRSecondsRequiredToOccupy = "PIRSecondsRequiredToOccupy";
         public const string PIRSecondsRequiredToFree = "PIRSecondsRequiredToFree";
-        public const string LightOnThreshold = "LightOnThreshold";        
+        public const string LightOnThreshold = "LightOnThreshold";
+        public const string ProximityThreshold = "ProximityThreshold";        
     }
 }

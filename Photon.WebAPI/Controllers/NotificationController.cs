@@ -91,7 +91,7 @@ namespace Photon.WebAPI.Controllers
         /// <returns></returns>
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [System.Web.Http.AcceptVerbs("GET")]
-        public NotificationUnsubscribeResponse Unsubscribe(int bathId, string userId)
+        public NotificationUnsubscribeResponse Unsubscribe(int bathId, string userId, bool sendMessage)
         {
             NotificationUnsubscribeResponse response = new NotificationUnsubscribeResponse();
             response.BathId = bathId.ToString();
@@ -112,13 +112,21 @@ namespace Photon.WebAPI.Controllers
                 response.Message = "Success";
                 response.Status = "200";
                 response.NotificationMessage = "Ya no estás en la cola para el baño " + bathId;
-
             }
             else
             {
                 response.Message = "Success";
                 response.Status = "200";
                 response.NotificationMessage = "Ya no estabas en la cola para el baño " + bathId;
+            }
+
+            if (sendMessage)
+            {
+                PhotonHub.SendMessage(new Notification
+                {
+                    Title = response.NotificationTitle,
+                    Message = response.NotificationMessage
+                });
             }
 
             // TODO: These 2 lines are only for debugging purposes. They have to be removed
@@ -258,13 +266,13 @@ namespace Photon.WebAPI.Controllers
 
                 if (removeFromAll)
                 {
-                    Unsubscribe(1, user.ID);
-                    Unsubscribe(2, user.ID);
-                    Unsubscribe(3, user.ID);
+                    Unsubscribe(1, user.ID, false);
+                    Unsubscribe(2, user.ID, false);
+                    Unsubscribe(3, user.ID, false);
                 }
                 else
                 {
-                    Unsubscribe(bathId, user.ID);
+                    Unsubscribe(bathId, user.ID, true);
                 }
             }
 
