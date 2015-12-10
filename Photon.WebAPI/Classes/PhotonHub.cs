@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Collections;
 using Photon.Entities;
+using Photon.WebAPI.Utilities;
 
 namespace Photon.WebAPI.Classes
 {
@@ -13,7 +14,10 @@ namespace Photon.WebAPI.Classes
         //public static void SendMessage(string user, BathStatus bathStatus)
         public static void SendMessage(Notification notification)
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
+            List<User> UsersList = CacheManager.Get(Constants.UsersList) as List<User>;  
+
+             var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
+
             //hubContext.Clients.All.broadcastMessage(bathid, state);
             hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
 
@@ -26,6 +30,7 @@ namespace Photon.WebAPI.Classes
         public static List<User> UsersList = new List<User>();
         public string registerConId()
         {
+            List<User> UsersList =  CacheManager.Get(Constants.UsersList) as List<User>;  
             if (UsersList.Count == 0)
             {
                 UsersList.Add(new User() 

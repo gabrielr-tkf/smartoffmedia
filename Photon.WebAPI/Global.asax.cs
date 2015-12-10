@@ -23,6 +23,10 @@ namespace Photon.WebAPI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //Chrome Plugin IDs lists - Used for SIGNALR
+            List<User> UsersList = new List<User>();
+            CacheManager.Add(Constants.UsersList, UsersList);  
+
 
             //All available bathrooms
             Bathroom wcMen = new Bathroom()

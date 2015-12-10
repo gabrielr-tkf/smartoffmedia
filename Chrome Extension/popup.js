@@ -6,7 +6,16 @@ var API_BASE_URL = "http://localhost:52325/";
 
 
 
-//var setCheckStatusOnLoad = false;
+
+ //Switch enable/disable notification
+ var wcMensCheckbox;
+ var wcWomensCheckbox;
+ var wcMixedCheckbox;
+
+//Switchery variables
+ var swcMensCheckbox; 
+ var swcWomensCheckbox;
+ var swcMixedCheckbox; 
 
 $(function() {
 
@@ -16,19 +25,22 @@ $(function() {
     //CSS classes = busy / free / uncertain
     //bath1, bath2, bath3
     //Bath 1
-    if (data.BathStatusList[0].Bathroom.IsOccupied == "true") {
+	console.log("data.BathStatusList[0].Bathroom.IsOccupied = " + data.BathStatusList[0].Bathroom.IsOccupied)
+    if (data.BathStatusList[0].Bathroom.IsOccupied == true) {
+		console.log("BUSY");
       $("#bath1").addClass("busy");
     } else {
+		console.log("FREE");
       $("#bath1").addClass("free");
     }
     //Bath 2
-    if (data.BathStatusList[1].Bathroom.IsOccupied == "true") {
+    if (data.BathStatusList[1].Bathroom.IsOccupied == true) {
       $("#bath2").addClass("busy");
     } else {
       $("#bath2").addClass("free");
     }
     //Bath 3
-    if (data.BathStatusList[2].Bathroom.IsOccupied == "true") {
+    if (data.BathStatusList[2].Bathroom.IsOccupied == true) {
       $("#bath3").addClass("busy");
     } else {
       $("#bath3").addClass("free");
@@ -54,23 +66,23 @@ $(function() {
     }
     console.log(data);
 
-    //Switch enable/disable notification
-    var wcMensCheckbox = document.getElementById('wcMensCheckbox');
-    var wcWomensCheckbox = document.getElementById('wcWomensCheckbox');
-    var wcMixedCheckbox = document.getElementById('wcMixedCheckbox');
-
-    var checkboxOptions = {
+  });
+  
+   //Switch enable/disable notification
+     wcMensCheckbox = document.getElementById('wcMensCheckbox');
+     wcWomensCheckbox = document.getElementById('wcWomensCheckbox');
+     wcMixedCheckbox = document.getElementById('wcMixedCheckbox');
+  
+   var checkboxOptions = {
       size: 'small',
       color: '#05820b',
       secondaryColor: '#c2000d'
     };
-
-    var swcMensCheckbox = new Switchery(wcMensCheckbox, checkboxOptions);
-    var swcWomensCheckbox = new Switchery(wcWomensCheckbox, checkboxOptions);
-    var swcMixedCheckbox = new Switchery(wcMixedCheckbox, checkboxOptions);
-
-  });
-
+	try{
+		 swcMensCheckbox = new Switchery(wcMensCheckbox, checkboxOptions);
+		 swcWomensCheckbox = new Switchery(wcWomensCheckbox, checkboxOptions);
+		 swcMixedCheckbox = new Switchery(wcMixedCheckbox, checkboxOptions);
+	}catch(e){}
   //Get Status of User Notifications (On/off for all bathrooms)
   //TODO
 });
@@ -106,12 +118,14 @@ $(function() {
     if (JSON.parse($(this)[0].checked)) {
       //SUBSCRIBE MEN BATHROOM
       $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
-
+console.log("Subscribe");
         //Success
         if (data.Status == "200") {
+			console.log("ok");
           ShowNotification(data.NotificationTitle, data.NotificationMessage);
           wasCallCallback1 = false;
         } else if (data.Status == "304") {
+			console.log("Ñoba vacio");
           wasCallCallback1 = true;
           wcMensCheckbox.checked = !wcMensCheckbox.checked;
           swcMensCheckbox.handleOnchange(false);

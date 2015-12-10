@@ -33,6 +33,7 @@
  $(function() {
 
    $.connection.hub.url = HUB_BASE_URL;
+   
 
    // Declare a proxy to reference the hub.
    var chat = $.connection.photonHub;
