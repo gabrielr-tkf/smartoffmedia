@@ -19,6 +19,8 @@ var API_BASE_URL = "http://localhost:52325/";
 
 $(function() {
 
+function GetBathStatus()
+{
   //Get Status of all bathrooms on Load
   $.get(API_BASE_URL + "/Api/Bath/GetStatus", function(data) {
 
@@ -28,21 +30,27 @@ $(function() {
 	console.log("data.BathStatusList[0].Bathroom.IsOccupied = " + data.BathStatusList[0].Bathroom.IsOccupied)
     if (data.BathStatusList[0].Bathroom.IsOccupied == true) {
 		console.log("BUSY");
+		$("#bath1").removeClass("free");
       $("#bath1").addClass("busy");
     } else {
 		console.log("FREE");
+		$("#bath1").removeClass("busy");
       $("#bath1").addClass("free");
     }
     //Bath 2
     if (data.BathStatusList[1].Bathroom.IsOccupied == true) {
+		$("#bath2").removeClass("free");
       $("#bath2").addClass("busy");
     } else {
+	$("#bath2").removeClass("busy");
       $("#bath2").addClass("free");
     }
     //Bath 3
     if (data.BathStatusList[2].Bathroom.IsOccupied == true) {
+		$("#bath3").removeClass("free");
       $("#bath3").addClass("busy");
     } else {
+		$("#bath3").removeClass("busy");
       $("#bath3").addClass("free");
     }
 
@@ -50,23 +58,29 @@ $(function() {
     console.log(data.BathStatusList);
 
   });
+}
+function GetNotificationStatus()
+{
   var userId = localStorage.Guid;
   $.get(API_BASE_URL + "/Api/Notification/GetNotificationStatusByUser?userId=" + userId, function(data) {
 
     console.log("==> " + data.SubscribedNotificationBath1);
-    if (data.SubscribedNotificationBath1 == true) {
-      console.log("Entro true");
+   
       $("#wcMensCheckbox").prop('checked', true);
-    }
-    if (data.SubscribedNotificationBath2 == "true") {
-      $("#wcWomensCheckbox").prop('checked', true);
-    }
-    if (data.SubscribedNotificationBath3 == "true") {
-      $("#wcMixedCheckbox").prop('checked', true);
-    }
+    
+    
+      $("#wcWomensCheckbox").prop('checked', data.SubscribedNotificationBath2);
+   
+    
+      $("#wcMixedCheckbox").prop('checked', data.SubscribedNotificationBath3);
+    
     console.log(data);
 
   });
+}
+
+	setInterval(function(){GetBathStatus();}, 3000);
+	
   
    //Switch enable/disable notification
      wcMensCheckbox = document.getElementById('wcMensCheckbox');
@@ -85,6 +99,7 @@ $(function() {
 	}catch(e){}
   //Get Status of User Notifications (On/off for all bathrooms)
   //TODO
+  setInterval(function(){GetNotificationStatus();}, 1000);
 });
 
 // Bind button event to recieve notifications

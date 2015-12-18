@@ -22,6 +22,9 @@ Particle Firmware
 - Obtener con codigo el device id en c++ (build.particle.com)
 
 
+/////BUGS//////
+Se pierde ID de usuario en API
+
 
 /////////GUIA/////////////////// 
 

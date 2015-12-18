@@ -125,7 +125,8 @@ namespace Photon.WebAPI.Controllers
                 PhotonHub.SendMessage(new Notification
                 {
                     Title = response.NotificationTitle,
-                    Message = response.NotificationMessage
+                    Message = response.NotificationMessage,
+                    User = new User() { ID = userId }
                 });
             }
 
