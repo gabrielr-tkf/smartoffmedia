@@ -29,6 +29,14 @@ namespace Photon.WebAPI.Controllers
                 device.PIRSensorValue = sensorValue;
                 device.LastPIRReportTime = DateTime.Now;
             }
+            //ProximitySensor
+            else if (sensorType == "2")
+            {
+
+                device.ProximityValue = int.Parse(sensorValue);
+                device.LastProximityReportTime = DateTime.Now;
+            }
+            //PhotoResistor
             else if(sensorType == "3"){
 
                 device.PhotoSensorValue = int.Parse(sensorValue);

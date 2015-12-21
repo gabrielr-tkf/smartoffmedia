@@ -33,7 +33,7 @@ namespace Photon.WebAPI.Classes
         }
 
         /// <summary>
-        /// Uses a PIR motion sensor and a Photovoltaic sensor
+        /// Uses a PIR motion sensor, a Proximity sensor and a Photovoltaic sensor
         /// </summary>
         /// <param name="bathroom">The bathroom where the device is implanted</param>
         private static void ProcessDeviceMethod1(Bathroom bathroom)
@@ -45,10 +45,14 @@ namespace Photon.WebAPI.Classes
             // Milliseconds elapsed since the last time the Photo sensor reported status change
             TimeSpan PhotoSpan;
             int PhotoMs;
+            // Milliseconds elapsed since the last time the Proximity sensor reported status change
+            TimeSpan ProximitySpan;
+            int ProximityMs;
 
             int PIRSecondsRequiredToOccupy = int.Parse(ConfigurationManager.AppSettings[Constants.PIRSecondsRequiredToOccupy]);
             int PIRSecondsRequiredToFree = int.Parse(ConfigurationManager.AppSettings[Constants.PIRSecondsRequiredToFree]);
             int lightOnThreshold = int.Parse(ConfigurationManager.AppSettings[Constants.LightOnThreshold]);
+            int proximityThreshold = int.Parse(ConfigurationManager.AppSettings[Constants.ProximityThreshold]);
             LogController lC = new LogController();
 
             while (true)
@@ -59,48 +63,67 @@ namespace Photon.WebAPI.Classes
                 PhotoSpan = DateTime.Now - device.LastPhotoReportTime;
                 PhotoMs = (int)PhotoSpan.TotalMilliseconds;
 
-                // If there is movement and the light was turned on a few seconds ago, the bath is occupied
-                if (device.PIRSensorValue == "1" && device.PhotoSensorValue >= lightOnThreshold && PhotoMs < 3000)
+                ProximitySpan = DateTime.Now - device.LastProximityReportTime;
+                ProximityMs = (int)ProximitySpan.TotalMilliseconds;
+
+                // If there is a person close the proximity sensor, the bath is occupied
+                if (device.ProximityValue < proximityThreshold)
                 {
                     if (!bathroom.IsOccupied)
                     {
                         lC.LogStateChange(bathroom.ID, true);
                     }
                 }
-                // If ther is not movement and the light is off, the bath is free
-                else if (device.PIRSensorValue == "0" && device.PhotoSensorValue < lightOnThreshold)
-                {
-                    if (bathroom.IsOccupied)
-                    {
-                        lC.LogStateChange(bathroom.ID, false);
-                    }
-                }
-                // If the PhotoSensor was not helpful to determine the bath status
+                // If the Proximity Sensor was not helpful to determine the bath status
                 else
                 {
-                    // If the device is reporting '1' and the bathroom is free
-                    if (device.PIRSensorValue == "1" && !bathroom.IsOccupied)
+                    // Avoid changing the state when the user is moving from the WC area to the basin area
+                    if (ProximityMs > 5000)
                     {
-                        // Avoid logging the state change more than once in a row
-                        if (device.LastPIRReportTime > bathroom.LastOccupiedTime)
+                        // If there is movement and the light was turned on a few seconds ago, the bath is occupied
+                        if (device.PIRSensorValue == "1" && device.PhotoSensorValue >= lightOnThreshold && PhotoMs < 3000)
                         {
-                            // If some seconds have passed with uninterrupted 'true' state
-                            if (PIRMs > PIRSecondsRequiredToOccupy * 1000)
+                            if (!bathroom.IsOccupied)
                             {
                                 lC.LogStateChange(bathroom.ID, true);
                             }
                         }
-                    }
-                    // If the device is reporting '0' and the bathroom is occupied
-                    else if (device.PIRSensorValue == "0" && bathroom.IsOccupied)
-                    {
-                        // Avoid logging the state change more than once in a row
-                        if (device.LastPIRReportTime > bathroom.LastFreedTime)
+                        // If there is not movement and the light is off, the bath is free
+                        else if (device.PIRSensorValue == "0" && device.PhotoSensorValue < lightOnThreshold)
                         {
-                            // If some seconds have passed with a uninterrupted 'false' state
-                            if (PIRMs > PIRSecondsRequiredToFree * 1000)
+                            if (bathroom.IsOccupied)
                             {
                                 lC.LogStateChange(bathroom.ID, false);
+                            }
+                        }
+                        // If the PhotoSensor was not helpful to determine the bath status
+                        else
+                        {
+                            // If the device is reporting '1' and the bathroom is free
+                            if (device.PIRSensorValue == "1" && !bathroom.IsOccupied)
+                            {
+                                // Avoid logging the state change more than once in a row
+                                if (device.LastPIRReportTime > bathroom.LastOccupiedTime)
+                                {
+                                    // If some seconds have passed with uninterrupted 'true' state
+                                    if (PIRMs > PIRSecondsRequiredToOccupy * 1000)
+                                    {
+                                        lC.LogStateChange(bathroom.ID, true);
+                                    }
+                                }
+                            }
+                            // If the device is reporting '0' and the bathroom is occupied
+                            else if (device.PIRSensorValue == "0" && bathroom.IsOccupied)
+                            {
+                                // Avoid logging the state change more than once in a row
+                                if (device.LastPIRReportTime > bathroom.LastFreedTime)
+                                {
+                                    // If some seconds have passed with a uninterrupted 'false' state
+                                    if (PIRMs > PIRSecondsRequiredToFree * 1000)
+                                    {
+                                        lC.LogStateChange(bathroom.ID, false);
+                                    }
+                                }
                             }
                         }
                     }
@@ -120,7 +143,7 @@ namespace Photon.WebAPI.Classes
             // Milliseconds elapsed since the last time the PIR sensor reported status change
             TimeSpan PIRSpan;
             int PIRMs;
-            // Milliseconds elapsed since the last time the Photo sensor reported status change
+            // Milliseconds elapsed since the last time the Proximity sensor reported status change
             TimeSpan ProximitySpan;
             int ProximityMs;
 
@@ -137,7 +160,7 @@ namespace Photon.WebAPI.Classes
                 ProximitySpan = DateTime.Now - device.LastProximityReportTime;
                 ProximityMs = (int)ProximitySpan.TotalMilliseconds;
 
-                // If there is a person close the proximity sensor, the bath has to be occupied
+                // If there is a person close the proximity sensor, the bath is occupied
                 if (device.ProximityValue < proximityThreshold)
                 {
                     if (!bathroom.IsOccupied)
@@ -148,29 +171,33 @@ namespace Photon.WebAPI.Classes
                 // If the Proximity Sensor was not helpful to determine the bath status
                 else
                 {
-                    // If the device is reporting '1' and the bathroom is free
-                    if (device.PIRSensorValue == "1" && !bathroom.IsOccupied)
+                    // Avoid changing the state when the user is moving from the WC area to the basin area
+                    if (ProximityMs > 5000)
                     {
-                        // Avoid logging the state change more than once in a row
-                        if (device.LastPIRReportTime > bathroom.LastOccupiedTime)
+                        // If the device is reporting '1' and the bathroom is free
+                        if (device.PIRSensorValue == "1" && !bathroom.IsOccupied)
                         {
-                            // If some seconds have passed with uninterrupted 'true' state
-                            if (PIRMs > PIRSecondsRequiredToOccupy * 1000)
+                            // Avoid logging the state change more than once in a row
+                            if (device.LastPIRReportTime > bathroom.LastOccupiedTime)
                             {
-                                lC.LogStateChange(bathroom.ID, true);
+                                // If some seconds have passed with uninterrupted 'true' state
+                                if (PIRMs > PIRSecondsRequiredToOccupy * 1000)
+                                {
+                                    lC.LogStateChange(bathroom.ID, true);
+                                }
                             }
                         }
-                    }
-                    // If the device is reporting '0' and the bathroom is occupied
-                    else if (device.PIRSensorValue == "0" && bathroom.IsOccupied)
-                    {
-                        // Avoid logging the state change more than once in a row
-                        if (device.LastPIRReportTime > bathroom.LastFreedTime)
+                        // If the device is reporting '0' and the bathroom is occupied
+                        else if (device.PIRSensorValue == "0" && bathroom.IsOccupied)
                         {
-                            // If some seconds have passed with a uninterrupted 'false' state
-                            if (PIRMs > PIRSecondsRequiredToFree * 1000)
+                            // Avoid logging the state change more than once in a row
+                            if (device.LastPIRReportTime > bathroom.LastFreedTime)
                             {
-                                lC.LogStateChange(bathroom.ID, false);
+                                // If some seconds have passed with a uninterrupted 'false' state
+                                if (PIRMs > PIRSecondsRequiredToFree * 1000)
+                                {
+                                    lC.LogStateChange(bathroom.ID, false);
+                                }
                             }
                         }
                     }

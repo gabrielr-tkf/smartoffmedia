@@ -26,6 +26,28 @@
 <div>Bath 3 Last occupied time: @bathroomLines[2].Bathroom.LastOccupiedTime.ToString("HH:mm:ss")</div>
 <br />
 <br />
+
+<div>Sensor 1 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PIRSensorValue != null) {
+
+                         @bathroomLines[0].Bathroom.PhotonDevice.PIRSensorValue;
+
+                     }</div>
+
+<div>Sensor 2 state: @if(bathroomLines[0].Bathroom.PhotonDevice.ProximityValue != null) {
+
+                         @bathroomLines[0].Bathroom.PhotonDevice.ProximityValue;
+
+                     }</div>
+
+<div>Sensor 3 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue != null) {
+
+                         @bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue;
+
+                     }</div>
+
+<br />
+<br />
+
 <div><b>Last 20 notifications:</b></div>
 <br />
 @{
@@ -35,15 +57,3 @@
 @foreach(string n in last20Notifications){
     <div>@n</div>
 }
-
-<div>Sensor 1 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PIRSensorValue != null) {
-
-                         @bathroomLines[0].Bathroom.PhotonDevice.PIRSensorValue;
-
-                     }</div>
-
-<div>Sensor 3 state: @if(bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue != null) {
-
-                         @bathroomLines[0].Bathroom.PhotonDevice.PhotoSensorValue;
-
-                     }</div>
