@@ -27,7 +27,7 @@ namespace Photon.WebAPI.Classes
         }
       
         //public static List<string> UsersConnectionIds = new List<string>();
-        public static List<User> UsersList = new List<User>();
+        //public static List<User> UsersList = new List<User>();
         public string registerConId()
         {
             List<User> UsersList =  CacheManager.Get(Constants.UsersList) as List<User>;  
