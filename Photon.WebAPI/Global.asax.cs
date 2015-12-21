@@ -32,7 +32,7 @@ namespace Photon.WebAPI
             Bathroom wcMen = new Bathroom()
             {
                 ID = 1,
-                PhotonDevice = new Device(){ ID = "330034000d47343432313031" },
+                PhotonDevice = new Device(){ ID = "330034000d47343432313031", ProximityValue = 100 },
                 IsOccupied = false,
                 Name = "WCMen",
                 LastFreedTime = DateTime.Now,
