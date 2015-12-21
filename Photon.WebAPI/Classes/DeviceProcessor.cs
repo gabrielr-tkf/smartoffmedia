@@ -67,7 +67,7 @@ namespace Photon.WebAPI.Classes
                 ProximityMs = (int)ProximitySpan.TotalMilliseconds;
 
                 // If there is a person close the proximity sensor, the bath is occupied
-                if (device.ProximityValue < proximityThreshold)
+                if (device.ProximityValue < proximityThreshold && ProximityMs > 3000)
                 {
                     if (!bathroom.IsOccupied)
                     {
@@ -161,7 +161,7 @@ namespace Photon.WebAPI.Classes
                 ProximityMs = (int)ProximitySpan.TotalMilliseconds;
 
                 // If there is a person close the proximity sensor, the bath is occupied
-                if (device.ProximityValue < proximityThreshold)
+                if (device.ProximityValue < proximityThreshold && ProximityMs > 3000)
                 {
                     if (!bathroom.IsOccupied)
                     {
