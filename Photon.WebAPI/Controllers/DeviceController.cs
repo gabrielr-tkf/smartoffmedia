@@ -26,7 +26,7 @@ namespace Photon.WebAPI.Controllers
             //PirSensor
             if (sensorType == "1")
             {
-                device.PIRSensorValue = sensorValue;
+                device.PIRSensorValue = int.Parse(sensorValue);
                 device.LastPIRReportTime = DateTime.Now;
             }
             //ProximitySensor

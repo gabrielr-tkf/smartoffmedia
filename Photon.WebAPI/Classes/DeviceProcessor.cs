@@ -67,9 +67,9 @@ namespace Photon.WebAPI.Classes
                 ProximityMs = (int)ProximitySpan.TotalMilliseconds;
 
                 // If there is a person close the proximity sensor, the bath is occupied
-                if (device.ProximityValue < proximityThreshold && ProximityMs > 3000)
+                if (device.ProximityValue < proximityThreshold)
                 {
-                    if (!bathroom.IsOccupied)
+                    if (!bathroom.IsOccupied && ProximityMs > 3000)
                     {
                         lC.LogStateChange(bathroom.ID, true);
                     }
@@ -81,7 +81,7 @@ namespace Photon.WebAPI.Classes
                     if (ProximityMs > 5000)
                     {
                         // If there is movement and the light was turned on a few seconds ago, the bath is occupied
-                        if (device.PIRSensorValue == "1" && device.PhotoSensorValue >= lightOnThreshold && PhotoMs < 3000)
+                        if (device.PIRSensorValue == 1 && device.PhotoSensorValue >= lightOnThreshold && PhotoMs < 3000)
                         {
                             if (!bathroom.IsOccupied)
                             {
@@ -89,7 +89,7 @@ namespace Photon.WebAPI.Classes
                             }
                         }
                         // If there is not movement and the light is off, the bath is free
-                        else if (device.PIRSensorValue == "0" && device.PhotoSensorValue < lightOnThreshold)
+                        else if (device.PIRSensorValue == 0 && device.PhotoSensorValue < lightOnThreshold)
                         {
                             if (bathroom.IsOccupied)
                             {
@@ -100,7 +100,7 @@ namespace Photon.WebAPI.Classes
                         else
                         {
                             // If the device is reporting '1' and the bathroom is free
-                            if (device.PIRSensorValue == "1" && !bathroom.IsOccupied)
+                            if (device.PIRSensorValue == 1 && !bathroom.IsOccupied)
                             {
                                 // Avoid logging the state change more than once in a row
                                 if (device.LastPIRReportTime > bathroom.LastOccupiedTime)
@@ -113,7 +113,7 @@ namespace Photon.WebAPI.Classes
                                 }
                             }
                             // If the device is reporting '0' and the bathroom is occupied
-                            else if (device.PIRSensorValue == "0" && bathroom.IsOccupied)
+                            else if (device.PIRSensorValue == 0 && bathroom.IsOccupied)
                             {
                                 // Avoid logging the state change more than once in a row
                                 if (device.LastPIRReportTime > bathroom.LastFreedTime)
@@ -161,9 +161,9 @@ namespace Photon.WebAPI.Classes
                 ProximityMs = (int)ProximitySpan.TotalMilliseconds;
 
                 // If there is a person close the proximity sensor, the bath is occupied
-                if (device.ProximityValue < proximityThreshold && ProximityMs > 3000)
+                if (device.ProximityValue < proximityThreshold)
                 {
-                    if (!bathroom.IsOccupied)
+                    if (!bathroom.IsOccupied && ProximityMs > 3000)
                     {
                         lC.LogStateChange(bathroom.ID, true);
                     }
@@ -175,7 +175,7 @@ namespace Photon.WebAPI.Classes
                     if (ProximityMs > 5000)
                     {
                         // If the device is reporting '1' and the bathroom is free
-                        if (device.PIRSensorValue == "1" && !bathroom.IsOccupied)
+                        if (device.PIRSensorValue == 1 && !bathroom.IsOccupied)
                         {
                             // Avoid logging the state change more than once in a row
                             if (device.LastPIRReportTime > bathroom.LastOccupiedTime)
@@ -188,7 +188,7 @@ namespace Photon.WebAPI.Classes
                             }
                         }
                         // If the device is reporting '0' and the bathroom is occupied
-                        else if (device.PIRSensorValue == "0" && bathroom.IsOccupied)
+                        else if (device.PIRSensorValue == 0 && bathroom.IsOccupied)
                         {
                             // Avoid logging the state change more than once in a row
                             if (device.LastPIRReportTime > bathroom.LastFreedTime)
