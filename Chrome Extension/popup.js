@@ -17,23 +17,24 @@ var API_BASE_URL = "http://localhost:52325/";
  var swcWomensCheckbox;
  var swcMixedCheckbox; 
 
+ var executeChangeBath1 = true;
+ var executeChangeBath2 = true;
+ var executeChangeBath3 = true;
+ 
 $(function() {
 
 function GetBathStatus()
 {
-  //Get Status of all bathrooms on Load
+	//Get Status of all bathrooms on Load
   $.get(API_BASE_URL + "/Api/Bath/GetStatus", function(data) {
 
     //CSS classes = busy / free / uncertain
     //bath1, bath2, bath3
     //Bath 1
-	console.log("data.BathStatusList[0].Bathroom.IsOccupied = " + data.BathStatusList[0].Bathroom.IsOccupied)
     if (data.BathStatusList[0].Bathroom.IsOccupied == true) {
-		console.log("BUSY");
 		$("#bath1").removeClass("free");
       $("#bath1").addClass("busy");
     } else {
-		console.log("FREE");
 		$("#bath1").removeClass("busy");
       $("#bath1").addClass("free");
     }
@@ -54,29 +55,28 @@ function GetBathStatus()
       $("#bath3").addClass("free");
     }
 
-    console.log(data.BathStatusList[0].Bathroom.IsOccupied);
-    console.log(data.BathStatusList);
-
   });
 }
 function GetNotificationStatus()
 {
   var userId = localStorage.Guid;
   $.get(API_BASE_URL + "/Api/Notification/GetNotificationStatusByUser?userId=" + userId, function(data) {
-
-    console.log("==> " + data.SubscribedNotificationBath1);
    
-      $("#wcMensCheckbox").prop('checked', data.SubscribedNotificationBath1);
-    
-		//swcMensCheckbox.handleOnchange(false);
+		$("#wcMensCheckbox").prop('checked', data.SubscribedNotificationBath1);
+		executeChangeBath1 = false;
+		swcMensCheckbox.handleOnchange(data.SubscribedNotificationBath1);
+		
 	
-	
-      $("#wcWomensCheckbox").prop('checked', data.SubscribedNotificationBath2);
+		$("#wcWomensCheckbox").prop('checked', data.SubscribedNotificationBath2);
+		executeChangeBath2 = false;
+		swcWomensCheckbox.handleOnchange(data.SubscribedNotificationBath2);
    
     
-      $("#wcMixedCheckbox").prop('checked', data.SubscribedNotificationBath3);
+		$("#wcMixedCheckbox").prop('checked', data.SubscribedNotificationBath3);
+		executeChangeBath3 = false;
+		swcMixedCheckbox.handleOnchange(data.SubscribedNotificationBath3);
     
-    console.log(data);
+		executeChangeBath1 = true;
 
   });
 }
@@ -104,78 +104,60 @@ function GetNotificationStatus()
   //setInterval(function(){GetNotificationStatus();}, 1000);
   
 	GetNotificationStatus();
-});
-
-// Bind button event to recieve notifications
-$(function() {
-
-
-  /*
-  var fiveSeconds = new Date().getTime() + 3000 * 60;
-  $('.countdown').countdown(fiveSeconds)
-    .on('update.countdown', function(event) {
-      var $this = $(this);
-      $this.html(event.strftime('<span>%M:%S</span>'));
-    })
-    .on('finish.countdown', function(event) {
-      $(this).html('This offer has expired!').parent().addClass('disabled');
-      // Test for notification support.
-      if (window.Notification) {
-        //show();
-        //
-      }
-    });
-    */
 
   //Bathroom 1
   var wasCallCallback1 = false;
 
   $(wcMensCheckbox).on('change', function() {
+  
+	if(executeChangeBath1){
+  
+		var userId = localStorage.Guid;
 
-    var userId = localStorage.Guid;
+		if (JSON.parse($(this)[0].checked)) {
+		  //SUBSCRIBE MEN BATHROOM
+		  $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
+			//Success
+			if (data.Status == "200") {
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  wasCallCallback1 = false;
+			} else if (data.Status == "304") {
+			  wasCallCallback1 = true;
+			  wcMensCheckbox.checked = !wcMensCheckbox.checked;
+			  
+			  swcMensCheckbox.handleOnchange(false);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			} else {
+			  //Error!
+			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			}
 
-    if (JSON.parse($(this)[0].checked)) {
-      //SUBSCRIBE MEN BATHROOM
-      $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
-console.log("Subscribe");
-        //Success
-        if (data.Status == "200") {
-			console.log("ok");
-          ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          wasCallCallback1 = false;
-        } else if (data.Status == "304") {
-			console.log("Ñoba vacio");
-          wasCallCallback1 = true;
-          wcMensCheckbox.checked = !wcMensCheckbox.checked;
-          swcMensCheckbox.handleOnchange(false);
-          ShowNotification(data.NotificationTitle, data.NotificationMessage);
-        } else {
-          //Error!
-          ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-        }
+		  });
+		} else {
+		  if (!wasCallCallback1) {
+			//UN-SUBSCRIBE MEN BATHROOM
+			$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=1&userId=" + userId + "&sendMessage=false", function(data) {
 
-      });
-    } else {
-
-      if (!wasCallCallback1) {
-        //UN-SUBSCRIBE MEN BATHROOM
-        $.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=1&userId=" + userId, function(data) {
-
-          //Success
-          if (data.Status == "200") {
-            ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          } else if (data.Status == "304") {
-            //Keep button green and show error message
-            wcMensCheckbox.checked = true;
-            swcMensCheckbox.handleOnchange(true);
-            ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          } else {
-            //Error
-            ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-          }
-        });
-      }
-    }
+			  //Success
+			  if (data.Status == "200") {
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  } else if (data.Status == "304") {
+				//Keep button green and show error message
+				wcMensCheckbox.checked = true;
+				wasCallCallback1 = true;				
+				swcMensCheckbox.handleOnchange(true);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  } else {
+				//Error
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			  }
+			});
+		  }
+		}
+	}
+	else{
+		executeChangeBath1 = true;
+	}
   });
   //Bathroom 2
   var wasCallCallback2 = false;
@@ -254,7 +236,9 @@ console.log("Subscribe");
           //Success
           if (data.Status == "200") {
             ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          } else if (data.Status == "304") {
+          
+		  
+		  } else if (data.Status == "304") {
 
             //Keep button green and show error message
             swcMixedCheckbox.checked = true;
@@ -287,9 +271,7 @@ var port = chrome.extension.connect({
   name: "Sample Communication"
 });
 port.onMessage.addListener(function(data) {
-  console.log(data);
   if (data.type == 200) {
-    console.log(true);
     if (!data.IsOccupied) {
       switch (data.BathId) {
         case 1:
