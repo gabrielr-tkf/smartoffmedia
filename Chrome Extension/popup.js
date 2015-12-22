@@ -66,9 +66,11 @@ function GetNotificationStatus()
 
     console.log("==> " + data.SubscribedNotificationBath1);
    
-      $("#wcMensCheckbox").prop('checked', true);
+      $("#wcMensCheckbox").prop('checked', data.SubscribedNotificationBath1);
     
-    
+		//swcMensCheckbox.handleOnchange(false);
+	
+	
       $("#wcWomensCheckbox").prop('checked', data.SubscribedNotificationBath2);
    
     
@@ -99,7 +101,9 @@ function GetNotificationStatus()
 	}catch(e){}
   //Get Status of User Notifications (On/off for all bathrooms)
   //TODO
-  setInterval(function(){GetNotificationStatus();}, 1000);
+  //setInterval(function(){GetNotificationStatus();}, 1000);
+  
+	GetNotificationStatus();
 });
 
 // Bind button event to recieve notifications
