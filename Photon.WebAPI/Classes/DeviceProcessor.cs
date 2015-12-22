@@ -13,7 +13,7 @@ namespace Photon.WebAPI.Classes
     public class DeviceProcessor
     {
         /// <summary>
-        /// Procceses the devices state depending on the bathroom
+        /// Processes the devices state depending on the bathroom
         /// </summary>
         /// <param name="deviceId">The ID of the Photon device implanted on the bathroom</param>
         public static void ProcessDevicesState(string deviceId)

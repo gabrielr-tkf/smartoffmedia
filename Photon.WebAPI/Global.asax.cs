@@ -55,13 +55,12 @@ namespace Photon.WebAPI
                 LastOccupiedTime = DateTime.Now
             };
 
-            //List of waiting Line (Users)
+            // List of waiting Line (Users)
             BathroomLine linebth1 = new BathroomLine()
             {
                 Bathroom = wcMen,
                 LastTimesFirstChanged = DateTime.Now
-            };
-          
+            };          
 
             BathroomLine linebth2 = new BathroomLine()
             {
@@ -82,6 +81,7 @@ namespace Photon.WebAPI
 
             CacheManager.Add(Constants.BathLines, bathlines);  
 
+            // Flags that the first user in line can set false when somebody else occupied the bathroom instead of him/her
             CacheManager.Add(Constants.OccupiedByFirstInLine, new List<bool>(new bool[] { true, true, true}));
 
             new Thread(() =>

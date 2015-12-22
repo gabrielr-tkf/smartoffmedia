@@ -32,7 +32,7 @@ namespace Photon.Entities
         public DateTime LastProximityReportTime { get; set; }
         // Attributes used to store the last reports from the device
 
-        public string PIRSensorValue { get; set; }
+        public int PIRSensorValue { get; set; }
         public int PhotoSensorValue { get; set; }
         public int ProximityValue { get; set; }
 
