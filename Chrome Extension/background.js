@@ -1,5 +1,5 @@
  //var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
- var HUB_BASE_URL = "http://localhost:52325/signalr";
+  var HUB_BASE_URL = "http://localhost:52325/signalr";
 
  //Method A) Using Long Lived Connections
  var frontEndProxy;
@@ -29,6 +29,28 @@
    }
    chrome.notifications.create("", opt, function() {});
  }
+ 
+  function ShowNotificationWithButton(notification) {
+   var opt = {
+     type: "basic",
+     title: notification.Title,
+     message: notification.Message,
+	 iconUrl: "images/logo/logo48.png",
+	 priority: 2,
+	 buttons: [
+		{ title: 'No fui yo, ¡dejame en la fila!' }
+	  ]
+   }
+   chrome.notifications.create("", opt, function() {});
+ }
+ 
+ chrome.notifications.onButtonClicked.addListener(function(notifId, btnIdx) {
+    if (true/*notifId === myNotificationID*/) {
+        if (btnIdx === 0) {
+            $.get(API_BASE_URL + "/Api/Notification/KeepFirstPosition?bathId=" + userId
+        }
+    }
+});
 
  $(function() {
 
@@ -56,8 +78,16 @@
      //frontEndProxy.postMessage("From background " + name + " " + message);
 
     // frontEndProxy.postMessage(data);
+	
+	console.log(notification.Type);
+	if(notification.Type == 1){
 
-     ShowNotification(notification.Title, notification.Message);
+		ShowNotificationWithButton(notification);
+	 
+	 }
+	 else{
+		ShowNotification(notification.Title, notification.Message);
+	 }
 
    };
 
