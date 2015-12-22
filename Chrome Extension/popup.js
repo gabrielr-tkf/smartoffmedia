@@ -77,6 +77,9 @@ function GetNotificationStatus()
 		swcMixedCheckbox.handleOnchange(data.SubscribedNotificationBath3);
     
 		executeChangeBath1 = true;
+		executeChangeBath2 = true;
+		executeChangeBath3 = true;
+		
 
   });
 }
@@ -163,95 +166,110 @@ function GetNotificationStatus()
   var wasCallCallback2 = false;
   $(wcWomensCheckbox).on('change', function() {
 
+	if(executeChangeBath2){
+  
     var userId = localStorage.Guid;
 
-    if (JSON.parse($(this)[0].checked)) {
+		if (JSON.parse($(this)[0].checked)) {
 
-      //SUBSCRIBE WOMAN BATHROOM
-      $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=2&userId=" + userId, function(data) {
-        //Subscription Success
-        if (data.Status == "200") {
-          ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          wasCallCallback2 = false;
-        } else if (data.Status == "304") {
-          wasCallCallback2 = true;
-          wcWomensCheckbox.checked = !wcWomensCheckbox.checked;
-          swcWomensCheckbox.handleOnchange(false);
-          ShowNotification(data.NotificationTitle, data.NotificationMessage);
-        } else {
-          //Subscription Error!
-          ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-        }
-      });
-    } else {
+		  //SUBSCRIBE WOMAN BATHROOM
+		  $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=2&userId=" + userId, function(data) {
+			//Subscription Success
+			if (data.Status == "200") {
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  wasCallCallback2 = false;
+			} else if (data.Status == "304") {
+			  wasCallCallback2 = true;
+			  wcWomensCheckbox.checked = !wcWomensCheckbox.checked;
+			  swcWomensCheckbox.handleOnchange(false);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			} else {
+			  //Subscription Error!
+			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			}
+		  });
+		} else {
 
-      if (!wasCallCallback2) {
-        //UN-SUBSCRIBE WOMAN BATHROOM
-        $.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=2&userId=" + userId, function(data) {
-          //Success
-          if (data.Status == "200") {
-            ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          } else if (data.Status == "304") {
-            //Keep button green and show error message
-            swcWomensCheckbox.checked = true;
-            swcWomensCheckbox.handleOnchange(true);
-            ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          } else {
-            //Error
-            ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-          }
+		  if (!wasCallCallback2) {
+			//UN-SUBSCRIBE WOMAN BATHROOM
+			$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=2&userId=" + userId + "&sendMessage=false", function(data) {
+			  //Success
+			  if (data.Status == "200") {
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  } else if (data.Status == "304") {
+				//Keep button green and show error message
+				swcWomensCheckbox.checked = true;
+				wasCallCallback2 = true;				
+				swcWomensCheckbox.handleOnchange(true);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  } else {
+				//Error
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			  }
 
-        });
-      }
-    }
+			});
+		  }
+		}
+	}
+	else{
+		executeChangeBath2 = true;
+	}
   });
   //Bathroom 3
   var wasCallCallback3 = false;
   $(wcMixedCheckbox).on('change', function() {
-    //SUBSCRIBE MIX BATHROOM
-    var userId = localStorage.Guid;
-    if (JSON.parse($(this)[0].checked)) {
+  
+	if(executeChangeBath3){
+  
+		//SUBSCRIBE MIX BATHROOM
+		var userId = localStorage.Guid;
+		if (JSON.parse($(this)[0].checked)) {
 
-      $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=3&userId=" + userId, function(data) {
-        //Success
-        if (data.Status == "200") {
-          ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          wasCallCallback3 = false;
-        } else if (data.Status == "304") {
-          wasCallCallback3 = true;
-          wcMixedCheckbox.checked = !wcMixedCheckbox.checked;
-          swcMixedCheckbox.handleOnchange(false);
-          ShowNotification(data.NotificationTitle, data.NotificationMessage);
-        } else {
-          //Error!
-          ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-        }
+		  $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=3&userId=" + userId, function(data) {
+			//Success
+			if (data.Status == "200") {
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  wasCallCallback3 = false;
+			} else if (data.Status == "304") {
+			  wasCallCallback3 = true;
+			  wcMixedCheckbox.checked = !wcMixedCheckbox.checked;
+			  swcMixedCheckbox.handleOnchange(false);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			} else {
+			  //Error!
+			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			}
 
-      });
-    } else {
+		  });
+		} else {
 
-      if (!wasCallCallback3) {
-        //UN-SUBSCRIBE MIX BATHROOM
-        $.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=3&userId=" + userId, function(data) {
-          //Success
-          if (data.Status == "200") {
-            ShowNotification(data.NotificationTitle, data.NotificationMessage);
-          
-		  
-		  } else if (data.Status == "304") {
+		  if (!wasCallCallback3) {
+			//UN-SUBSCRIBE MIX BATHROOM
+			$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=3&userId=" + userId + "&sendMessage=false", function(data) {
+			  //Success
+			  if (data.Status == "200") {
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  
+			  
+			  } else if (data.Status == "304") {
 
-            //Keep button green and show error message
-            swcMixedCheckbox.checked = true;
-            swcMixedCheckbox.handleOnchange(true);
-            ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				//Keep button green and show error message
+				swcMixedCheckbox.checked = true;
+				wasCallCallback3 = true;	
+				swcMixedCheckbox.handleOnchange(true);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage);
 
-          } else {
-            //Error
-            ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
-          }
-        });
-      }
-    }
+			  } else {
+				//Error
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			  }
+			});
+		  }
+		}
+	}
+	else{
+		executeChangeBath3 = true;
+	}
   });
 
 });
