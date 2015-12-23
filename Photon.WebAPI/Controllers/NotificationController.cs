@@ -173,7 +173,7 @@ namespace Photon.WebAPI.Controllers
                             {
                                 User = user,
                                 Bathroom = bathroom,
-                                Title = "Hey!",
+                                Title = "¡Hey!",
                                 Message = "¡El baño " + bathroom.ID.ToString() + " está libre y es tu turno!"
                             };
 
@@ -193,7 +193,7 @@ namespace Photon.WebAPI.Controllers
                             {
                                 User = user,
                                 Bathroom = bathroom,
-                                Title = "Hey!",
+                                Title = "¡Hey!",
                                 Message = "El baño " + bathroom.ID.ToString() + " está libre y sos el " + (i + 1) + "º en la fila"
                             };
                             PhotonHub.SendMessage(notification);
@@ -204,23 +204,17 @@ namespace Photon.WebAPI.Controllers
                 // another user from taking his/her place, making him/her go to the end of the line again
                 else
                 {
-                    User user = usersInLine.First();
-
-                    //BathStatus bathStatus = new BathStatus()
-                    //{
-                    //    Title = "Hey!",
-                    //    Message = "El baño " + bathroom.ID.ToString() + " fue ocupado y tenías el primer lugar, ¿fuiste vos?",
-                    //    BathId = bathroom.ID,
-                    //    IsOccupied = bathroom.IsOccupied
-                    //};
-                    Notification notification = new Notification()
+                    if (usersInLine.Count > 0)
                     {
-                        User = user,
-                        Bathroom = bathroom,
-                        Title = "Hey!",
-                        Message = "El baño " + bathroom.ID.ToString() + " fue ocupado y tenías el primer lugar, ¿fuiste vos?"
-                    };
-                    PhotonHub.SendMessage(notification);
+                        PhotonHub.SendMessage(new Notification
+                        {
+                            Bathroom = bathroom,
+                            Message = "Se ocupó el baño " + bathroom.ID + ", ¿fuiste vos?",
+                            Title = "Baño ocupado",
+                            User = usersInLine.First(),
+                            Type = NotificationType.WITH_BUTTON
+                        });
+                    }
                 }
             }
         }

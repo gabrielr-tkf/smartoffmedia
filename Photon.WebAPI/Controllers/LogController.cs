@@ -28,7 +28,8 @@ namespace Photon.WebAPI.Controllers
             {
                 BathroomLine bathroomLine = (CacheManager.Get(Constants.BathLines) as List<BathroomLine>).First(a=> a.Bathroom.ID == bathId);
                 Bathroom bathroom = bathroomLine.Bathroom;
-                
+                NotificationController notificationController = new NotificationController();
+
                 if (!isOccupied)
                 {
                     DateTime occupiedTime = bathroom.LastOccupiedTime;
@@ -40,7 +41,6 @@ namespace Photon.WebAPI.Controllers
                     bathroom.IsOccupied = isOccupied;
                     bathroom.LastFreedTime = DateTime.Now;
 
-                    NotificationController notificationController = new NotificationController();
                     notificationController.Publish(bathroom);
                 }
                 else
@@ -48,16 +48,7 @@ namespace Photon.WebAPI.Controllers
                     bathroom.IsOccupied = isOccupied;
                     bathroom.LastOccupiedTime = DateTime.Now;
 
-                    if (bathroomLine.UsersLine.Count > 0)
-                    {
-                        PhotonHub.SendMessage(new Notification{
-                            Bathroom = bathroom,
-                            Message = "Se ocupó el baño, ¿fuiste vos?",
-                            Title = "Baño ocupado",
-                            User = bathroomLine.UsersLine.First(),
-                            Type = NotificationType.WITH_BUTTON
-                        });
-                    }
+                    notificationController.Publish(bathroom);
                 }                
 
                 response.Status = "200";

@@ -104,9 +104,9 @@ function GetNotificationStatus()
 	}catch(e){}
   //Get Status of User Notifications (On/off for all bathrooms)
   //TODO
-  //setInterval(function(){GetNotificationStatus();}, 1000);
+  setInterval(function(){GetNotificationStatus();}, 1000);
   
-	GetNotificationStatus();
+	//GetNotificationStatus();
 
   //Bathroom 1
   var wasCallCallback1 = false;

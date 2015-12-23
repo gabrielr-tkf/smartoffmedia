@@ -1,6 +1,9 @@
  //var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
   var HUB_BASE_URL = "http://localhost:52325/signalr";
 
+  //var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+ var API_BASE_URL = "http://localhost:52325";
+  
  //Method A) Using Long Lived Connections
  var frontEndProxy;
  chrome.extension.onConnect.addListener(function(port) {
@@ -12,6 +15,10 @@
    //});
  });
 
+ // Variables used to show 2 times the keepFirstPosition notification (the max configurable duration is 25 secs)
+ var pendingNotifications = []; // IDs of the bathrooms corresponding to the notifications that the user has not yet confirmed (clicking yes or no)
+ var notificationsCount = [0, 0, 0]; // times that the keepFirstPosition notification was sent for each bathroom
+ 
  //Method B)  Direct Manipulation of DOM
  //EXAMPLE
  //var views = chrome.extension.getViews({type: "popup"});
@@ -20,11 +27,11 @@
  //}
 
  //Show system notification => BACKGROUND
- function ShowNotification(title, message) {
+ function ShowNotification(notification) {
    var opt = {
      type: "basic",
-     title: title,
-     message: message,
+     title: notification.Title,
+     message: notification.Message,
      iconUrl: "images/logo/logo48.png"
    }
    chrome.notifications.create("", opt, function() {});
@@ -36,20 +43,45 @@
      title: notification.Title,
      message: notification.Message,
 	 iconUrl: "images/logo/logo48.png",
-	 priority: 2,
+	 priority: 1,
 	 buttons: [
-		{ title: 'No fui yo, ¡dejame en la fila!' }
+		{ title: 'No fui yo, \u00a1dejame en la fila!' },
+		{ title: 'S\u00ed, fui yo' }
 	  ]
    }
-   chrome.notifications.create("", opt, function() {});
+   var bathId = notification.Bathroom.ID;
+   chrome.notifications.create(bathId + "", opt, function() {});
+   
+   if(pendingNotifications.indexOf(bathId) == -1){
+		pendingNotifications.push(bathId);
+    }
+	
+	setTimeout(function(){
+		notificationsCount[bathId - 1]++;
+		console.log('a');
+		if(pendingNotifications.indexOf(bathId) != -1){
+			console.log('b');
+			if(notificationsCount[bathId - 1] < 2){
+				console.log(notification);
+				ShowNotificationWithButton(notification)				
+			}
+			else{
+				notificationsCount[bathId - 1] = 0;
+				pendingNotifications.splice(pendingNotifications.indexOf(bathId), 1)
+			}
+		}
+		else{
+			notificationsCount[bathId - 1] = 0;
+		}
+	}, 26000);
  }
  
- chrome.notifications.onButtonClicked.addListener(function(notifId, btnIdx) {
-    if (true/*notifId === myNotificationID*/) {
-        if (btnIdx === 0) {
-            $.get(API_BASE_URL + "/Api/Notification/KeepFirstPosition?bathId=" + userId
-        }
-    }
+ chrome.notifications.onButtonClicked.addListener(function(bathId, btnIdx) {
+	if (btnIdx === 0) {		
+		$.post(API_BASE_URL + "/Api/Notification/KeepFirstPosition?bathId=" + bathId)
+	}
+	chrome.notifications.clear(bathId);
+	pendingNotifications.splice(pendingNotifications.indexOf(bathId), 1)
 });
 
  $(function() {
@@ -79,14 +111,13 @@
 
     // frontEndProxy.postMessage(data);
 	
-	console.log(notification.Type);
 	if(notification.Type == 1){
 
 		ShowNotificationWithButton(notification);
 	 
 	 }
 	 else{
-		ShowNotification(notification.Title, notification.Message);
+		ShowNotification(notification);
 	 }
 
    };
