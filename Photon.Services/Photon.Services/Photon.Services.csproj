@@ -41,6 +41,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,8 @@
     <Compile Include="PhotonController.cs" />
     <Compile Include="PhotonRESTService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Utilities\CacheManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Photon.DataAccess\Photon.DataAccess.csproj">

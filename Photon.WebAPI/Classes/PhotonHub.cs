@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using System.Collections;
 using Photon.Entities;
 using Photon.WebAPI.Utilities;
+using System.Threading.Tasks;
 
 namespace Photon.WebAPI.Classes
 {
@@ -14,16 +15,94 @@ namespace Photon.WebAPI.Classes
         //public static void SendMessage(string user, BathStatus bathStatus)
         public static void SendMessage(Notification notification)
         {
-            List<User> UsersList = CacheManager.Get(Constants.UsersList) as List<User>;  
+            // Old School
 
-             var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
+            //List<User> UsersList = CacheManager.Get(Constants.UsersList) as List<User>;  
 
-            //hubContext.Clients.All.broadcastMessage(bathid, state);
-            hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
+            // var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
 
-            // TODO: These 2 lines are only for debugging purposes. They have to be removed
-            string stringNotification = notification.User.ID.Split('-')[0] + ": " + notification.Message;
-            ((List<string>)System.Web.HttpRuntime.Cache["Notifications"]).Add(stringNotification);
+            ////hubContext.Clients.All.broadcastMessage(bathid, state);
+            //hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
+
+            //// TODO: These 2 lines are only for debugging purposes. They have to be removed
+            //string stringNotification = notification.User.ID.Split('-')[0] + ": " + notification.Message;
+            //((List<string>)System.Web.HttpRuntime.Cache["Notifications"]).Add(stringNotification);
+
+
+            // New School
+
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
+
+            User user = Services.User.Find(notification.User.ID);
+            List<Connection> connections = user.Connections.Where(c => c.Connected).ToList();
+
+            if (connections.Count > 0)
+            {
+                foreach (Connection conn in connections)
+                {
+                    hubContext.Clients.Client(conn.ConnectionID).sendMessage(notification);
+                }
+
+                // TODO: These 2 lines are only for debugging purposes. They have to be removed
+                string stringNotification = notification.User.ID.Split('-')[0] + ": " + notification.Message;
+                ((List<string>)System.Web.HttpRuntime.Cache["Notifications"]).Add(stringNotification);
+            }
+
+           //hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
+
+            
+        }
+
+        public override Task OnConnected()
+        {
+            var name = Context.User.Identity.Name;
+           
+                //var user = db.Users
+                //    .Include(u => u.Connections)
+                //    .SingleOrDefault(u => u.UserName == name);
+
+            var user = Services.User.Find(name);
+
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        ID = name,                       
+                    };
+                    //db.Users.Add(user);
+                }
+
+                user.Connections.Add(new Connection
+                {
+                    ConnectionID = Context.ConnectionId,
+                    UserAgent = Context.Request.Headers["User-Agent"],
+                    Connected = true
+                });
+                Services.User.SaveUserConnection(user);
+
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {           
+            //var connection = db.Connections.Find(Context.ConnectionId);
+            //connection.Connected = false;
+            //db.SaveChanges();
+
+            //TODO: Code Refactoring
+            User user = Services.User.FindByConnectionID(Context.ConnectionId);
+            foreach (Connection c in user.Connections)
+            {
+                
+                if(c.ConnectionID == Context.ConnectionId){
+                    c.Connected = false;
+                    
+                }
+
+                Services.User.UpdateUserConnection(user.ID, c);
+            }
+           
+            return base.OnDisconnected(stopCalled);
         }
       
         //public static List<string> UsersConnectionIds = new List<string>();
