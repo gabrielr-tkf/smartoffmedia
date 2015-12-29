@@ -12,6 +12,7 @@ namespace Photon.Entities
         public string UserAgent { get; set; }
         public bool Connected { get; set; }
         public DateTime Timestamp { get; set; }
+        public bool IsNew { get; set; }
 
     }
 }

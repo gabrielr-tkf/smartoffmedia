@@ -7,6 +7,7 @@ using System.Collections;
 using Photon.Entities;
 using Photon.WebAPI.Utilities;
 using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace Photon.WebAPI.Classes
 {
@@ -17,9 +18,9 @@ namespace Photon.WebAPI.Classes
         {
             // Old School
 
-            //List<User> UsersList = CacheManager.Get(Constants.UsersList) as List<User>;  
+            //List<User> UsersList = CacheManager.Get(Constants.UsersList) as List<User>;
 
-            // var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
+            //var hubContext = GlobalHost.ConnectionManager.GetHubContext<PhotonHub>();
 
             ////hubContext.Clients.All.broadcastMessage(bathid, state);
             //hubContext.Clients.Client(UsersList.Find(a => a.ID == notification.User.ID).ID).sendMessage(notification);
@@ -55,36 +56,39 @@ namespace Photon.WebAPI.Classes
 
         public override Task OnConnected()
         {
-            var name = Context.User.Identity.Name;
-           
-                //var user = db.Users
-                //    .Include(u => u.Connections)
-                //    .SingleOrDefault(u => u.UserName == name);
+            var name = HttpContext.Current.Request.QueryString["localIP"];
+
+            //var name = Context.User.Identity.Name;
+
+            //var user = db.Users
+            //    .Include(u => u.Connections)
+            //    .SingleOrDefault(u => u.UserName == name);
 
             var user = Services.User.Find(name);
 
-                if (user == null)
+            if (user == null)
+            {
+                user = new User
                 {
-                    user = new User
-                    {
-                        ID = name,                       
-                    };
-                    //db.Users.Add(user);
-                }
+                    ID = name,
+                };
+                //db.Users.Add(user);
+            }
 
-                user.Connections.Add(new Connection
-                {
-                    ConnectionID = Context.ConnectionId,
-                    UserAgent = Context.Request.Headers["User-Agent"],
-                    Connected = true
-                });
-                Services.User.SaveUserConnection(user);
+            user.Connections.Add(new Connection
+            {
+                ConnectionID = Context.ConnectionId,
+                UserAgent = Context.Request.Headers["User-Agent"],
+                Connected = true,
+                IsNew = true
+            });
+            Services.User.SaveUserConnection(user);
 
             return base.OnConnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
-        {           
+        {
             //var connection = db.Connections.Find(Context.ConnectionId);
             //connection.Connected = false;
             //db.SaveChanges();
@@ -93,41 +97,42 @@ namespace Photon.WebAPI.Classes
             User user = Services.User.FindByConnectionID(Context.ConnectionId);
             foreach (Connection c in user.Connections)
             {
-                
-                if(c.ConnectionID == Context.ConnectionId){
+
+                if (c.ConnectionID == Context.ConnectionId)
+                {
                     c.Connected = false;
-                    
+
                 }
 
                 Services.User.UpdateUserConnection(user.ID, c);
             }
-           
+
             return base.OnDisconnected(stopCalled);
         }
       
         //public static List<string> UsersConnectionIds = new List<string>();
         //public static List<User> UsersList = new List<User>();
-        public string registerConId()
-        {
-            List<User> UsersList =  CacheManager.Get(Constants.UsersList) as List<User>;  
-            if (UsersList.Count == 0)
-            {
-                UsersList.Add(new User() 
-                {
-                   ID = Context.ConnectionId
-                });
-            }
-            else
-            {
-                if (!UsersList.Exists(a => a.ID == Context.ConnectionId))
-              {
-                  UsersList.Add(new User()
-                  {
-                      ID = Context.ConnectionId
-                  });
-              }
-            }
-            return Context.ConnectionId;
-        }
+        //public string registerConId()
+        //{
+        //    List<User> UsersList =  CacheManager.Get(Constants.UsersList) as List<User>;  
+        //    if (UsersList.Count == 0)
+        //    {
+        //        UsersList.Add(new User() 
+        //        {                    
+        //           ID = Context.User.Identity.Name
+        //        });
+        //    }
+        //    else
+        //    {
+        //        if (!UsersList.Exists(a => a.ID == Context.ConnectionId))
+        //      {
+        //          UsersList.Add(new User()
+        //          {
+        //              ID = Context.ConnectionId
+        //          });
+        //      }
+        //    }
+        //    return Context.ConnectionId;
+        //}
     }
 }

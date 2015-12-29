@@ -22,15 +22,7 @@ namespace Photon.Services
 
         private static List<Entities.User> GetUsersConnections()
         {
-            if (CacheManager.ValidatExistence("UsersConnections"))
-            {
-                return CacheManager.Get("UsersConnections") as List<Entities.User>;
-            }
-            else
-            {
-                CacheManager.Add("UsersConnections", UserData.GetUsersConnections());
-                return CacheManager.Get("UsersConnections") as List<Entities.User>;
-            }
+            return UserData.GetUsersConnections();
         }
 
         public static Entities.User Find(string userID)
@@ -50,7 +42,13 @@ namespace Photon.Services
 
         public static Entities.User FindByConnectionID(string connectionID)
         {
-            return GetUsersConnections().Where(u => u.Connections.Where(c => c.ConnectionID == connectionID).FirstOrDefault() != null).FirstOrDefault();
+            List<Entities.User> usersAux = GetUsersConnections();
+
+            List<Entities.User> users = (from u in usersAux
+                            where u.Connections.Exists(c=> c.ConnectionID == connectionID)
+                            select u).ToList();
+
+            return users.First();
         }
 
     }

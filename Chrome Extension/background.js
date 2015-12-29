@@ -4,7 +4,9 @@
   //var API_BASE_URL = "http://kkcloud.azurewebsites.net";
  var API_BASE_URL = "http://localhost:52325";
   
- //Method A) Using Long Lived Connections
+ var localIP = "not assigned";
+  
+  //Method A) Using Long Lived Connections
  var frontEndProxy;
  chrome.extension.onConnect.addListener(function(port) {
 
@@ -58,9 +60,7 @@
 	
 	setTimeout(function(){
 		notificationsCount[bathId - 1]++;
-		console.log('a');
 		if(pendingNotifications.indexOf(bathId) != -1){
-			console.log('b');
 			if(notificationsCount[bathId - 1] < 2){
 				console.log(notification);
 				ShowNotificationWithButton(notification)				
@@ -84,51 +84,108 @@
 	pendingNotifications.splice(pendingNotifications.indexOf(bathId), 1)
 });
 
- $(function() {
+function getLocalIP(){
 
-   $.connection.hub.url = HUB_BASE_URL;
-   
+	var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
-   // Declare a proxy to reference the hub.
-   var chat = $.connection.photonHub;
-   // Create a function that the hub can call to broadcast messages.
-   chat.client.sendMessage = function(notification) {
-     // Html encode display name and message.
-     //var encodedName = $('<div />').text(name).html();
-     //var encodedMsg = $('<div />').text(message).html();
-     // Add the message to the page.
-     //Method A)
-     //try {
-    //   var views = chrome.extension.getViews({
-    //     type: "popup"
-    //   });
-    //   views[0].document.getElementById('discussion').innerHTML += '<li><strong>' + encodedName + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>';
-    // } catch (ex) {
-       //No VIEW available
-    // }
-     //Method B)
-     //frontEndProxy.postMessage("From background " + name + " " + message);
+	if (RTCPeerConnection) (function () {
+		
+		var rtc = new RTCPeerConnection({iceServers:[]});
+		if (1 || window.mozRTCPeerConnection) {      // FF [and now Chrome!] needs a channel/stream to proceed
+			rtc.createDataChannel('', {reliable:false});
+		};
+		
+		rtc.onicecandidate = function (evt) {
+			// convert the candidate to SDP so we can run it through our general parser
+			// see https://twitter.com/lancestout/status/525796175425720320 for details
+			if (evt.candidate) grepSDP("a="+evt.candidate.candidate);
+		};
+		
+		rtc.createOffer(function (offerDesc) {
+			grepSDP(offerDesc.sdp);
+			rtc.setLocalDescription(offerDesc);
+		}, function (e) { console.warn("offer failed", e); });
+		
+		
+		var addrs = Object.create(null);
+		addrs["0.0.0.0"] = false;
+		function updateDisplay(newAddr) {
+			if (newAddr in addrs) return;
+			else addrs[newAddr] = true;
+			var displayAddrs = Object.keys(addrs).filter(function (k) { return addrs[k]; });
+			localIP = displayAddrs.join(" or perhaps ") || "n/a";			
+		}
+		
+		function grepSDP(sdp) {
+			var hosts = [];
+			sdp.split('\r\n').forEach(function (line) { // c.f. http://tools.ietf.org/html/rfc4566#page-39
+				if (~line.indexOf("a=candidate")) {     // http://tools.ietf.org/html/rfc4566#section-5.13
+					var parts = line.split(' '),        // http://tools.ietf.org/html/rfc5245#section-15.1
+						addr = parts[4],
+						type = parts[7];
+					if (type === 'host') updateDisplay(addr);
+				} else if (~line.indexOf("c=")) {       // http://tools.ietf.org/html/rfc4566#section-5.7
+					var parts = line.split(' '),
+						addr = parts[2];
+					updateDisplay(addr);
+				}
+			});
+		}
+	})();
+}
 
-    // frontEndProxy.postMessage(data);
+$(function() {
 	
-	if(notification.Type == 1){
+	getLocalIP();
+	
+	setTimeout(function(){
+		$.connection.hub.url = HUB_BASE_URL;
+   
+		// Declare a proxy to reference the hub.
+		var chat = $.connection.photonHub;
+		
+		$.connection.hub.qs = 'localIP=' + localIP;
+		localStorage.Guid = localIP;
+	   // Create a function that the hub can call to broadcast messages.
+	   chat.client.sendMessage = function(notification) {
+		 // Html encode display name and message.
+		 //var encodedName = $('<div />').text(name).html();
+		 //var encodedMsg = $('<div />').text(message).html();
+		 // Add the message to the page.
+		 //Method A)
+		 //try {
+		//   var views = chrome.extension.getViews({
+		//     type: "popup"
+		//   });
+		//   views[0].document.getElementById('discussion').innerHTML += '<li><strong>' + encodedName + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>';
+		// } catch (ex) {
+		   //No VIEW available
+		// }
+		 //Method B)
+		 //frontEndProxy.postMessage("From background " + name + " " + message);
 
-		ShowNotificationWithButton(notification);
-	 
-	 }
-	 else{
-		ShowNotification(notification);
-	 }
+		// frontEndProxy.postMessage(data);
+		
+		if(notification.Type == 1){
 
-   };
+			ShowNotificationWithButton(notification);
+		 
+		 }
+		 else{
+			ShowNotification(notification);
+		 }
 
-   // Start the connection.
-   $.connection.hub.start().done(function() {
-     //Register connection ID => User ID
-     chat.server.registerConId().done(function(result) {
-       //Save Connection ID to Chrome Local Storage
-       localStorage.Guid = result;
-     });;
-   });
+	   };
+
+	   // Start the connection.
+	   // $.connection.hub.start().done(function() {
+		 // //Register connection ID => User ID
+		 
+		 // chat.server.registerConId().done(function(result) {
+		   // //Save Connection ID to Chrome Local Storage
+		   // localStorage.Guid = result;
+		 // });;
+	   // });
+   }, 500);
 
  });

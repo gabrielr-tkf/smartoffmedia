@@ -38,26 +38,37 @@ namespace Photon.DataAccess
 
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "SaveUserConnection";
+                command.Transaction = transaction;
 
                 foreach (var conn in user.Connections)
                 {
-                    command.Parameters.AddWithValue("@UserID", user.ID);
-                    command.Parameters.AddWithValue("@ConnectionID", conn.ConnectionID);
-                    command.Parameters.AddWithValue("@UserAgent", conn.UserAgent);
-                    command.Parameters.AddWithValue("@TimeStamp", DateTime.Now);
-                    command.Parameters.AddWithValue("@Connected", conn.Connected);
+                    if (conn.IsNew)
+                    {
+                        command.Parameters.Clear();
 
-                    command.ExecuteNonQuery();
+                        command.Parameters.AddWithValue("@UserID", user.ID);
+                        command.Parameters.AddWithValue("@ConnectionID", conn.ConnectionID);
+                        command.Parameters.AddWithValue("@UserAgent", conn.UserAgent);
+                        command.Parameters.AddWithValue("@TimeStamp", DateTime.Now);
+                        command.Parameters.AddWithValue("@Connected", conn.Connected);
 
+                        command.ExecuteNonQuery();                        
+                    }
+
+                   
                 }
                 //command.Parameters.AddWithValue("@freedTime", DateTime.Now);
              
                 transaction.Commit();
+
+                foreach (var conn in user.Connections)
+                {
+                    conn.IsNew = false;
+                }
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
-
             }
             finally
             {
@@ -128,20 +139,24 @@ namespace Photon.DataAccess
                     string userID = "0";
                     while (reader.Read())
                     {
-                        User u = new User();
-                        u.ID = reader.GetString(0);
-                        u.Connections.Add(new Connection{
+                       
+                        Connection conn = new Connection{
                             ConnectionID = reader.GetString(1),
                             UserAgent = reader.GetString(2),
                             Timestamp = reader.GetDateTime(3),
                             Connected = reader.GetBoolean(4)
-                        });
+                        };
 
-                        if (userID != u.ID) {
+                        if (userID != reader.GetString(0))
+                        {
+                            User u = new User();
+                            u.ID = reader.GetString(0);
                             users.Add(u);
                         }
 
-                        userID = u.ID;
+                        users.Last().Connections.Add(conn);
+
+                        userID = reader.GetString(0);
                         
                     }
                 }
