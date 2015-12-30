@@ -27,7 +27,9 @@ namespace Photon.Services
 
         public static Entities.User Find(string userID)
         {
-            return GetUsersConnections().Where(u => u.ID == userID).FirstOrDefault();
+            List<Entities.User> list = GetUsersConnections();
+            Entities.User user = list.Where(u => u.ID == userID).FirstOrDefault();
+            return user;
         }
 
         public static Entities.Connection FindConnected(string userID)

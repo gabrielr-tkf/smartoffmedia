@@ -178,14 +178,14 @@ $(function() {
 	   };
 
 	   // Start the connection.
-	   // $.connection.hub.start().done(function() {
+	    $.connection.hub.start().done(function() {
 		 // //Register connection ID => User ID
 		 
-		 // chat.server.registerConId().done(function(result) {
+		  chat.server.registerConId().done(function(result) {
 		   // //Save Connection ID to Chrome Local Storage
 		   // localStorage.Guid = result;
-		 // });;
-	   // });
+		  });;
+	   });
    }, 500);
 
  });

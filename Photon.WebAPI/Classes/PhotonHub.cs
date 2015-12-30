@@ -56,33 +56,27 @@ namespace Photon.WebAPI.Classes
 
         public override Task OnConnected()
         {
-            var name = HttpContext.Current.Request.QueryString["localIP"];
+            //var name = HttpContext.Current.Request.QueryString["localIP"];
 
-            //var name = Context.User.Identity.Name;
+            //var user = Services.User.Find(name);
 
-            //var user = db.Users
-            //    .Include(u => u.Connections)
-            //    .SingleOrDefault(u => u.UserName == name);
+            //if (user == null)
+            //{
+            //    user = new User
+            //    {
+            //        ID = name,
+            //    };
+            //    //db.Users.Add(user);
+            //}
 
-            var user = Services.User.Find(name);
-
-            if (user == null)
-            {
-                user = new User
-                {
-                    ID = name,
-                };
-                //db.Users.Add(user);
-            }
-
-            user.Connections.Add(new Connection
-            {
-                ConnectionID = Context.ConnectionId,
-                UserAgent = Context.Request.Headers["User-Agent"],
-                Connected = true,
-                IsNew = true
-            });
-            Services.User.SaveUserConnection(user);
+            //user.Connections.Add(new Connection
+            //{
+            //    ConnectionID = Context.ConnectionId,
+            //    UserAgent = Context.Request.Headers["User-Agent"],
+            //    Connected = true,
+            //    IsNew = true
+            //});
+            //Services.User.SaveUserConnection(user);
 
             return base.OnConnected();
         }
@@ -112,27 +106,51 @@ namespace Photon.WebAPI.Classes
       
         //public static List<string> UsersConnectionIds = new List<string>();
         //public static List<User> UsersList = new List<User>();
-        //public string registerConId()
-        //{
-        //    List<User> UsersList =  CacheManager.Get(Constants.UsersList) as List<User>;  
-        //    if (UsersList.Count == 0)
-        //    {
-        //        UsersList.Add(new User() 
-        //        {                    
-        //           ID = Context.User.Identity.Name
-        //        });
-        //    }
-        //    else
-        //    {
-        //        if (!UsersList.Exists(a => a.ID == Context.ConnectionId))
-        //      {
-        //          UsersList.Add(new User()
-        //          {
-        //              ID = Context.ConnectionId
-        //          });
-        //      }
-        //    }
-        //    return Context.ConnectionId;
-        //}
+        public string registerConId()
+        {
+            //List<User> UsersList = CacheManager.Get(Constants.UsersList) as List<User>;
+            //if (UsersList.Count == 0)
+            //{
+            //    UsersList.Add(new User()
+            //    {
+            //        ID = Context.User.Identity.Name
+            //    });
+            //}
+            //else
+            //{
+            //    if (!UsersList.Exists(a => a.ID == Context.ConnectionId))
+            //    {
+            //        UsersList.Add(new User()
+            //        {
+            //            ID = Context.ConnectionId
+            //        });
+            //    }
+            //}
+            //return Context.ConnectionId;
+
+            var name = HttpContext.Current.Request.QueryString["localIP"];
+
+            var user = Services.User.Find(name);
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    ID = name,
+                };
+                //db.Users.Add(user);
+            }
+
+            user.Connections.Add(new Connection
+            {
+                ConnectionID = Context.ConnectionId,
+                UserAgent = Context.Request.Headers["User-Agent"],
+                Connected = true,
+                IsNew = true
+            });
+            Services.User.SaveUserConnection(user);
+
+            return Context.ConnectionId;
+        }
     }
 }
