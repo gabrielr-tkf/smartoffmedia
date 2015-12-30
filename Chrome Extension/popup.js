@@ -54,6 +54,9 @@ function GetBathStatus()
 		$("#bath3").removeClass("busy");
       $("#bath3").addClass("free");
     }
+	
+	$('#loader-wrapper').fadeOut();
+	$('#container').css("visibility", "");
 
   });
 }
