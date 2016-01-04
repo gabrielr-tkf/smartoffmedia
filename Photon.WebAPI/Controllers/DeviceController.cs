@@ -43,7 +43,7 @@ namespace Photon.WebAPI.Controllers
                 device.LastPhotoReportTime = DateTime.Now;
             }
 
-            Services.Logger.LogDeviceReport(deviceId, sensorType, sensorValue);
+            //Services.Logger.LogDeviceReport(deviceId, sensorType, sensorValue);
         }
 
 
