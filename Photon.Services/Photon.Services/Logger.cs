@@ -17,5 +17,13 @@ namespace Photon.Services
                 Photon.DataAccess.Logger.LogBathUsage(bathroom);
             }).Start();            
         }
+
+        public static void LogDeviceReport(string deviceId, string sensorId, string value)
+        {
+            new Thread(() =>
+            {
+                Photon.DataAccess.Logger.LogDeviceReport(deviceId, sensorId, value);
+            }).Start();
+        }
     }
 }
