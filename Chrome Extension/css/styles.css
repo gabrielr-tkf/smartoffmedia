@@ -490,6 +490,7 @@ body .row .icon .radius { padding: .5em; border: 2px solid #ffffff; border-radiu
 body .row .icon i { display: block; }
 body .row .notification-area { margin: 0 1em .35em 2.25em; padding-top: .125em; border-top-right-radius: 5px; border-bottom-right-radius: 5px; height: 2.05em; border: 2px solid #ffffff; background-color: rgba(255, 255, 255, 0.8); }
 body .row .notification-area .notification { float: left; }
+body .row .notification-area .error { color: #000000; font-size: 12px; line-height: 25px; }
 body .row .counter { color: #080808; float: right; font-size: 1.5rem; line-height: 1.5rem; margin-right: .5em; }
 
 .color-white { color: #ffffff; }
