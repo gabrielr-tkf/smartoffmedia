@@ -16,7 +16,8 @@ Chrome Extension
 + Remove suscription - DONE
 + Abrir pestaña con status de notificaciones (activada/desactivada) - DONE
 + Status baños cuando inicializa la aplicacion (/Api/Bath/GetStatus => Return json with all bathroom state) (Preservar checked cuando se cierra el popup) -  DONE
-- Preloader mientras carga el plugin
++ Preloader mientras carga el plugin DONE
+- Indicador de la posicion en la fila.
 - Resincronizar los connection IDs
 
 Particle Firmware
