@@ -40,13 +40,13 @@ namespace Photon.Services
             }
           
         }
-        public string GetJSON()
+        public string GetJSON(string deviceId)
         {
 
-            string deviceID = "330034000d47343432313031";
+            //string deviceID = "330034000d47343432313031";
             string kind = "devices";
 
-            string uri = BasicConfiguration.BaseURL + "/" + kind + "/" + deviceID + "/"
+            string uri = BasicConfiguration.BaseURL + "/" + kind + "/" + deviceId + "/"
                  + "?" +
                 "access_token=" + BasicConfiguration.AuthorizationToken;
 

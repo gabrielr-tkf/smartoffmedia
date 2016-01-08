@@ -24,8 +24,50 @@ Particle Firmware
 - Obtener con codigo el device id en c++ (build.particle.com)
 
 
+Sitio Web
+
+ - Textos
+ 
+ 1)
+Smartoff Media
+
+Conocé el estado de los ñobas al instante.
+
+Descarga la extension para chrome
+
+2)Funcionalidades
+
+3)Como usar
+
+4)
+
+Agradecimientos a los que colaboraron
+
+Santi pe - con diseño de extension
+Barcia - con textos de sitio web
+Maxi Ramirez - Con ideas nuevas (usar SignalR e I)
+
+Realizadores(?):
+
+Gabriel Ramos
+Jonathan Machado
+Andres Gasteasoro
+
+
+
+
+ 
+ - Link a instalar extension en chrome
+ - Logo
+ - 
+
+
+
+
+
+
 /////BUGS//////
-Se pierde ID de usuario en API
++ Se pierde ID de usuario en API  --- DONE
 
 
 /////////GUIA/////////////////// 

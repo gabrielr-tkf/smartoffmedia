@@ -17,6 +17,22 @@ namespace Photon.Entities
         public DateTime LastOccupiedTime { get; set; }
         public DateTime LastFreedTime { get; set; }
 
+        public TimeSpan FreeFor
+        {
+            get
+            {
+                if (this.IsOccupied)
+                {
+                    return new TimeSpan(0);
+                }
+                else
+                {
+                    return DateTime.Now - this.LastFreedTime;
+                }
+            }
+
+        }
+
 
     }
 }

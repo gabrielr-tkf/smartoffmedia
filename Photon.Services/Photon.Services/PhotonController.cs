@@ -10,19 +10,27 @@ namespace Photon.Services
 {
     public class PhotonController
     {
-        public static Device GetDeviceStatus()
+        public static Device GetDeviceStatus(string deviceId)
         {
-            PhotonRESTService service = new PhotonRESTService();
+            try
+            {
+                PhotonRESTService service = new PhotonRESTService();
 
-            //Dictionary<string, string> additionalParameters = new Dictionary<string, string>();
-            //additionalParameters.Add("area_id", "1"); //World
-            //additionalParameters.Add("authorized", "yes"); //authorized
+                //Dictionary<string, string> additionalParameters = new Dictionary<string, string>();
+                //additionalParameters.Add("area_id", "1"); //World
+                //additionalParameters.Add("authorized", "yes"); //authorized
 
-            string json = service.GetJSON();
+                string json = service.GetJSON(deviceId);
 
-            //dynamic context = JObject.Parse(json);
-            Device device = Newtonsoft.Json.JsonConvert.DeserializeObject<Device>(json);
-            return device;
+                //dynamic context = JObject.Parse(json);
+                Device device = Newtonsoft.Json.JsonConvert.DeserializeObject<Device>(json);
+                return device;
+            }
+            catch (Exception ex)
+            {
+                return new Device(){ Connected = false};
+            }
+           
 
         }
         //Get movement YES/NO
@@ -42,7 +50,7 @@ namespace Photon.Services
             PhotonRESTService service = new PhotonRESTService();
 
 
-             service.GetJSONOAuth();
+            service.GetJSONOAuth();
 
             return "";
 

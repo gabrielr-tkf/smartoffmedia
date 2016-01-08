@@ -1,8 +1,8 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-var API_BASE_URL = "http://kkcloud.azurewebsites.net";
-// var API_BASE_URL = "http://localhost:52325/";
+//var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+ var API_BASE_URL = "http://localhost:52325/";
 
 
 
@@ -31,35 +31,66 @@ function GetBathStatus()
     //CSS classes = busy / free / uncertain
     //bath1, bath2, bath3
     //Bath 1
-    if (data.BathStatusList[0].Bathroom.IsOccupied == true) {
+	if(data.BathStatusList[0].Bathroom.PhotonDevice.Connected == true)
+	{
+		$("#bath1-error").hide();
+		$("#bath1").show();
+		
+		if (data.BathStatusList[0].Bathroom.IsOccupied == true) {
 		$("#bath1").removeClass("free");
-      $("#bath1").addClass("busy");
-    } else {
-		$("#bath1").removeClass("busy");
-      $("#bath1").addClass("free");
-    }
+		  $("#bath1").addClass("busy");
+		} else {
+			$("#bath1").removeClass("busy");
+		  $("#bath1").addClass("free");
+		}
+	}else{
+		$("#bath1-error").show();
+		$("#bath1").hide();
+	}
+	
+   
     //Bath 2
-    if (data.BathStatusList[1].Bathroom.IsOccupied == true) {
-		$("#bath2").removeClass("free");
-      $("#bath2").addClass("busy");
-    } else {
-	$("#bath2").removeClass("busy");
-      $("#bath2").addClass("free");
-    }
+	if(data.BathStatusList[1].Bathroom.PhotonDevice.Connected == true)
+	{
+		$("#bath2-error").hide();
+		$("#bath2").show();
+		
+		if (data.BathStatusList[1].Bathroom.IsOccupied == true) {
+			$("#bath2").removeClass("free");
+		  $("#bath2").addClass("busy");
+		} else {
+		$("#bath2").removeClass("busy");
+		  $("#bath2").addClass("free");
+		}
+	}else{
+		$("#bath2-error").show();
+		$("#bath2").hide();
+	}
     //Bath 3
-    if (data.BathStatusList[2].Bathroom.IsOccupied == true) {
-		$("#bath3").removeClass("free");
-      $("#bath3").addClass("busy");
-    } else {
-		$("#bath3").removeClass("busy");
-      $("#bath3").addClass("free");
-    }
+	if(data.BathStatusList[1].Bathroom.PhotonDevice.Connected == true)
+	{
+		$("#bath3-error").hide();
+		$("#bath3").show();
+		
+		if (data.BathStatusList[2].Bathroom.IsOccupied == true) {
+			$("#bath3").removeClass("free");
+		  $("#bath3").addClass("busy");
+		} else {
+			$("#bath3").removeClass("busy");
+		  $("#bath3").addClass("free");
+		}
+	}else{
+		$("#bath3-error").show();
+		$("#bath3").hide();
+	}
 	
 	$('#loader-wrapper').fadeOut();
 	$('#container').css("visibility", "");
 
   });
 }
+
+
 function GetNotificationStatus()
 {
   var userId = localStorage.Guid;
@@ -87,7 +118,8 @@ function GetNotificationStatus()
   });
 }
 
-	setInterval(function(){GetBathStatus();}, 3000);
+	//setInterval(function(){GetBathStatus();}, 3000);
+	GetBathStatus();
 	
   
    //Switch enable/disable notification

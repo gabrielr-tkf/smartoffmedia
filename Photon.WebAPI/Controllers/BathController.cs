@@ -20,10 +20,21 @@ namespace Photon.WebAPI.Controllers
         [System.Web.Http.AcceptVerbs("GET")]
         public BathGetStatusResponse GetStatus()
         {
+            List<BathroomLine> bathLines =  CacheManager.Get(Constants.BathLines) as List<BathroomLine>;
+
+            foreach (var bathLine in bathLines)
+            {
+                //Update "connected" status of device
+                string deviceId = bathLine.Bathroom.PhotonDevice.ID;
+                bathLine.Bathroom.PhotonDevice.Connected = Photon.Services.PhotonController.GetDeviceStatus(deviceId).Connected;
+            }
+
             BathGetStatusResponse response = new BathGetStatusResponse();
             response.Message = "Success";
             response.Status = "200";
-            response.BathStatusList = CacheManager.Get(Constants.BathLines) as List<BathroomLine>;
+            response.BathStatusList = bathLines;
+
+           
 
             return response;
         }

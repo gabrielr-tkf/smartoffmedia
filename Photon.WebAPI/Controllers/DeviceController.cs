@@ -46,16 +46,46 @@ namespace Photon.WebAPI.Controllers
             //Services.Logger.LogDeviceReport(deviceId, sensorType, sensorValue);
         }
 
+        //Get the device status by bathId
+        [System.Web.Http.AcceptVerbs("GET")]
+        public DeviceGetResponse GetByBathId(int bathId)
+        {
+            DeviceGetResponse response = new DeviceGetResponse();
 
+            if (CacheManager.ValidatExistence(Constants.BathLines))
+            {
+                //Find photon id used in the bathroom
+                List<BathroomLine> bathLines = CacheManager.Get(Constants.BathLines) as List<BathroomLine>;
+                string deviceId = bathLines.Where(a => a.Bathroom.ID == bathId).First().Bathroom.PhotonDevice.ID;
 
+                try
+                {
+                    response.Device = Photon.Services.PhotonController.GetDeviceStatus(deviceId);
+                    //Everything OK
+                    response.Status = "200";
+                    response.Message = "Success";
+                }
+                catch (Exception ex)
+                {
+                    response.Status = "500";
+                    response.Message = "Internal Server Error";
+                }
+            }
+            else
+            {
+                response.Status = "204";
+                response.Message = "No content";
+            }
+            return response;
+        }
 
         [System.Web.Http.AcceptVerbs("GET")]
-        public DeviceGetResponse Get()
+        public DeviceGetResponse Get(string deviceId)
         {
             DeviceGetResponse response = new DeviceGetResponse();
             try
             {
-                response.Device = Photon.Services.PhotonController.GetDeviceStatus();
+                response.Device = Photon.Services.PhotonController.GetDeviceStatus(deviceId);
                 //Everything OK
                 response.Status = "200";
                 response.Message = "Success";

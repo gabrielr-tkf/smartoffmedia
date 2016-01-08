@@ -30,7 +30,8 @@ namespace Photon.WebAPI.Classes
 
                 for (int i = 0; i < bathroomLines.Count; i++)
                 {
-                    bathroom = bathroomLines[i].Bathroom;
+                    BathroomLine bathroomLine = bathroomLines[i];
+                    bathroom = bathroomLine.Bathroom;
                     lastFreedTime = bathroom.LastFreedTime;
                     span = DateTime.Now - lastFreedTime;
                     ms = (int)span.TotalMilliseconds;
@@ -42,10 +43,14 @@ namespace Photon.WebAPI.Classes
 
                     if (ms > 60000 && !(bathroom.IsOccupied))
                     {
+                        if (bathroomLine.UsersLine.Count != 0)
+                        {
+                            bathroom.LastFreedTime = DateTime.Now;
+                        }
+                        
                         notificationController.AdvanceLine(bathroom.ID, false);
                         notificationController.Publish(bathroom);
 
-                        bathroom.LastFreedTime = DateTime.Now;
                     }
 
                 }

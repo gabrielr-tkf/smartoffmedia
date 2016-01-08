@@ -41,6 +41,7 @@ namespace Photon.WebAPI
             Bathroom wcWoman = new Bathroom()
             {
                 ID = 2,
+                PhotonDevice = new Device() { ID = "UnknownBath2", ProximityValue = 100 },
                 IsOccupied = false,
                 Name = "wcWoman",
                 LastFreedTime = DateTime.Now,
@@ -49,6 +50,7 @@ namespace Photon.WebAPI
             Bathroom wcMix = new Bathroom()
             {
                 ID = 3,
+                PhotonDevice = new Device() { ID = "UnknownBath3", ProximityValue = 100 },
                 IsOccupied = false,
                 Name = "wcMix",
                 LastFreedTime = DateTime.Now,
