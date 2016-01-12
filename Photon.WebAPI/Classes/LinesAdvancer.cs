@@ -94,6 +94,10 @@ namespace Photon.WebAPI.Classes
                         if (lastOccupiedTime > lastTimeFirstChanged)
                         {
                             notificationController.AdvanceLine(i + 1, true);
+                            if (!bathroom.IsOccupied)
+                            {
+                                notificationController.Publish(bathroom);
+                            }
                         }
                     }
                 }
