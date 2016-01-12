@@ -92,5 +92,39 @@ namespace Photon.DataAccess
         {
 
         }
+
+        public static void LogError(string controller, string method, Exception exception, string clientIp, string url)
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["kkcloudFreeDB"].ConnectionString;
+            LoggingCN = new SqlConnection(connectionString);
+
+            try
+            {
+                SqlCommand command = LoggingCN.CreateCommand();
+
+                if (LoggingCN.State != ConnectionState.Open)
+                    LoggingCN.Open();
+                command.Parameters.AddWithValue("@DateTime", DateTime.Now);
+                command.Parameters.AddWithValue("@Controller",  controller );
+                command.Parameters.AddWithValue("@Method", method);
+                command.Parameters.AddWithValue("@Exception", exception.Message);
+                 command.Parameters.AddWithValue("@ClientIP", clientIp);
+                command.Parameters.AddWithValue("@Url", url);
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "SaveErrorLog";
+                command.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (LoggingCN != null)
+                    if (LoggingCN.State != ConnectionState.Closed)
+                        LoggingCN.Close();
+            }
+        }
+
     }
 }

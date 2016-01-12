@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.WebAPI.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -22,6 +23,9 @@ namespace Photon.WebAPI
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { controller = "Device", action = "Get",  id = RouteParameter.Optional }
             );
+
+            config.Filters.Add(new ExceptionHandlerHelper());
+
             //Return Json as default browser request.
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 

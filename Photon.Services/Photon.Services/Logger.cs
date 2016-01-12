@@ -25,5 +25,14 @@ namespace Photon.Services
                 Photon.DataAccess.Logger.LogDeviceReport(deviceId, sensorId, value);
             }).Start();
         }
+        public static void LogError(string controller, string method, Exception exception, string clientIp, string url)
+        {
+        
+    
+            //new Thread(() =>
+            //{
+                Photon.DataAccess.Logger.LogError(controller, method, exception,clientIp, url);
+            //}).Start();
+        }
     }
 }
