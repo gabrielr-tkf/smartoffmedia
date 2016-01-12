@@ -17,6 +17,7 @@ namespace Photon.Entities
         public Bathroom Bathroom { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public string AudioFile { get; set; }
         public NotificationType Type { get; set; }
 
         

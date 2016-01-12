@@ -10,6 +10,7 @@ namespace Photon.WebAPI.Entities
       
             public string Status { get; set; }
             public string Message { get; set; }
+            public string AudioFile { get; set; }
        
     }
 }
