@@ -86,7 +86,7 @@ namespace Photon.WebAPI.Classes
                     // After 45 seconds since the last occupancy time, if the user didn't indicate that
                     // he/she was not the one who occupied the bath, it's assumed that he/she was the one,
                     // so we remove him/her from all the lines
-                    if (ms > 45000 && bathroom.IsOccupied && (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[i])
+                    if (ms > 45000 && (CacheManager.Get(Constants.OccupiedByFirstInLine) as List<bool>)[i])
                     {
                         // If the line had already been advanced, don't do it again. We check this by
                         // comparing the last time the bath was occupied and the last time we advanced
@@ -94,6 +94,10 @@ namespace Photon.WebAPI.Classes
                         if (lastOccupiedTime > lastTimeFirstChanged)
                         {
                             notificationController.AdvanceLine(i + 1, true);
+                            if (!bathroom.IsOccupied)
+                            {
+                                notificationController.Publish(bathroom);
+                            }
                         }
                     }
                 }
