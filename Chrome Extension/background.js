@@ -1,8 +1,8 @@
-//var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
-var HUB_BASE_URL = "http://localhost:52325/signalr";
+var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
+// var HUB_BASE_URL = "http://localhost:52325/signalr";
 
-//var API_BASE_URL = "http://kkcloud.azurewebsites.net";
-var API_BASE_URL = "http://localhost:52325";
+var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+// var API_BASE_URL = "http://localhost:52325";
   
  var localIP = "not assigned";
   
@@ -38,7 +38,6 @@ var API_BASE_URL = "http://localhost:52325";
    }
    chrome.notifications.create("", opt, function() {});
    
-   alert(notification.Audiofile);
    if(notification.AudioFile != ""){
 		var audio = new Audio(notification.AudioFile);
 		audio.play();
