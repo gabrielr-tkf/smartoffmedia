@@ -22,5 +22,10 @@ namespace Photon.WebAPI.Utilities
         public const string ProximityThreshold = "ProximityThreshold";
 
         public const string UsersList = "UsersList";
+
+        public const string KnockSoundFile = "knock.wav";
+        public const string ToiletFlushSoundFile = "toilet_flush.wav";
+        public const string DoorShutSoundFile = "door_shut.wav";
+        
     }
 }

@@ -1,8 +1,8 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-var API_BASE_URL = "http://kkcloud.azurewebsites.net";
-//var API_BASE_URL = "http://localhost:52325/";
+//var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+var API_BASE_URL = "http://localhost:52325/";
 
 
 
@@ -163,17 +163,17 @@ function GetNotificationStatus()
 		  $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=1&userId=" + userId, function(data) {
 			//Success
 			if (data.Status == "200") {
-			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  wasCallCallback1 = false;
 			} else if (data.Status == "304") {
 			  wasCallCallback1 = true;
 			  wcMensCheckbox.checked = !wcMensCheckbox.checked;
 			  
 			  swcMensCheckbox.handleOnchange(false);
-			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			} else {
 			  //Error!
-			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
 			}
 
 		  });
@@ -184,16 +184,16 @@ function GetNotificationStatus()
 
 			  //Success
 			  if (data.Status == "200") {
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  } else if (data.Status == "304") {
 				//Keep button green and show error message
 				wcMensCheckbox.checked = true;
 				wasCallCallback1 = true;				
 				swcMensCheckbox.handleOnchange(true);
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  } else {
 				//Error
-				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
 			  }
 			});
 		  }
@@ -217,16 +217,16 @@ function GetNotificationStatus()
 		  $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=2&userId=" + userId, function(data) {
 			//Subscription Success
 			if (data.Status == "200") {
-			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  wasCallCallback2 = false;
 			} else if (data.Status == "304") {
 			  wasCallCallback2 = true;
 			  wcWomensCheckbox.checked = !wcWomensCheckbox.checked;
 			  swcWomensCheckbox.handleOnchange(false);
-			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			} else {
 			  //Subscription Error!
-			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
 			}
 		  });
 		} else {
@@ -236,16 +236,16 @@ function GetNotificationStatus()
 			$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=2&userId=" + userId + "&sendMessage=false", function(data) {
 			  //Success
 			  if (data.Status == "200") {
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  } else if (data.Status == "304") {
 				//Keep button green and show error message
 				swcWomensCheckbox.checked = true;
 				wasCallCallback2 = true;				
 				swcWomensCheckbox.handleOnchange(true);
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  } else {
 				//Error
-				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
 			  }
 
 			});
@@ -269,16 +269,16 @@ function GetNotificationStatus()
 		  $.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=3&userId=" + userId, function(data) {
 			//Success
 			if (data.Status == "200") {
-			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  wasCallCallback3 = false;
 			} else if (data.Status == "304") {
 			  wasCallCallback3 = true;
 			  wcMixedCheckbox.checked = !wcMixedCheckbox.checked;
 			  swcMixedCheckbox.handleOnchange(false);
-			  ShowNotification(data.NotificationTitle, data.NotificationMessage);
+			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			} else {
 			  //Error!
-			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+			  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
 			}
 
 		  });
@@ -289,7 +289,7 @@ function GetNotificationStatus()
 			$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=3&userId=" + userId + "&sendMessage=false", function(data) {
 			  //Success
 			  if (data.Status == "200") {
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  
 			  
 			  } else if (data.Status == "304") {
@@ -298,11 +298,11 @@ function GetNotificationStatus()
 				swcMixedCheckbox.checked = true;
 				wasCallCallback3 = true;	
 				swcMixedCheckbox.handleOnchange(true);
-				ShowNotification(data.NotificationTitle, data.NotificationMessage);
+				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 
 			  } else {
 				//Error
-				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.");
+				ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
 			  }
 			});
 		  }
@@ -314,8 +314,9 @@ function GetNotificationStatus()
   });
 
 });
+
 //Show system notification => FRONTEND
-function ShowNotification(title, message) {
+function ShowNotification(title, message, audioFile) {
   var opt = {
     type: "basic",
     title: title,
@@ -323,6 +324,11 @@ function ShowNotification(title, message) {
     iconUrl: "images/logo/logo48.png"
   }
   chrome.notifications.create("", opt, function() {});
+  
+  if(audioFile != ""){
+	var audio = new Audio(audioFile);
+	audio.play();
+  }
 }
 
 //Communication with background.js

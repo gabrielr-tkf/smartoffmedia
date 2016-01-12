@@ -62,6 +62,7 @@ namespace Photon.WebAPI.Controllers
                     response.Message = "Success";
                     response.Status = "200";
                     response.NotificationMessage = "Tenés el número " + usersInLine.Count + ", te avisamos cuando el baño " + bathId + " esté libre ;-)";
+                    response.AudioFile = Constants.KnockSoundFile;
 
                     if (usersInLine.Count == 1)
                     {
@@ -74,6 +75,7 @@ namespace Photon.WebAPI.Controllers
                 response.Message = "Success";
                 response.Status = "304"; //Not Modified.
                 response.NotificationMessage = "El baño " + bathId +  " está libre y no hay nadie esperando, va pa i";
+                response.AudioFile = Constants.KnockSoundFile;
             }
 
             // TODO: These 2 lines are only for debugging purposes. They have to be removed
@@ -174,7 +176,8 @@ namespace Photon.WebAPI.Controllers
                                 User = user,
                                 Bathroom = bathroom,
                                 Title = "¡Hey!",
-                                Message = "¡El baño " + bathroom.ID.ToString() + " está libre y es tu turno!"
+                                Message = "¡El baño " + bathroom.ID.ToString() + " está libre y es tu turno!",
+                                AudioFile = Constants.ToiletFlushSoundFile
                             };
 
                             PhotonHub.SendMessage(notification);
@@ -194,7 +197,8 @@ namespace Photon.WebAPI.Controllers
                                 User = user,
                                 Bathroom = bathroom,
                                 Title = "¡Hey!",
-                                Message = "El baño " + bathroom.ID.ToString() + " está libre y sos el " + (i + 1) + "º en la fila"
+                                Message = "El baño " + bathroom.ID.ToString() + " está libre y sos el " + (i + 1) + "º en la fila",
+                                AudioFile = Constants.ToiletFlushSoundFile
                             };
                             PhotonHub.SendMessage(notification);
                         }
@@ -211,6 +215,7 @@ namespace Photon.WebAPI.Controllers
                             Bathroom = bathroom,
                             Message = "Se ocupó el baño " + bathroom.ID + ", ¿fuiste vos?",
                             Title = "Baño ocupado",
+                            AudioFile = Constants.DoorShutSoundFile,
                             User = usersInLine.First(),
                             Type = NotificationType.WITH_BUTTON
                         });
