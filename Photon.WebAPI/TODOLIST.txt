@@ -18,7 +18,7 @@ Chrome Extension
 + Status baños cuando inicializa la aplicacion (/Api/Bath/GetStatus => Return json with all bathroom state) (Preservar checked cuando se cierra el popup) -  DONE
 + Preloader mientras carga el plugin DONE
 - Indicador de la posicion en la fila.
-- Resincronizar los connection IDs
+- Resincronizar los connection IDs (reload/CHECK)
 
 Particle Firmware
 

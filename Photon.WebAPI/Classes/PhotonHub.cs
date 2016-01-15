@@ -78,6 +78,9 @@ namespace Photon.WebAPI.Classes
             //});
             //Services.User.SaveUserConnection(user);
 
+          
+            this.registerConId();
+          
             return base.OnConnected();
         }
 
@@ -141,14 +144,24 @@ namespace Photon.WebAPI.Classes
                 //db.Users.Add(user);
             }
 
-            user.Connections.Add(new Connection
+            if (user.Connections.Count > 0)
             {
-                ConnectionID = Context.ConnectionId,
-                UserAgent = Context.Request.Headers["User-Agent"],
-                Connected = true,
-                IsNew = true
-            });
-            Services.User.SaveUserConnection(user);
+                int connectionCount = user.Connections.Where(a => a.ConnectionID == Context.ConnectionId).Count();
+                if (connectionCount == 0)
+                {
+                    //New connection
+                    user.Connections.Add(new Connection
+                    {
+                        ConnectionID = Context.ConnectionId,
+                        UserAgent = Context.Request.Headers["User-Agent"],
+                        Connected = true,
+                        IsNew = true
+                    });
+                    Services.User.SaveUserConnection(user);
+                }
+            }
+
+          
 
             return Context.ConnectionId;
         }
