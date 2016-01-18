@@ -8,13 +8,26 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
   
   //Method A) Using Long Lived Connections
  var frontEndProxy;
+ var chatGlobal;
  chrome.extension.onConnect.addListener(function(port) {
 
    frontEndProxy = port;
    //EXAMPLE
-   //port.onMessage.addListener(function(msg) {
-   // port.postMessage("Hi Popup.js");
-   //});
+   port.onMessage.addListener(function(msg) {
+	   console.log("ValidateConnection =  " + msg);
+	   if(msg == "ValidateConnection")
+	   {
+		   
+		     console.log("if(msg == 'ValidateConnection')  ");
+			 
+		   chatGlobal.server.registerConId().done(function(result) {
+		   // //Save Connection ID to Chrome Local Storage
+		   // localStorage.Guid = result;
+			console.log("registerConId done");
+		  });
+	   }
+		
+   });
  });
 
  // Variables used to show 2 times the keepFirstPosition notification (the max configurable duration is 25 secs)
@@ -153,6 +166,7 @@ $(function() {
    
 		// Declare a proxy to reference the hub.
 		var chat = $.connection.photonHub;
+		chatGlobal = chat;
 		
 		$.connection.hub.qs = 'localIP=' + localIP;
 		localStorage.Guid = localIP;
@@ -189,13 +203,10 @@ $(function() {
 
 	   // Start the connection.
 	    $.connection.hub.start().done(function() {
-		 // //Register connection ID => User ID
-		 
-		  chat.server.registerConId().done(function(result) {
-		   // //Save Connection ID to Chrome Local Storage
-		   // localStorage.Guid = result;
-		  });;
+		 //Register connection ID => User ID
+		  chat.server.registerConId().done(function(result) {});
 	   });
+	   
    }, 500);
 
  });

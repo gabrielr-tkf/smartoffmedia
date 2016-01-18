@@ -335,6 +335,9 @@ function ShowNotification(title, message, audioFile) {
 var port = chrome.extension.connect({
   name: "Sample Communication"
 });
+
+port.postMessage("ValidateConnection");
+
 port.onMessage.addListener(function(data) {
   if (data.type == 200) {
     if (!data.IsOccupied) {
