@@ -143,22 +143,31 @@ namespace Photon.WebAPI.Classes
                 };
                 //db.Users.Add(user);
             }
-
+            bool addConnection = false;
             if (user.Connections.Count > 0)
             {
-                int connectionCount = user.Connections.Where(a => a.ConnectionID == Context.ConnectionId).Count();
+                int connectionCount = user.Connections.Where(a => a.ConnectionID == Context.ConnectionId && a.Connected == true).Count();
                 if (connectionCount == 0)
                 {
                     //New connection
-                    user.Connections.Add(new Connection
-                    {
-                        ConnectionID = Context.ConnectionId,
-                        UserAgent = Context.Request.Headers["User-Agent"],
-                        Connected = true,
-                        IsNew = true
-                    });
-                    Services.User.SaveUserConnection(user);
+                    addConnection = true;
                 }
+            }else
+            {
+                //New connection => 1st Connection
+                addConnection = true;
+            }
+
+            if (addConnection)
+            {
+                user.Connections.Add(new Connection
+                {
+                    ConnectionID = Context.ConnectionId,
+                    UserAgent = Context.Request.Headers["User-Agent"],
+                    Connected = true,
+                    IsNew = true
+                });
+                Services.User.SaveUserConnection(user);
             }
 
           
