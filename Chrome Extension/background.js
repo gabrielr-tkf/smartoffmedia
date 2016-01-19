@@ -169,7 +169,6 @@ function generateUUID() {
 $(function() {
 	
 	// getLocalIP();
-	var randomNumber = generateUUID();
 	
 	// setTimeout(function(){
 		$.connection.hub.url = HUB_BASE_URL;
@@ -178,8 +177,16 @@ $(function() {
 		var chat = $.connection.photonHub;
 		chatGlobal = chat;
 		
-		$.connection.hub.qs = 'localIP=' + randomNumber;
-		localStorage.Guid = localIP;
+		if(localStorage.Guid == undefined){
+			var randomNumber = generateUUID();
+			$.connection.hub.qs = 'localIP=' + randomNumber;
+			localStorage.Guid = randomNumber;
+		}
+		else{
+			$.connection.hub.qs = 'localIP=' + localStorage.Guid;
+		}
+		
+		
 	   // Create a function that the hub can call to broadcast messages.
 	   chat.client.sendMessage = function(notification) {
 		 // Html encode display name and message.
