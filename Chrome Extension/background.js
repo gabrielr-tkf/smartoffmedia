@@ -223,6 +223,16 @@ $(function() {
 		 //Register connection ID => User ID
 		  chat.server.registerConId().done(function(result) {});
 	   });
+	   	   
+	    //When disconnected => connect again!
+	    $.connection.hub.disconnected(function() {
+		   setTimeout(function() {
+			   $.connection.hub.start().done(function() {
+				//Register connection ID => User ID
+				chat.server.registerConId().done(function(result) {});
+			});
+		   }, 5000); // Restart connection after 5 seconds.
+		});
 	   
    // }, 500);
 
