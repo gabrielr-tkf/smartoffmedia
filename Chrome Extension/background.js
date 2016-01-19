@@ -177,7 +177,7 @@ $(function() {
 		var chat = $.connection.photonHub;
 		chatGlobal = chat;
 		
-		if(localStorage.Guid == undefined){
+		if(localStorage.Guid == undefined || localStorage.Guid.length != 36){
 			var randomNumber = generateUUID();
 			$.connection.hub.qs = 'localIP=' + randomNumber;
 			localStorage.Guid = randomNumber;
