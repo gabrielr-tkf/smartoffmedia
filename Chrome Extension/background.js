@@ -4,7 +4,7 @@ var HUB_BASE_URL = "http://kkcloud.azurewebsites.net/signalr";
 var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 // var API_BASE_URL = "http://localhost:52325";
   
- var localIP = "not assigned";
+ var localIP = "not assigned"; 
   
   //Method A) Using Long Lived Connections
  var frontEndProxy;
@@ -25,8 +25,7 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 		   // localStorage.Guid = result;
 			console.log("registerConId done");
 		  });
-	   }
-		
+	   }		
    });
  });
 
@@ -157,18 +156,29 @@ function getLocalIP(){
 	})();
 }
 
+function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+};
+
 $(function() {
 	
-	getLocalIP();
+	// getLocalIP();
+	var randomNumber = generateUUID();
 	
-	setTimeout(function(){
+	// setTimeout(function(){
 		$.connection.hub.url = HUB_BASE_URL;
    
 		// Declare a proxy to reference the hub.
 		var chat = $.connection.photonHub;
 		chatGlobal = chat;
 		
-		$.connection.hub.qs = 'localIP=' + localIP;
+		$.connection.hub.qs = 'localIP=' + randomNumber;
 		localStorage.Guid = localIP;
 	   // Create a function that the hub can call to broadcast messages.
 	   chat.client.sendMessage = function(notification) {
@@ -207,6 +217,6 @@ $(function() {
 		  chat.server.registerConId().done(function(result) {});
 	   });
 	   
-   }, 500);
+   // }, 500);
 
  });
