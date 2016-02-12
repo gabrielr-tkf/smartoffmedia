@@ -26,7 +26,7 @@ html, body { height: 100%; }
 
 html, body { font-size: 100%; }
 
-body { background: #fff; color: #222; cursor: auto; font-family: "Roboto", sans-serif; font-style: normal; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; position: relative; }
+body { background: #fff; color: #222; cursor: auto; font-family: "Droid Sans", sans-serif; font-style: normal; font-weight: normal; line-height: 1.5; margin: 0; padding: 0; position: relative; }
 
 a:hover { cursor: pointer; }
 
@@ -356,7 +356,7 @@ p.lead { font-size: 1.21875rem; line-height: 1.6; }
 p aside { font-size: 0.875rem; font-style: italic; line-height: 1.35; }
 
 /* Default header styles */
-h1, h2, h3, h4, h5, h6 { color: #222222; font-family: "Roboto", sans-serif; font-style: normal; font-weight: normal; line-height: 1.4; margin-bottom: 0.5rem; margin-top: 0.2rem; text-rendering: optimizeLegibility; }
+h1, h2, h3, h4, h5, h6 { color: #222222; font-family: "Droid Sans", sans-serif; font-style: normal; font-weight: normal; line-height: 1.4; margin-bottom: 0.5rem; margin-top: 0.2rem; text-rendering: optimizeLegibility; }
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small { color: #6f6f6f; font-size: 60%; line-height: 0; }
 
 h1 { font-size: 2.125rem; }
@@ -476,29 +476,181 @@ The `sprites` mixin generates identical output to the CSS template but can be ov
 
 @include sprites($spritesheet-sprites);
 */
-.free { background-image: url("/images/pattern/free.png"); padding-bottom: .5em}
 
-.busy { background-image: url("/images/pattern/busy.png"); padding-bottom: .5em}
-
-.uncertain { background-image: url("/images/pattern/uncertain.png"); padding-bottom: .5em}
-
-body { color: #ffffff; }
-body h4 { margin-bottom: 0.2rem; }
-body .row { width: 18em; }
-body .row .icon { float: left; margin: .95em .5em 0; }
-body .row .icon .radius { padding: .5em; border: 2px solid #ffffff; border-radius: 50%; background-color: #080808; }
-body .row .icon i { display: block; }
-body .row .notification-area { margin: 0 1em .35em 2.25em; padding-top: .125em; border-top-right-radius: 5px; border-bottom-right-radius: 5px; height: 2.05em; border: 2px solid #ffffff; background-color: rgba(255, 255, 255, 0.8); }
-body .row .notification-area .notification { float: left; }
-body .row .notification-area .error { color: #000000; font-size: 12px; line-height: 25px; }
-body .row .counter { color: #080808; float: right; font-size: 1.5rem; line-height: 1.5rem; margin-right: .5em; }
-
+body { color: #ffffff; min-width: 320px; }
+body h3 {
+	margin: .8em 0;
+	font-size: 17px;
+}
+body .icon { background-color: rgba(0, 45, 124, .1); width: 30%; float: left; padding: 10% 0; position: relative;}
+body .icon img,
+body .icon svg {
+	margin: 0 auto;
+	display: block;
+}
+body .icon svg {
+	width: 40px;
+    height: 90px;
+}
+body .icon sup {
+	position: absolute;
+	top: 5%;
+	right: 5%;
+}
+body .notification-area {
+	float: left;
+	width: 70%;
+	text-align: center;
+	min-height: 125px;
+}
+body .notification-area .content .notification span{
+	border-radius: 50%;
+	border: 2px solid #FFF;
+	padding: 3% 5.5%;
+}
+body .notification-area .content .waves-radius {
+	border-radius: 22px;
+	width: 70%;
+}
+body .notification-area .content input,
+body .notification-area .content input:hover {
+	background: rgba(0, 45, 124, .2);
+	border-radius: 22px;
+}
+body .notification-area .content a {
+	background: rgba(29, 46, 121, .2);
+	border-radius: 22px;
+}
 .color-white { color: #ffffff; }
+.row {
+	background: #00aced;
+}
+.error {
+	padding: 10% 0;
+}
+ .panel {
+    float: left;
+    width: 100%;
+    height: 128px;
+    position: relative;
 
-.men { background-image: url(../images/sprite/sprite.png); background-position: 0px 0px; width: 36px; height: 36px; }
+    -webkit-perspective: 600px;
+            perspective: 600px;
+}
+/* -- make sure to declare a default for every property that you want animated -- */
+/* -- general styles, including Y axis rotation -- */
+.panel .front {
+	float: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 900;
+	width: inherit;
+	height: inherit;
+	background: #00aced;
+	text-align: center;
 
-.mixed { background-image: url(../images/sprite/sprite.png); background-position: -36px 0px; width: 36px; height: 36px; }
+	-webkit-transform: rotateX(0) rotateY(0);
+		transform: rotateX(0) rotateY(0);
 
-.women { background-image: url(../images/sprite/sprite.png); background-position: 0px -36px; width: 36px; height: 36px; }
+	-webkit-transform-style: preserve-3d;
+		transform-style: preserve-3d;
 
-.notification { background-image: url(../images/sprite/sprite.png); background-position: -36px -36px; width: 28px; height: 28px; }
+	-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+
+	/* -- transition is the magic sauce for animation -- */
+	-webkit-transition: all .4s ease-in-out;
+		transition: all .4s ease-in-out;
+}
+.panel .front h4 {
+	margin-top: 20px;
+	margin-bottom: 15px;
+}
+.panel.flip .front {
+	z-index: 900;
+	background: #00aced;
+
+	-webkit-transform: rotateY(179deg);
+		transform: rotateY(179deg);
+}
+
+.panel .back {
+	float: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 800;
+	width: inherit;
+	height: inherit;
+	background: #00aced;
+
+	-webkit-transform: rotateY(-179deg);
+		transform: rotateY(-179deg);
+
+	-webkit-transform-style: preserve-3d;
+		transform-style: preserve-3d;
+
+	-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+
+	/* -- transition is the magic sauce for animation -- */
+	-webkit-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+
+.panel.flip .back {
+	z-index: 1000;
+	background: #00aced;
+
+	-webkit-transform: rotateX(0) rotateY(0);
+	transform: rotateX(0) rotateY(0);
+
+}
+
+.panel .back h4 {
+	margin-top: 20px;
+}
+
+.free {
+	border-top: 5px solid #33bdf1;
+	background: #00aced;
+}
+.free .panel .front,
+.free .panel .back {
+	background: #00aced;
+}
+.reserved, 
+.busy, 
+.reserved-busy {
+	border-top: 5px solid #ce617d;
+	background: #d33f62;
+}
+.reserved .panel .front,
+.reserved .panel .back,
+.busy .panel .front,
+.busy .panel .back,
+.reserved-busy .panel .front,
+.reserved-busy .panel .back {
+	background: #d33f62;
+}
+body .notification-area .content .flip .btn {
+	margin-top: 12px;
+}
+.your-turn {
+	border-top: 5px solid #52ddb8;
+	background: #27d5a6;
+}
+.your-turn .panel .front,
+.your-turn .panel .back {
+	background: #27d5a6;
+}
+.uncertain {
+	border-top: 5px solid #b5b5b5;
+	background: #a2a2a2;
+}
+.uncertain .panel .front,
+.uncertain .panel .back {
+	background: #a2a2a2;
+}
+

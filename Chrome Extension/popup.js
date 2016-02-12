@@ -21,9 +21,7 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
  var executeChangeBath2 = true;
  var executeChangeBath3 = true;
  
-$(function() {
-
-function GetBathStatus()
+ function GetBathStatus()
 {
 	//Get Status of all bathrooms on Load
   $.get(API_BASE_URL + "/Api/Bath/GetStatus", function(data) {
@@ -90,12 +88,32 @@ function GetBathStatus()
 		$("#bath3").addClass('uncertain');
 	}
 	
-	$('#loader-wrapper').fadeOut();
+	var svg = new Walkway({
+	  selector: '#boy',
+	  duration: 500,
+	  easing: 'linear'
+	});
+	var svg2 = new Walkway({
+	  selector: '#girl',
+	  duration: 500,
+	  easing: 'linear'
+	});
+	var svg3 = new Walkway({
+	  selector: '#boy2',
+	  duration: 500,
+	  easing: 'linear'
+	});
+		
+	$('#loader-wrapper').fadeOut(function() {
+		svg.draw();
+		svg2.draw();
+		svg3.draw();
+	});
 	$('#container').css("visibility", "");
 
+	
   });
 }
-
 
 function GetNotificationStatus()
 {
@@ -124,8 +142,32 @@ function GetNotificationStatus()
   });
 }
 
-	setInterval(function(){GetBathStatus();}, 3000);
-	//GetBathStatus();
+$(function() {
+
+	$('.panel .btn').click(function(e){
+		
+		e.preventDefault();  
+		var panel = $(this).closest('.panel');
+		var flip = panel.hasClass('flip');
+		setTimeout(function(){
+			if(!flip) {
+				console.log(true);
+				panel.addClass('flip');
+			}else {
+				console.log(false);
+				panel.removeClass('flip');
+			}
+		}, 300);
+		
+
+	});
+	
+	Waves.init();
+    Waves.attach('.float-buttons', ['waves-button', 'waves-radius', 'waves-float']);
+	
+
+	//setInterval(function(){GetBathStatus();}, 3000);
+	GetBathStatus();
 	
   
    //Switch enable/disable notification

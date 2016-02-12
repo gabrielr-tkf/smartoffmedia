@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>WC Takeoffmedia</title>
-  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="bower_components/switchery/dist/switchery.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="css/waves.min.css" />
   <link rel="stylesheet" href="css/styles.css">
   <!--Script references. -->
   <!--Reference the jQuery library. -->
@@ -126,78 +126,181 @@
 
 
 <div id="container" style="visibility:hidden;" >
-
   <div class="row">
-    <div id="bath1" class=" clearfix">
+    <div class="small-12 columns">
+		<h3 class="text-center color-white">
+			Selecciona tu baño preferido
+		</h3>
+	</div>
+  </div>
+  <div class="row">
+    <div id="bath1" class="clearfix">
       <div class="icon">
-        <div class="radius">
-          <i class="men"></i>
+        <div>
+			<sup>1</sup>
+			<svg version="1.1" id="boy" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			  width="36px" height="66px" viewBox="0 0 36 66" style="enable-background:new 0 0 36 66;" xml:space="preserve">
+			<line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" x1="18" y1="27" x2="18" y2="66"/>
+			<path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M9,37v-9.01c0-5.072,3.928-9.184,9-9.184l0,0
+			 c5.072,0,9,4.112,9,9.184V37"/>
+			<rect x="4" y="14" style="fill:none;" width="28" height="23"/>
+			<g>
+			 <path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M18.258,13.449c-2.536,0-4.592-2.056-4.592-4.592
+			  c0-2.536,2.056-4.592,4.592-4.592"/>
+			 <path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M18.258,13.449c2.536,0,4.592-2.056,4.592-4.592
+			  c0-2.536-2.056-4.592-4.592-4.592"/>
+			</g>
+			</svg>
         </div>
       </div>
-      <h4 class="color-white">WC Hombres</h4>
       <div class="notification-area clearfix">
-		<div class="notificationRow">
-			<i class="notification"></i>
-			<input type="checkbox" id="wcMensCheckbox" class="js-switch" />
-			<div class="counter">
-			  <span class="countdown"></span>
+		<div class="content">
+			<div class="notificationRow">
+				<!--<h4 class="color-white">Libre</h4>
+				<input type="button" class="btn float-buttons" value="Reservar" />
+				<div class="notification">
+					Tenés el N<sup>º</sup>
+					<span>2</span>
+					<input type="button" class="btn float-buttons" value="Cancelar" />
+				</div>
+				-->
+				<div class="panel">
+				  <div class="front">
+					<h4 class="color-white">Libre</h4>
+					<input type="button" class="btn float-buttons" value="Reservar" />
+				  </div>
+				  <div class="back" id="contact">
+					<h4 class="color-white">Reservado</h4>
+					<div class="notification">
+						Tenés el N<sup>º</sup>
+						<span>2</span>
+						<input type="button" class="btn float-buttons" value="Cancelar" />
+					</div>
+				  </div>
+				</div>	
 			</div>
-		</div>
-		<div id="bath1-error" class="error" style="display:none;">
-			<div>Algo no funciona :( <a href="#">Reportar</a></div>
+			
+			<div id="bath1-error" class="error" style="display:none;">
+				<h4 class="color-white">Error</h4>
+				<a class="btn float-buttons" href="#">Reportar</a>
+			</div>
 		</div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div id="bath2" class=" clearfix">
+    <div id="bath2" class="clearfix">
       <div class="icon">
-        <div class="radius">
-          <i class="women"></i>
+        <div>
+			<sup>2</sup>
+			<svg version="1.1" id="girl" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			  width="36px" height="66px" viewBox="0 0 36 66" style="enable-background:new 0 0 36 66;" xml:space="preserve">
+			<line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" x1="3" y1="16" x2="33" y2="16"/>
+			<line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" x1="18" y1="43" x2="18" y2="66"/>
+			<g>
+			 <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" points="18.001,15.842 25.475,30.564 32.948,44 
+			  18,44  "/>
+			 <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" points="18,44 3.059,44 10.531,30.282 
+			  18.001,16.018  "/>
+			</g>
+			<g>
+			 <path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M18.258,13.449c-2.536,0-4.592-2.056-4.592-4.592
+			  c0-2.536,2.056-4.592,4.592-4.592"/>
+			 <path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M18.258,13.449c2.536,0,4.592-2.056,4.592-4.592
+			  c0-2.536-2.056-4.592-4.592-4.592"/>
+			</g>
+			</svg>
         </div>
       </div>
-      <h4 class="color-white">WC Mujeres</h4>
       <div class="notification-area clearfix">
-		<div class="notificationRow">
-			<i class="notification"></i>
-			<input type="checkbox" id="wcWomensCheckbox" class="js-switch" />
-			<div class="counter">
-			  <span class="countdown"></span>
+		<div class="content">
+			<div class="notificationRow">
+				<div class="panel">
+				  <div class="front">
+					<h4 class="color-white">Libre</h4>
+					<input type="button" class="btn float-buttons" value="Reservar" />
+				  </div>
+				  <div class="back" id="contact">
+					<h4 class="color-white">Reservado</h4>
+					<div class="notification">
+						Tenés el N<sup>º</sup>
+						<span>2</span>
+						<input type="button" class="btn float-buttons" value="Cancelar" />
+					</div>
+				  </div>
+				</div>	
+				<!--<i class="notification"></i>
+				<input type="checkbox" id="wcWomensCheckbox" class="js-switch" />
+				<div class="counter">
+				  <span class="countdown"></span>
+				</div>-->
 			</div>
-		</div>
-		<div id="bath2-error" class="error" style="display:none;">
-			<div>Algo no funciona :( <a href="#">Reportar</a></div>
+			<div id="bath2-error" class="error" style="display:none;">
+				<h4 class="color-white">Error</h4>
+				<a class="btn float-buttons" href="#">Reportar</a>
+			</div>
 		</div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div id="bath3" class=" clearfix">
+    <div id="bath3" class="clearfix">
       <div class="icon">
-        <div class="radius">
-          <i class="mixed"></i>
+        <div>
+			<sup>3</sup>
+			<svg version="1.1" id="boy2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			  width="36px" height="66px" viewBox="0 0 36 66" style="enable-background:new 0 0 36 66;" xml:space="preserve">
+			<line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" x1="18" y1="27" x2="18" y2="66"/>
+			<path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M9,37v-9.01c0-5.072,3.928-9.184,9-9.184l0,0
+			 c5.072,0,9,4.112,9,9.184V37"/>
+			<rect x="4" y="14" style="fill:none;" width="28" height="23"/>
+			<g>
+			 <path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M18.258,13.449c-2.536,0-4.592-2.056-4.592-4.592
+			  c0-2.536,2.056-4.592,4.592-4.592"/>
+			 <path style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" d="M18.258,13.449c2.536,0,4.592-2.056,4.592-4.592
+			  c0-2.536-2.056-4.592-4.592-4.592"/>
+			</g>
+			</svg>
         </div>
       </div>
-      <h4 class="color-white">WC Mixto</h4>
       <div class="notification-area clearfix">
-		<div class="notificationRow">
-			<i class="notification"></i>
-			<input type="checkbox" id="wcMixedCheckbox" class="js-switch" />
-			<div class="counter">
-			  <span class="countdown"></span>
+		<div class="content">
+			<div class="notificationRow">
+				<div class="panel">
+				  <div class="front">
+					<h4 class="color-white">Libre</h4>
+					<input type="button" class="btn float-buttons" value="Reservar" />
+				  </div>
+				  <div class="back" id="contact">
+					<h4 class="color-white">Reservado</h4>
+					<div class="notification">
+						Tenés el N<sup>º</sup>
+						<span>2</span>
+						<input type="button" class="btn float-buttons" value="Cancelar" />
+					</div>
+				  </div>
+				</div>	
+				<!--<i class="notification"></i>
+				<input type="checkbox" id="wcMixedCheckbox" class="js-switch" />
+				<div class="counter">
+				  <span class="countdown"></span>
+				</div>-->
+				
 			</div>
-		</div>
-		<div id="bath3-error" class="error" style="display:none;">
-			<div>Algo no funciona :( <a href="#">Reportar</a></div>
+			<div id="bath3-error" class="error" style="display:none;">
+				<h4 class="color-white">Error</h4>
+				<a class="btn float-buttons" href="#">Reportar</a>
+			</div>
 		</div>
       </div>
     </div>	
   </div>
   </div>
-  <script type="text/javascript" src="bower_components/switchery/dist/switchery.min.js"></script>
+  <script type="text/javascript" src="waves.min.js"></script>
+  <script type="text/javascript" src="walkway.min.js"></script>
   <script type="text/javascript" src="bower_components/jquery-numerator/jquery-numerator.js"></script>
   <script type="text/javascript" src="bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
   <!--Add script to update the page and send messages.-->
-	<script src="popup.js"></script>
+  <script type="text/javascript" src="popup.js"></script>
 </body>
 </html>
