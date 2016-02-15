@@ -5,7 +5,7 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 // var API_BASE_URL = "http://localhost:52325";
   
  var localIP = "not assigned"; 
-  
+ 
   //Method A) Using Long Lived Connections
  var frontEndProxy;
  var chatGlobal;
@@ -19,7 +19,6 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 	   {
 		   
 		     console.log("if(msg == 'ValidateConnection')  ");
-			 
 		   chatGlobal.server.registerConId().done(function(result) {
 		   // //Save Connection ID to Chrome Local Storage
 		   // localStorage.Guid = result;

@@ -129,12 +129,12 @@
   <div class="row">
     <div class="small-12 columns">
 		<h3 class="text-center color-white">
-			Selecciona tu baño preferido
+			Seleccioná tu baño preferido
 		</h3>
 	</div>
   </div>
   <div class="row">
-    <div id="bath1" class="clearfix">
+    <div id="bath1" data-bath-id="1" class="clearfix bath">
       <div class="icon">
         <div>
 			<sup>1</sup>
@@ -161,15 +161,17 @@
 				-->
 				<div class="panel">
 				  <div class="front">
-					<h4 class="color-white">Libre</h4>
-					<input type="button" class="btn float-buttons" value="Reservar" />
+					<h4 class="color-white state">Libre</h4>
+					<input type="button" class="btn float-buttons btnReservar" value="Reservar" />
 				  </div>
 				  <div class="back" id="contact">
-					<h4 class="color-white">Reservado</h4>
+					<h4 class="color-white state">Reservado</h4>
 					<div class="notification">
-						Tenés el N<sup>º</sup>
-						<span>2</span>
-						<input type="button" class="btn float-buttons" value="Cancelar" />
+						<div class="linePosition">
+							Tenés el N<sup>º</sup>
+							<span></span>
+						</div>
+						<input type="button" class="btn float-buttons btnCancelar" value="Cancelar" />
 					</div>
 				  </div>
 				</div>	
@@ -184,7 +186,7 @@
     </div>
   </div>
   <div class="row">
-    <div id="bath2" class="clearfix">
+    <div id="bath2" data-bath-id="2" class="clearfix bath">
       <div class="icon">
         <div>
 			<sup>2</sup>
@@ -203,15 +205,15 @@
 			<div class="notificationRow">
 				<div class="panel">
 				  <div class="front">
-					<h4 class="color-white">Libre</h4>
-					<input type="button" class="btn float-buttons" value="Reservar" />
+					<h4 class="color-white state">Libre</h4>
+					<input type="button" class="btn float-buttons btnReservar" value="Reservar" />
 				  </div>
 				  <div class="back" id="contact">
-					<h4 class="color-white">Reservado</h4>
+					<h4 class="color-white state">Reservado</h4>
 					<div class="notification">
 						Tenés el N<sup>º</sup>
 						<span>2</span>
-						<input type="button" class="btn float-buttons" value="Cancelar" />
+						<input type="button" class="btn float-buttons btnCancelar" value="Cancelar" />
 					</div>
 				  </div>
 				</div>	
@@ -230,7 +232,7 @@
     </div>
   </div>
   <div class="row">
-    <div id="bath3" class="clearfix">
+    <div id="bath3" data-bath-id="3" class="clearfix bath">
       <div class="icon">
         <div>
 			<sup>3</sup>
@@ -249,15 +251,15 @@
 			<div class="notificationRow">
 				<div class="panel">
 				  <div class="front">
-					<h4 class="color-white">Libre</h4>
-					<input type="button" class="btn float-buttons" value="Reservar" />
+					<h4 class="color-white state">Libre</h4>
+					<input type="button" class="btn float-buttons btnReservar" value="Reservar" />
 				  </div>
 				  <div class="back" id="contact">
-					<h4 class="color-white">Reservado</h4>
+					<h4 class="color-white state">Reservado</h4>
 					<div class="notification">
 						Tenés el N<sup>º</sup>
 						<span>2</span>
-						<input type="button" class="btn float-buttons" value="Cancelar" />
+						<input type="button" class="btn float-buttons btnCancelar" value="Cancelar" />
 					</div>
 				  </div>
 				</div>	

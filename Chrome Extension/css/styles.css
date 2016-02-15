@@ -531,7 +531,7 @@ body .notification-area .content a {
  .panel {
     float: left;
     width: 100%;
-    height: 128px;
+    height: 153px;
     position: relative;
 
     -webkit-perspective: 600px;
@@ -634,7 +634,7 @@ body .notification-area .content a {
 .reserved-busy .panel .back {
 	background: #d33f62;
 }
-body .notification-area .content .flip .btn {
+body .notification-area .content .btn {
 	margin-top: 12px;
 }
 .your-turn {

@@ -26,21 +26,87 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 	//Get Status of all bathrooms on Load
   $.get(API_BASE_URL + "/Api/Bath/GetStatus", function(data) {
 
+	var userId = localStorage.Guid;  
+  
     //CSS classes = busy / free / uncertain
     //bath1, bath2, bath3
     //Bath 1
+	var panel = $("#bath1 .panel");
+		
 	if(data.BathStatusList[0].Bathroom.PhotonDevice.Connected == true)
 	{
 		$("#bath1-error").hide();
 		$("#bath1 .notificationRow").show();
 		$("#bath1").removeClass('uncertain');
+		$("#bath1 .btnReservar").show()
 		
+		var usersLine = data.BathStatusList[0].UsersLine;
+		var userPosition = findWithAttr(usersLine, 'ID', userId) + 1;
+				
 		if (data.BathStatusList[0].Bathroom.IsOccupied == true) {
 			$("#bath1").removeClass("free");
+			$("#bath1").removeClass("your-turn");
 			$("#bath1").addClass("busy");
+			$("#bath1 .state").text("Ocupado");
+			$("#bath1 .linePosition span").hide();
+			
+			if(usersLine.length > 0 && userPosition != -1){
+				$("#bath1 .linePosition span").show();
+				$("#bath1 .linePosition span").text(userPosition);
+				
+				if(!panel.hasClass("flip")){
+					panel.addClass('flip');
+				}
+			}
+			else{
+				if(panel.hasClass("flip")){
+					panel.removeClass('flip');
+				}
+			}
 		} else {
-			$("#bath1").removeClass("busy");
-			$("#bath1").addClass("free");
+			if(usersLine.length > 0){
+				if(usersLine[0].ID == userId){
+					$("#bath1").removeClass("free");
+					$("#bath1").removeClass("busy");
+					$("#bath1").addClass("your-turn");
+					$("#bath1 .state").text("¡Te toca!");
+					$("#bath1 .btnReservar").hide();
+					
+					if(panel.hasClass("flip")){
+						panel.removeClass('flip');
+					}
+				}
+				else{
+					$("#bath1").removeClass("free");
+					$("#bath1").removeClass("your-turn");
+					$("#bath1").addClass("busy");
+					$("#bath1 .state").text("Reservado");
+					
+					if(userPosition != -1){
+						$("#bath1 .linePosition span").show();
+						$("#bath1 .linePosition span").text(userPosition);
+						
+						if(!panel.hasClass("flip")){
+							panel.addClass('flip');
+						}
+					}
+					else{
+						if(panel.hasClass("flip")){
+							panel.removeClass('flip');
+						}
+					}
+				}
+			}
+			else{
+				$("#bath1").removeClass("busy");
+				$("#bath1").removeClass("your-turn");
+				$("#bath1").addClass("free");
+				$("#bath1 .state").text("Libre");
+				
+				if(panel.hasClass("flip")){
+					panel.removeClass('flip');
+				}
+			}
 		}
 	}else{
 		$("#bath1-error").show();
@@ -58,18 +124,39 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 		
 		if (data.BathStatusList[1].Bathroom.IsOccupied == true) {
 			$("#bath2").removeClass("free");
+			$("#bath2").removeClass("your-turn");
 			$("#bath2").addClass("busy");
+			$("#bath2 .state").text("Ocupado");
 		} else {
-			$("#bath2").removeClass("busy");
-			$("#bath2").addClass("free");
+			if(data.BathStatusList[1].UsersLine.length > 0){
+				if(data.BathStatusList[1].UsersLine[0].ID == userId){
+					$("#bath2").removeClass("free");
+					$("#bath2").removeClass("busy");
+					$("#bath2").addClass("your-turn");
+					$("#bath2 .state").text("¡Te toca!");
+				}
+				else{
+					$("#bath2").removeClass("free");
+					$("#bath2").removeClass("your-turn");
+					$("#bath2").addClass("busy");
+					$("#bath2 .state").text("Reservado");
+				}
+			}
+			else{
+				$("#bath2").removeClass("busy");
+				$("#bath2").removeClass("your-turn");
+				$("#bath2").addClass("free");
+				$("#bath2 .state").text("Libre");
+			}
 		}
 	}else{
 		$("#bath2-error").show();
 		$("#bath2 .notificationRow").hide();
 		$("#bath2").addClass('uncertain');
 	}
-    //Bath 3
-	if(data.BathStatusList[1].Bathroom.PhotonDevice.Connected == true)
+	
+	//Bath 3
+	if(data.BathStatusList[2].Bathroom.PhotonDevice.Connected == true)
 	{
 		$("#bath3-error").hide();
 		$("#bath3 .notificationRow").show();
@@ -77,39 +164,36 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 		
 		if (data.BathStatusList[2].Bathroom.IsOccupied == true) {
 			$("#bath3").removeClass("free");
+			$("#bath3").removeClass("your-turn");
 			$("#bath3").addClass("busy");
+			$("#bath3 .state").text("Ocupado");
 		} else {
-			$("#bath3").removeClass("busy");
-			$("#bath3").addClass("free");
+			if(data.BathStatusList[2].UsersLine.length > 0){
+				if(data.BathStatusList[2].UsersLine[0].ID == userId){
+					$("#bath3").removeClass("free");
+					$("#bath3").removeClass("busy");
+					$("#bath3").addClass("your-turn");
+					$("#bath3 .state").text("¡Te toca!");
+				}
+				else{
+					$("#bath3").removeClass("free");
+					$("#bath3").removeClass("your-turn");
+					$("#bath3").addClass("busy");
+					$("#bath3 .state").text("Reservado");
+				}
+			}
+			else{
+				$("#bath3").removeClass("busy");
+				$("#bath3").removeClass("your-turn");
+				$("#bath3").addClass("free");
+				$("#bath3 .state").text("Libre");
+			}
 		}
 	}else{
 		$("#bath3-error").show();
 		$("#bath3 .notificationRow").hide();
 		$("#bath3").addClass('uncertain');
 	}
-	
-	var svg = new Walkway({
-	  selector: '#boy',
-	  duration: 500,
-	  easing: 'linear'
-	});
-	var svg2 = new Walkway({
-	  selector: '#girl',
-	  duration: 500,
-	  easing: 'linear'
-	});
-	var svg3 = new Walkway({
-	  selector: '#boy2',
-	  duration: 500,
-	  easing: 'linear'
-	});
-		
-	$('#loader-wrapper').fadeOut(function() {
-		svg.draw();
-		svg2.draw();
-		svg3.draw();
-	});
-	$('#container').css("visibility", "");
 
 	
   });
@@ -120,17 +204,17 @@ function GetNotificationStatus()
   var userId = localStorage.Guid;
   $.get(API_BASE_URL + "/Api/Notification/GetNotificationStatusByUser?userId=" + userId, function(data) {
    
-		$("#wcMensCheckbox").prop('checked', data.SubscribedNotificationBath1);
+		$("#bath1 .front .actionBtn input").val(data.SubscribedNotificationBath1 ? "Cancelar" : "Reservar")
 		executeChangeBath1 = false;
 		swcMensCheckbox.handleOnchange(data.SubscribedNotificationBath1);
 		
 	
-		$("#wcWomensCheckbox").prop('checked', data.SubscribedNotificationBath2);
+		$("#bath2 .front .actionBtn input").val(data.SubscribedNotificationBath1 ? "Cancelar" : "Reservar")
 		executeChangeBath2 = false;
 		swcWomensCheckbox.handleOnchange(data.SubscribedNotificationBath2);
    
     
-		$("#wcMixedCheckbox").prop('checked', data.SubscribedNotificationBath3);
+		$("#bath3 .front .actionBtn input").val(data.SubscribedNotificationBath1 ? "Cancelar" : "Reservar")
 		executeChangeBath3 = false;
 		swcMixedCheckbox.handleOnchange(data.SubscribedNotificationBath3);
     
@@ -144,18 +228,73 @@ function GetNotificationStatus()
 
 $(function() {
 
+	setTimeout(function(){
+		var svg = new Walkway({
+		  selector: '#boy',
+		  duration: 500,
+		  easing: 'linear'
+		});
+		var svg2 = new Walkway({
+		  selector: '#girl',
+		  duration: 500,
+		  easing: 'linear'
+		});
+		var svg3 = new Walkway({
+		  selector: '#boy2',
+		  duration: 500,
+		  easing: 'linear'
+		});
+		
+		$('#loader-wrapper').fadeOut(function() {
+			svg.draw();
+			svg2.draw();
+			svg3.draw();
+		});
+		$('#container').css("visibility", "");
+	},
+	3000);
+	
 	$('.panel .btn').click(function(e){
 		
 		e.preventDefault();  
+		var btn = $(this);
 		var panel = $(this).closest('.panel');
 		var flip = panel.hasClass('flip');
+		
 		setTimeout(function(){
-			if(!flip) {
-				console.log(true);
-				panel.addClass('flip');
-			}else {
-				console.log(false);
-				panel.removeClass('flip');
+			
+			var userId = localStorage.Guid;
+			
+			if($(btn).parent().hasClass("btnReservar")){
+				
+				$.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=" + $(btn).parents(".bath").data("bath-id") + "&userId=" + userId, function(data) {
+				//Success
+				if (data.Status == "200") {				
+				  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
+				  panel.addClass('flip');
+				} else if (data.Status == "304") {
+				  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
+				} else {
+				  //Error!
+				  ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
+				}
+
+			  });
+			} else if($(btn).parent().hasClass("btnCancelar")) {
+				//UN-SUBSCRIBE MEN BATHROOM
+				$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=1&userId=" + userId + "&sendMessage=false", function(data) {
+
+				  //Success
+				  if (data.Status == "200") {
+					ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);					
+					panel.removeClass('flip');
+				  } else if (data.Status == "304") {	
+					ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
+				  } else {
+					//Error
+					ShowNotification("Error :-(", "Por favor intentá nuevamente en unos minutos.", "");
+				  }
+				});
 			}
 		}, 300);
 		
@@ -166,7 +305,7 @@ $(function() {
     Waves.attach('.float-buttons', ['waves-button', 'waves-radius', 'waves-float']);
 	
 
-	//setInterval(function(){GetBathStatus();}, 3000);
+	setInterval(function(){GetBathStatus();}, 3000);
 	GetBathStatus();
 	
   
@@ -402,3 +541,11 @@ port.onMessage.addListener(function(data) {
     }
   }
 });
+
+function findWithAttr(array, attr, value) {
+    for(var i = 0; i < array.length; i += 1) {
+        if(array[i][attr] === value) {
+            return i;
+        }
+    }
+}
