@@ -1,8 +1,8 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-var API_BASE_URL = "http://kkcloud.azurewebsites.net";
-// var API_BASE_URL = "http://localhost:52325/";
+// var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+var API_BASE_URL = "http://localhost:52325/";
 
 
 
@@ -50,7 +50,7 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 			$("#bath1 .state").text("Ocupado");
 			$("#bath1 .linePosition span").hide();
 			
-			if(usersLine.length > 0 && userPosition != -1){
+			if(usersLine.length > 0 && userPosition != -1 && !isNaN(userPosition)){
 				$("#bath1 .linePosition span").show();
 				$("#bath1 .linePosition span").text(userPosition);
 				
@@ -82,7 +82,7 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 					$("#bath1").addClass("busy");
 					$("#bath1 .state").text("Reservado");
 					
-					if(userPosition != -1){
+					if(userPosition != -1 && !isNaN(userPosition)){
 						$("#bath1 .linePosition span").show();
 						$("#bath1 .linePosition span").text(userPosition);
 						
