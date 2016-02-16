@@ -1,8 +1,8 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-var API_BASE_URL = "http://kkcloud.azurewebsites.net";
-// var API_BASE_URL = "http://localhost:52325/";
+// var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+var API_BASE_URL = "http://localhost:52325/";
 
 
 
@@ -39,6 +39,8 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 		$("#bath1 .notificationRow").show();
 		$("#bath1").removeClass('uncertain');
 		$("#bath1 .btnReservar").show()
+		$("#bath1 .linePosition").hide();
+		$("#bath1 .peopleWaiting").hide();
 		
 		var usersLine = data.BathStatusList[0].UsersLine;
 		var userPosition = findWithAttr(usersLine, 'ID', userId) + 1;
@@ -47,18 +49,27 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 			$("#bath1").removeClass("free");
 			$("#bath1").removeClass("your-turn");
 			$("#bath1").addClass("busy");
-			$("#bath1 .state").text("Ocupado");
-			$("#bath1 .linePosition span").hide();
+			$("#bath1 .state").text("Ocupado");			
 			
 			if(usersLine.length > 0 && userPosition != -1 && !isNaN(userPosition)){
-				$("#bath1 .linePosition span").show();
+				$("#bath1 .linePosition").show();
 				$("#bath1 .linePosition span").text(userPosition);
+				$("#bath1 .peopleWaiting").hide();
 				
 				if(!panel.hasClass("flip")){
 					panel.addClass('flip');
 				}
 			}
 			else{
+				$("#bath1 .linePosition").hide();
+				$("#bath1 .peopleWaiting").show();
+				if(usersLine.length > 0){
+					$("#bath1 .peopleWaiting").text(usersLine.length + " persona" + (usersLine.length > 1 ? "s" : "") + " esperando");
+				}
+				else{
+					$("#bath1 .peopleWaiting").text("¡Nadie en la fila!");
+				}
+			
 				if(panel.hasClass("flip")){
 					panel.removeClass('flip');
 				}
@@ -83,6 +94,8 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 					$("#bath1 .state").text("Reservado");
 					
 					if(userPosition != -1 && !isNaN(userPosition)){
+						$("#bath1 .linePosition").show();
+						$("#bath1 .peopleWaiting").hide();
 						$("#bath1 .linePosition span").show();
 						$("#bath1 .linePosition span").text(userPosition);
 						
@@ -91,6 +104,10 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 						}
 					}
 					else{
+						$("#bath1 .peopleWaiting").show();
+						$("#bath1 .linePosition").hide();
+						$("#bath1 .peopleWaiting").text(usersLine.length + " persona" + (usersLine.length > 1 ? "s" : "") + " esperando");
+					
 						if(panel.hasClass("flip")){
 							panel.removeClass('flip');
 						}
@@ -102,6 +119,7 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 				$("#bath1").removeClass("your-turn");
 				$("#bath1").addClass("free");
 				$("#bath1 .state").text("Libre");
+				$("#bath1 .btnReservar").hide();
 				
 				if(panel.hasClass("flip")){
 					panel.removeClass('flip');
@@ -260,6 +278,8 @@ $(function() {
 		var btn = $(this);
 		var panel = $(this).closest('.panel');
 		var flip = panel.hasClass('flip');
+		$("#bath1 .linePosition").hide();
+		$("#bath1 .peopleWaiting").hide();
 		
 		setTimeout(function(){
 			
