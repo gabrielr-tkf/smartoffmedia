@@ -134,30 +134,88 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 	
    
     //Bath 2
+	panel = $("#bath2 .panel");
+	
+	
 	if(data.BathStatusList[1].Bathroom.PhotonDevice.Connected == true)
 	{
 		$("#bath2-error").hide();
 		$("#bath2 .notificationRow").show();
 		$("#bath2").removeClass('uncertain');
+		$("#bath2 .btnReservar").show()
+		$("#bath2 .linePosition").hide();
+		$("#bath2 .peopleWaiting").hide();
 		
+		var usersLine = data.BathStatusList[1].UsersLine;
+		var userPosition = findWithAttr(usersLine, 'ID', userId) + 1;
+				
 		if (data.BathStatusList[1].Bathroom.IsOccupied == true) {
 			$("#bath2").removeClass("free");
 			$("#bath2").removeClass("your-turn");
 			$("#bath2").addClass("busy");
-			$("#bath2 .state").text("Ocupado");
+			$("#bath2 .state").text("Ocupado");			
+			
+			if(usersLine.length > 0 && userPosition != -1 && !isNaN(userPosition)){
+				$("#bath2 .linePosition").show();
+				$("#bath2 .linePosition span").text(userPosition);
+				$("#bath2 .peopleWaiting").hide();
+				
+				if(!panel.hasClass("flip")){
+					panel.addClass('flip');
+				}
+			}
+			else{
+				$("#bath2 .linePosition").hide();
+				$("#bath2 .peopleWaiting").show();
+				if(usersLine.length > 0){
+					$("#bath2 .peopleWaiting").text(usersLine.length + " persona" + (usersLine.length > 1 ? "s" : "") + " esperando");
+				}
+				else{
+					$("#bath2 .peopleWaiting").text("¡Nadie en la fila!");
+				}
+			
+				if(panel.hasClass("flip")){
+					panel.removeClass('flip');
+				}
+			}
 		} else {
-			if(data.BathStatusList[1].UsersLine.length > 0){
-				if(data.BathStatusList[1].UsersLine[0].ID == userId){
+			if(usersLine.length > 0){
+				if(usersLine[0].ID == userId){
 					$("#bath2").removeClass("free");
 					$("#bath2").removeClass("busy");
 					$("#bath2").addClass("your-turn");
 					$("#bath2 .state").text("¡Te toca!");
+					$("#bath2 .btnReservar").hide();
+					
+					if(panel.hasClass("flip")){
+						panel.removeClass('flip');
+					}
 				}
 				else{
 					$("#bath2").removeClass("free");
 					$("#bath2").removeClass("your-turn");
 					$("#bath2").addClass("busy");
 					$("#bath2 .state").text("Reservado");
+					
+					if(userPosition != -1 && !isNaN(userPosition)){
+						$("#bath2 .linePosition").show();
+						$("#bath2 .peopleWaiting").hide();
+						$("#bath2 .linePosition span").show();
+						$("#bath2 .linePosition span").text(userPosition);
+						
+						if(!panel.hasClass("flip")){
+							panel.addClass('flip');
+						}
+					}
+					else{
+						$("#bath2 .peopleWaiting").show();
+						$("#bath2 .linePosition").hide();
+						$("#bath2 .peopleWaiting").text(usersLine.length + " persona" + (usersLine.length > 1 ? "s" : "") + " esperando");
+					
+						if(panel.hasClass("flip")){
+							panel.removeClass('flip');
+						}
+					}
 				}
 			}
 			else{
@@ -165,6 +223,11 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 				$("#bath2").removeClass("your-turn");
 				$("#bath2").addClass("free");
 				$("#bath2 .state").text("Libre");
+				$("#bath2 .btnReservar").hide();
+				
+				if(panel.hasClass("flip")){
+					panel.removeClass('flip');
+				}
 			}
 		}
 	}else{
@@ -174,30 +237,88 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 	}
 	
 	//Bath 3
+	panel = $("#bath3 .panel");
+	
+	
 	if(data.BathStatusList[2].Bathroom.PhotonDevice.Connected == true)
 	{
 		$("#bath3-error").hide();
 		$("#bath3 .notificationRow").show();
 		$("#bath3").removeClass('uncertain');
+		$("#bath3 .btnReservar").show()
+		$("#bath3 .linePosition").hide();
+		$("#bath3 .peopleWaiting").hide();
 		
+		var usersLine = data.BathStatusList[2].UsersLine;
+		var userPosition = findWithAttr(usersLine, 'ID', userId) + 1;
+				
 		if (data.BathStatusList[2].Bathroom.IsOccupied == true) {
 			$("#bath3").removeClass("free");
 			$("#bath3").removeClass("your-turn");
 			$("#bath3").addClass("busy");
-			$("#bath3 .state").text("Ocupado");
+			$("#bath3 .state").text("Ocupado");			
+			
+			if(usersLine.length > 0 && userPosition != -1 && !isNaN(userPosition)){
+				$("#bath3 .linePosition").show();
+				$("#bath3 .linePosition span").text(userPosition);
+				$("#bath3 .peopleWaiting").hide();
+				
+				if(!panel.hasClass("flip")){
+					panel.addClass('flip');
+				}
+			}
+			else{
+				$("#bath3 .linePosition").hide();
+				$("#bath3 .peopleWaiting").show();
+				if(usersLine.length > 0){
+					$("#bath3 .peopleWaiting").text(usersLine.length + " persona" + (usersLine.length > 1 ? "s" : "") + " esperando");
+				}
+				else{
+					$("#bath3 .peopleWaiting").text("¡Nadie en la fila!");
+				}
+			
+				if(panel.hasClass("flip")){
+					panel.removeClass('flip');
+				}
+			}
 		} else {
-			if(data.BathStatusList[2].UsersLine.length > 0){
-				if(data.BathStatusList[2].UsersLine[0].ID == userId){
+			if(usersLine.length > 0){
+				if(usersLine[0].ID == userId){
 					$("#bath3").removeClass("free");
 					$("#bath3").removeClass("busy");
 					$("#bath3").addClass("your-turn");
 					$("#bath3 .state").text("¡Te toca!");
+					$("#bath3 .btnReservar").hide();
+					
+					if(panel.hasClass("flip")){
+						panel.removeClass('flip');
+					}
 				}
 				else{
 					$("#bath3").removeClass("free");
 					$("#bath3").removeClass("your-turn");
 					$("#bath3").addClass("busy");
 					$("#bath3 .state").text("Reservado");
+					
+					if(userPosition != -1 && !isNaN(userPosition)){
+						$("#bath3 .linePosition").show();
+						$("#bath3 .peopleWaiting").hide();
+						$("#bath3 .linePosition span").show();
+						$("#bath3 .linePosition span").text(userPosition);
+						
+						if(!panel.hasClass("flip")){
+							panel.addClass('flip');
+						}
+					}
+					else{
+						$("#bath3 .peopleWaiting").show();
+						$("#bath3 .linePosition").hide();
+						$("#bath3 .peopleWaiting").text(usersLine.length + " persona" + (usersLine.length > 1 ? "s" : "") + " esperando");
+					
+						if(panel.hasClass("flip")){
+							panel.removeClass('flip');
+						}
+					}
 				}
 			}
 			else{
@@ -205,6 +326,11 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 				$("#bath3").removeClass("your-turn");
 				$("#bath3").addClass("free");
 				$("#bath3 .state").text("Libre");
+				$("#bath3 .btnReservar").hide();
+				
+				if(panel.hasClass("flip")){
+					panel.removeClass('flip');
+				}
 			}
 		}
 	}else{
@@ -224,17 +350,17 @@ function GetNotificationStatus()
    
 		$("#bath1 .front .actionBtn input").val(data.SubscribedNotificationBath1 ? "Cancelar" : "Reservar")
 		executeChangeBath1 = false;
-		swcMensCheckbox.handleOnchange(data.SubscribedNotificationBath1);
+		// swcMensCheckbox.handleOnchange(data.SubscribedNotificationBath1);
 		
 	
 		$("#bath2 .front .actionBtn input").val(data.SubscribedNotificationBath1 ? "Cancelar" : "Reservar")
 		executeChangeBath2 = false;
-		swcWomensCheckbox.handleOnchange(data.SubscribedNotificationBath2);
+		// swcWomensCheckbox.handleOnchange(data.SubscribedNotificationBath2);
    
     
 		$("#bath3 .front .actionBtn input").val(data.SubscribedNotificationBath1 ? "Cancelar" : "Reservar")
 		executeChangeBath3 = false;
-		swcMixedCheckbox.handleOnchange(data.SubscribedNotificationBath3);
+		// swcMixedCheckbox.handleOnchange(data.SubscribedNotificationBath3);
     
 		executeChangeBath1 = true;
 		executeChangeBath2 = true;
@@ -321,9 +447,6 @@ $(function() {
 
 	});
 	
-	Waves.init();
-    Waves.attach('.float-buttons', ['waves-button', 'waves-radius', 'waves-float']);
-	
 
 	setInterval(function(){GetBathStatus();}, 3000);
 	GetBathStatus();
@@ -390,7 +513,7 @@ $(function() {
 				//Keep button green and show error message
 				wcMensCheckbox.checked = true;
 				wasCallCallback1 = true;				
-				swcMensCheckbox.handleOnchange(true);
+				// swcMensCheckbox.handleOnchange(true);
 				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  } else {
 				//Error
@@ -423,7 +546,7 @@ $(function() {
 			} else if (data.Status == "304") {
 			  wasCallCallback2 = true;
 			  wcWomensCheckbox.checked = !wcWomensCheckbox.checked;
-			  swcWomensCheckbox.handleOnchange(false);
+			  // swcWomensCheckbox.handleOnchange(false);
 			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			} else {
 			  //Subscription Error!
@@ -442,7 +565,7 @@ $(function() {
 				//Keep button green and show error message
 				swcWomensCheckbox.checked = true;
 				wasCallCallback2 = true;				
-				swcWomensCheckbox.handleOnchange(true);
+				// swcWomensCheckbox.handleOnchange(true);
 				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			  } else {
 				//Error
@@ -475,7 +598,7 @@ $(function() {
 			} else if (data.Status == "304") {
 			  wasCallCallback3 = true;
 			  wcMixedCheckbox.checked = !wcMixedCheckbox.checked;
-			  swcMixedCheckbox.handleOnchange(false);
+			  // swcMixedCheckbox.handleOnchange(false);
 			  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 			} else {
 			  //Error!
@@ -498,7 +621,7 @@ $(function() {
 				//Keep button green and show error message
 				swcMixedCheckbox.checked = true;
 				wasCallCallback3 = true;	
-				swcMixedCheckbox.handleOnchange(true);
+				// swcMixedCheckbox.handleOnchange(true);
 				ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 
 			  } else {
@@ -545,15 +668,15 @@ port.onMessage.addListener(function(data) {
       switch (data.BathId) {
         case 1:
           wcMensCheckbox.checked = !wcMensCheckbox.checked;
-          swcMensCheckbox.handleOnchange(false);
+          // swcMensCheckbox.handleOnchange(false);
           break;
         case 2:
           wcWomensCheckbox.checked = !wcWomensCheckbox.checked;
-          swcWomensCheckbox.handleOnchange(false);
+          // swcWomensCheckbox.handleOnchange(false);
           break;
         case 3:
           wcMixedCheckbox.checked = !wcMixedCheckbox.checked;
-          swcMixedCheckbox.handleOnchange(false);
+          // swcMixedCheckbox.handleOnchange(false);
           break;
         default:
 
@@ -569,3 +692,6 @@ function findWithAttr(array, attr, value) {
         }
     }
 }
+
+Waves.init();
+Waves.attach('.float-buttons', ['waves-button', 'waves-radius', 'waves-float']);

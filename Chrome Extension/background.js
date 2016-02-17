@@ -78,7 +78,6 @@ var API_BASE_URL = "http://kkcloud.azurewebsites.net";
 		notificationsCount[bathId - 1]++;
 		if(pendingNotifications.indexOf(bathId) != -1){
 			if(notificationsCount[bathId - 1] < 2){
-				console.log(notification);
 				ShowNotificationWithButton(notification)				
 			}
 			else{
@@ -166,7 +165,6 @@ function generateUUID() {
 };
 
 $(function() {
-	
 	// getLocalIP();
 	
 	// setTimeout(function(){
