@@ -1,8 +1,8 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-var API_BASE_URL = "http://kkcloud.azurewebsites.net";
-// var API_BASE_URL = "http://localhost:52325/";
+// var API_BASE_URL = "http://kkcloud.azurewebsites.net";
+var API_BASE_URL = "http://localhost:52325/";
 
 
 
@@ -411,11 +411,11 @@ $(function() {
 			
 			var userId = localStorage.Guid;
 			
-			if($(btn).parent().hasClass("btnReservar")){
-				
+			console.log($(btn));
+			if($(btn).hasClass("btnReservar")){
 				$.get(API_BASE_URL + "/Api/Notification/subscribe?bathid=" + $(btn).parents(".bath").data("bath-id") + "&userId=" + userId, function(data) {
 				//Success
-				if (data.Status == "200") {				
+				if (data.Status == "200") {
 				  ShowNotification(data.NotificationTitle, data.NotificationMessage, data.AudioFile);
 				  panel.addClass('flip');
 				} else if (data.Status == "304") {
@@ -426,7 +426,7 @@ $(function() {
 				}
 
 			  });
-			} else if($(btn).parent().hasClass("btnCancelar")) {
+			} else if($(btn).hasClass("btnCancelar")) {
 				//UN-SUBSCRIBE MEN BATHROOM
 				$.get(API_BASE_URL + "/Api/Notification/unsubscribe?bathid=1&userId=" + userId + "&sendMessage=false", function(data) {
 
