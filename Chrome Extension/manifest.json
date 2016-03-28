@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "kkcloud",
-  "description": "Disponibilidad de Baños",
+  "name": "SmartPoo® ",
+  "description": "Disponibilidad de Baños en Takeoff Media",
   "version": "1.0",
   "icons": {
     "18": "images/logo/logo18.png",
@@ -33,7 +33,7 @@
   ],
   "devtools_page": "devtools.html",
   "omnibox": {
-    "keyword": "kkcloud"
+    "keyword": "SmartPoo® Disponibilidad de Baños en Takeoff Media"
   },
   "web_accessible_resources": [
     "images/logo/logo48.png"
