@@ -212,7 +212,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\kkcloud - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\kkcloud - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\kkcloud - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\kkcloud - Web Deploy.pubxml" />
     <Content Include="Views\Monitor\Index.cshtml" />
   </ItemGroup>

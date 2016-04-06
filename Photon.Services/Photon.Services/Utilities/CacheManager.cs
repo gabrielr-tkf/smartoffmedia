@@ -33,6 +33,13 @@ namespace Photon.Services.Utilities
             cacheAddCount++;
         }
 
+        public static void Add(string key, object obj, int minutesExpiration)
+        {
+            DateTime date = DateTime.Now.AddMinutes(minutesExpiration);
+            System.Web.HttpRuntime.Cache.Insert(key, obj, null, date, TimeSpan.Zero);
+            cacheAddCount++;
+        }
+
         /// <summary>
         /// <para>English: add on cache with a specific priority </para>
         /// <para>Español: agrega al cache una prioridad especifica</para>

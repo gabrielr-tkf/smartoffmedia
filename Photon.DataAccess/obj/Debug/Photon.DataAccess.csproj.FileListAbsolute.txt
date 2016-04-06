@@ -3,3 +3,12 @@ D:\Trabajos\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.DataAccess.pdb
 D:\Trabajos\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.csprojResolveAssemblyReference.cache
 D:\Trabajos\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.dll
 D:\Trabajos\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.pdb
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.DataAccess.dll
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.DataAccess.pdb
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.Entities.dll
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\bin\Debug\Newtonsoft.Json.dll
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\bin\Debug\Photon.Entities.pdb
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\bin\Debug\Newtonsoft.Json.xml
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.csprojResolveAssemblyReference.cache
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.dll
+C:\Trabajos\_Otros Proyectos\Particle Project\smartoffmedia\Photon.DataAccess\obj\Debug\Photon.DataAccess.pdb

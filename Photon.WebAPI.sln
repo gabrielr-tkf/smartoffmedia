@@ -11,6 +11,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.Entities", "Photon.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.DataAccess", "Photon.DataAccess\Photon.DataAccess.csproj", "{262EC7A6-DD53-475D-86E8-3CDF8BFC9438}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Site NET", "http://localhost:29180", "{0B7D72B9-417C-4002-9C51-8AA91E2641DA}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		ProjectReferences = "{c5a870d2-b959-446d-bf7f-d294679e40f9}|Photon.Entities.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_29180"
+		Debug.AspNetCompiler.PhysicalPath = "Site NET\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_29180\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_29180"
+		Release.AspNetCompiler.PhysicalPath = "Site NET\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_29180\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "Site NET\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +55,10 @@ Global
 		{262EC7A6-DD53-475D-86E8-3CDF8BFC9438}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{262EC7A6-DD53-475D-86E8-3CDF8BFC9438}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{262EC7A6-DD53-475D-86E8-3CDF8BFC9438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B7D72B9-417C-4002-9C51-8AA91E2641DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7D72B9-417C-4002-9C51-8AA91E2641DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B7D72B9-417C-4002-9C51-8AA91E2641DA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7D72B9-417C-4002-9C51-8AA91E2641DA}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
